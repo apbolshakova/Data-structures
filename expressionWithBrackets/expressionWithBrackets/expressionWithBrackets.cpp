@@ -1,36 +1,57 @@
 #define _CRT_SECURE_NO_WARNINGS
+#include "stdio.h"
+
+#define END_OF_EXPRESSION '='
 
 /*структура числа*/
-typedef struct Number
+typedef struct Number_
 {
 	char* asString;
-	int numberSystem;
 	int stringLen;
-} NUMBER;
+	int numberSystem;
+} number_t;
 
-/*линейный список opzItems*/
-typedef union OpzItem
+/*Линейный список ОПЗ*/
+typedef union OpzElValue_
 {
 	char sign;
-	NUMBER* number;
-} OPZ_ITEM;
+	number_t* number;
+} opz_list_el_value;
+typedef struct OpzEl_
+{
+	opz_list_el_value* value;
+	struct OpzEl_* next;
+} opz_list_el;
+/*Линейный список ОПЗ*/
 
-/*структура стека символов из getOPZ*/
-typedef struct CharStackItem
+/*структура стека символов, используемая при получении ОПЗ*/
+typedef struct OperatorStackEl_
 {
 	char sign;
-	//TODO закончить
-};
+	struct OperatorStackEl_* next;
+} operator_stack_el;
 
-/*структура стека для подсчёта опз*/
+/*TODO: структура стека для подсчёта опз*/
 
-void getOPZ()
+opz_list_el* getOpz() //читает входные данные, парсит их в ОПЗ и возвращает указатель на голову полученного списка
 {
-	//динамически читать строку, пока есть, при первом проходе формируем список opzItems:
+	opz_list_el* opzListHead = NULL;
+	operator_stack_el* operartorStackHead = NULL;
+	char* curChar = '\0';
+
+	if (!scanf("%c", &curChar)) return opzListHead;
+	while (curChar != END_OF_EXPRESSION)
+	{
+		opz_list_el_value* value = handleOpzElValue(*curChar, ); //возвращает значение для нового узла в списке ОПЗ
+		pushIntoOpzList(opzListHead, value);
+		if (!scanf("%c", &curChar)) return NULL; //выражение без знака равно => ошибка TODO: возвращать код ошибки??
+		
+	}
+	//динамически читать строку, пока есть, при первом проходе формируем opz_list:
 	/*
 	открывающая скобка - скидываем в стек
 	закрывающая скобка - вытаскиваем из стека всё до первой открывающей скобки включительно
-	число обрабатываем и скидываем в экземпляр NUM
+	число обрабатываем и скидываем в экземпляр number_t
 	символ - вытаскиваем все операции с большим приоритетом до первой открывающей скобки
 	конец строки - вытаскиваем всё из стека символов
 	*/
@@ -38,7 +59,8 @@ void getOPZ()
 
 int main(void)
 {
-	getReadyForCalculationOPZ(); //получить опз
-	calculateOPZ(); //поссчитать выражение по опз
+	printf("Введите выражение для подсчёта (должно заканчиваться знаком равенства): \n");
+	opz_list_el* opzListHead = getOpz(); //получить опз
+	calculateOpz(opzListHead); //поссчитать выражение по опз
 	return 0;
 }
