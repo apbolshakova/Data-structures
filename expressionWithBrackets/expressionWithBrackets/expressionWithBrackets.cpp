@@ -46,6 +46,17 @@ bool_t ifOperator (char symbol)
 	else return FALSE;
 }
 
+func_result_t pushIntoOperatorStack(operator_stack_el** head, char value)
+{
+	operator_stack_el *tmp = (operator_stack_el*)malloc(sizeof(operator_stack_el));
+	if (tmp == NULL) return FAIL;
+
+	tmp->next = *head;
+	tmp->sign = value;
+	*head = tmp;
+	return SUCCESS;
+}
+
 func_result_t handleNumber(opz_list_el** opzList_headPtr, char** curChar)
 {
 	//распарсить число в структуру и добавить в список ОПЗ
@@ -57,9 +68,10 @@ func_result_t handleOparator(opz_list_el** opzList_headPtr, operator_stack_el** 
 	//пишем полученный оператор в стек
 }
 
-func_result_t handleOpeningBracket(operator_stack_el** operatorStack_headPtr)
+func_result_t handleOpeningBracket(operator_stack_el** operatorStack_headPtr, char curChar)
 {
-	//положить скобку в стек
+	if (pushIntoOperatorStack(operatorStack_headPtr, curChar) != SUCCESS) return FAIL;
+	return SUCCESS;
 }
 
 func_result_t handleClosingBracket(opz_list_el** opzList_headPtr, operator_stack_el** operatorStack_headPtr)
@@ -82,17 +94,17 @@ func_result_t handleOpzListValue(opz_list_el** opzList_headPtr, operator_stack_e
 	}
 	else if (isOperator(**curChar))
 	{
-		if (handleOperator(opzList_headPtr, operatorStack_headPtr, curChar) != SUCCESS) //TODO: узнать, почему может быть ошибка
+		if (handleOperator(opzList_headPtr, operatorStack_headPtr, curChar) != SUCCESS)
 		{
-			printf("ERROR: problem with operators stack.\n");
+			printf("ERROR: operators stack overflow.\n");
 			return FAIL;
 		}
 	}
 	else if (**curChar == '(')
 	{
-		if (handleOpeningBracket(operatorStack_headPtr) != SUCCESS)
+		if (handleOpeningBracket(operatorStack_headPtr, **curChar) != SUCCESS)
 		{
-			printf("ERROR: problem with operators stack.\n");
+			printf("ERROR: operators stack overflow.\n");
 			return FAIL;
 		}
 	}
@@ -100,7 +112,7 @@ func_result_t handleOpzListValue(opz_list_el** opzList_headPtr, operator_stack_e
 	{
 		if (handleClosingBracket(opzList_headPtr, operatorStack_headPtr) != SUCCESS)
 		{
-			printf("ERROR: number of opening and closing brackets is unbalanced.\n");
+			printf("ERROR: number of opening and closing brackets is unbalanced or stack overflow.\n");
 			return FAIL;
 		}
 	}
