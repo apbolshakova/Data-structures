@@ -69,6 +69,13 @@ char popFromOperatorStack(operator_stack_el** head)
 	return value;
 }
 
+char getLastFromOperatorStack(operator_stack_el* head)
+{
+	if (head == NULL) return NULL_OPERATOR;
+	while (head->next) head = head->next;
+	return head->sign;
+}
+
 func_result_t pushIntoOpzList(opz_list_el** head, char value) 
 {
 	opz_list_el* tmp = (opz_list_el*)malloc(sizeof(opz_list_el));
@@ -84,10 +91,29 @@ func_result_t handleNumber(opz_list_el** opzList_headPtr, char** curChar)
 	//распарсить число в структуру и добавить в список ОПЗ
 }
 
-func_result_t handleOparator(opz_list_el** opzList_headPtr, operator_stack_el** operatorStack_headPtr, char** curChar)
+func_result_t handleOperator(opz_list_el** opzList_headPtr, operator_stack_el** operatorStack_headPtr, char curChar)
 {
-	//вытащить из стека все операции с большим приоритетом до первой открывающей скобки не включительно
-	//пишем полученный оператор в стек
+	if (curChar == '+' || curChar == '-')
+	{
+		char lastOperator = getLastFromOperatorStack(operatorStack_headPtr);
+		while ( lastOperator == '*' || lastOperator == '/')
+		{
+			lastOperator = popFromOperatorStack(operatorStack_headPtr);
+			if (pushIntoOpzList(opzList_headPtr, lastOperator) != SUCCESS)
+			{
+				printf("ERROR: RPN list stack overflow.\n");
+				return FAIL;
+			}
+			lastOperator = getLastFromOperatorStack(operatorStack_headPtr);
+		}
+	}
+
+	if (pushIntoOperatorStack(operatorStack_headPtr, curChar) != SUCCESS)
+	{
+		printf("ERROR: operator stack overflow.\n");
+		return FAIL;
+	}
+	return SUCCESS;
 }
 
 func_result_t handleOpeningBracket(operator_stack_el** operatorStack_headPtr, char curChar)
@@ -128,30 +154,21 @@ func_result_t handleOpzListValue(opz_list_el** opzList_headPtr, operator_stack_e
 	if (curChar == NULL) return NULL;
 	opz_list_el_value* elValue = (opz_list_el_value*)malloc(sizeof(opz_list_el_value));
 
-	if (isDigit(**curChar))
-	{
-		if (handleNumber(opzList_headPtr, curChar) != SUCCESS)
-		{
-			printf("ERROR: found incorrect number.\n");
-			return FAIL;
-		};
-	}
-	else if (isOperator(**curChar))
-	{
-		if (handleOperator(opzList_headPtr, operatorStack_headPtr, curChar) != SUCCESS)
-		{
-			printf("ERROR: operators stack overflow.\n");
-			return FAIL;
-		}
-	}
-	else if (**curChar == '(')
-	{
-		if (handleOpeningBracket(operatorStack_headPtr, **curChar) != SUCCESS) return FAIL;
-	}
-	else if (**curChar == ')')
-	{
-		if (handleClosingBracket(opzList_headPtr, operatorStack_headPtr) != SUCCESS) return FAIL;
-	}
+	if (isDigit(**curChar) && 
+		handleNumber(opzList_headPtr, curChar) != SUCCESS) 
+		return FAIL;
+	else if 
+		(isOperator(**curChar) &&
+		handleOperator(opzList_headPtr, operatorStack_headPtr, **curChar) != SUCCESS) 
+		return FAIL;
+	else if 
+		(**curChar == '(' && 
+		handleOpeningBracket(operatorStack_headPtr, **curChar) != SUCCESS) 
+		return FAIL;
+	else if 
+		(**curChar == ')' &&
+		handleClosingBracket(opzList_headPtr, operatorStack_headPtr) != SUCCESS) 
+		return FAIL;
 	return SUCCESS;
 }
 
