@@ -33,18 +33,31 @@ typedef struct OperatorStackEl_
 
 /*TODO: структура стека для подсчёта опз*/
 
+opz_list_el_value* getOpzElValue(operator_stack_el** operatorStack_head, char** curChar)
+{
+	if (curChar == NULL) return NULL;
+	opz_list_el_value* elValue = (opz_list_el_value*)malloc(sizeof(opz_list_el_value));
+
+	if      (isDigit(**curChar))    elValue = handleNumber();
+	else if (isOperator(**curChar)) elValue = handleOperator();
+	else if (**curChar == '(')      elValue = handleOpeningBracket();
+	else if (**curChar == ')')      elValue = handleClosingBracket();
+
+	return elValue;
+}
+
 opz_list_el* getOpz() //читает входные данные, парсит их в ОПЗ и возвращает указатель на голову полученного списка
 {
-	opz_list_el* opzListHead = NULL;
-	operator_stack_el* operartorStackHead = NULL;
+	opz_list_el* opzList_head = NULL;
+	operator_stack_el* operartorStack_head = NULL;
 	char* curChar = '\0';
 
-	if (!scanf("%c", &curChar)) return opzListHead;
+	if (!scanf("%c", &curChar)) return opzList_head;
 	while (curChar != END_OF_EXPRESSION)
 	{
-		opz_list_el_value* value = handleOpzElValue(*curChar, ); //возвращает значение для нового узла в списке ОПЗ
-		pushIntoOpzList(opzListHead, value);
-		if (!scanf("%c", &curChar)) return NULL; //выражение без знака равно => ошибка TODO: возвращать код ошибки??
+		opz_list_el_value* value = getOpzElValue(&operartorStack_head, &curChar); //возвращает значение для нового узла в списке ОПЗ
+		pushIntoOpzList(opzList_head, value);
+		if (!scanf("%c", &curChar)) return NULL; //выражение без знака равно => ошибка. TODO: возвращать код ошибки??
 		
 	}
 	//динамически читать строку, пока есть, при первом проходе формируем opz_list:
