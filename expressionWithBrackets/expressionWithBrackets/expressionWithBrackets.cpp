@@ -1,9 +1,8 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "stdio.h"
 
-#define END_OF_EXPRESSION '='
+typedef enum Bool_ { FALSE, TRUE } bool_t;
 
-/*структура числа*/
 typedef struct Number_
 {
 	char* asString;
@@ -33,17 +32,27 @@ typedef struct OperatorStackEl_
 
 /*TODO: структура стека для подсчёта опз*/
 
-opz_list_el_value* getOpzElValue(operator_stack_el** operatorStack_head, char** curChar)
+bool_t isDigit(char symbol)
+{
+	if ('0' <= symbol && symbol <= '9') return TRUE;
+	else return FALSE;
+}
+
+bool_t ifOperator(char symbol)
+{
+	if (symbol == '+' || symbol == '-' || symbol == '*' || symbol == '/') return TRUE;
+	else return FALSE;
+}
+
+void handleOpzListValue(opz_list_el** opzList_headPtr, operator_stack_el** operatorStack_headPtr, char** curChar)
 {
 	if (curChar == NULL) return NULL;
 	opz_list_el_value* elValue = (opz_list_el_value*)malloc(sizeof(opz_list_el_value));
 
-	if      (isDigit(**curChar))    elValue = handleNumber();
-	else if (isOperator(**curChar)) elValue = handleOperator();
-	else if (**curChar == '(')      elValue = handleOpeningBracket();
-	else if (**curChar == ')')      elValue = handleClosingBracket();
-
-	return elValue;
+	if      (isDigit(**curChar))    handleNumber(opzList_headPtr, operatorStack_headPtr, curChar);
+	else if (isOperator(**curChar)) handleOperator(opzList_headPtr, operatorStack_headPtr);
+	else if (**curChar == '(') handleOpeningBracket(opzList_headPtr, operatorStack_headPtr);
+	else if (**curChar == ')') handleClosingBracket(opzList_headPtr, operatorStack_headPtr);
 }
 
 opz_list_el* getOpz() //читает входные данные, парсит их в ОПЗ и возвращает указатель на голову полученного списка
@@ -53,10 +62,9 @@ opz_list_el* getOpz() //читает входные данные, парсит их в ОПЗ и возвращает указ
 	char* curChar = '\0';
 
 	if (!scanf("%c", &curChar)) return opzList_head;
-	while (curChar != END_OF_EXPRESSION)
+	while (curChar != '=')
 	{
-		opz_list_el_value* value = getOpzElValue(&operartorStack_head, &curChar); //возвращает значение для нового узла в списке ОПЗ
-		pushIntoOpzList(opzList_head, value);
+		handleOpzListValue(&opzList_head, &operartorStack_head, &curChar); //добавляет новые элементы в список ОПЗ в соот-вии с семантикой
 		if (!scanf("%c", &curChar)) return NULL; //выражение без знака равно => ошибка. TODO: возвращать код ошибки??
 		
 	}
