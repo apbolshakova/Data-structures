@@ -1,8 +1,9 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "stdio.h"
 
-typedef enum Bool_ { FALSE, TRUE } bool_t;
+#define NULL_OPERATOR '\0'
 
+typedef enum Bool_ { FALSE, TRUE } bool_t;
 typedef enum FuncResult_ { FAIL, SUCCESS } func_result_t;
 
 typedef struct Number_
@@ -50,10 +51,31 @@ func_result_t pushIntoOperatorStack(operator_stack_el** head, char value)
 {
 	operator_stack_el *tmp = (operator_stack_el*)malloc(sizeof(operator_stack_el));
 	if (tmp == NULL) return FAIL;
-
 	tmp->next = *head;
 	tmp->sign = value;
 	*head = tmp;
+	return SUCCESS;
+}
+
+char popFromOperatorStack(operator_stack_el** head) 
+{
+	operator_stack_el* out;
+	char value;
+	if (*head == NULL) return NULL_OPERATOR;
+	out = *head;
+	*head = (*head)->next;
+	value = out->sign;
+	free(out);
+	return value;
+}
+
+func_result_t pushIntoOpzList(opz_list_el** head, char value) 
+{
+	opz_list_el* tmp = (opz_list_el*)malloc(sizeof(opz_list_el));
+	if (tmp == NULL) return FAIL;
+	tmp->value = value;
+	tmp->next = (*head);
+	(*head) = tmp;
 	return SUCCESS;
 }
 
@@ -70,13 +92,35 @@ func_result_t handleOparator(opz_list_el** opzList_headPtr, operator_stack_el** 
 
 func_result_t handleOpeningBracket(operator_stack_el** operatorStack_headPtr, char curChar)
 {
-	if (pushIntoOperatorStack(operatorStack_headPtr, curChar) != SUCCESS) return FAIL;
+	if (pushIntoOperatorStack(operatorStack_headPtr, curChar) != SUCCESS)
+	{
+		printf("ERROR: operator stack overflow.\n");
+		return FAIL;
+	}
 	return SUCCESS;
 }
 
 func_result_t handleClosingBracket(opz_list_el** opzList_headPtr, operator_stack_el** operatorStack_headPtr)
 {
-	//вытащить из стека в ОПЗ все операции до открывающей скобки включительно
+	char lastOperator = NULL_OPERATOR;
+	do
+	{
+		lastOperator = popFromOperatorStack(operatorStack_headPtr);
+		if (lastOperator == NULL_OPERATOR)
+		{
+			printf("ERROR: number of opening and closing brackets is unbalanced.\n");
+			return FAIL;
+		}
+		if (lastOperator != '(')
+		{
+			if (pushIntoOpzList(opzList_headPtr, lastOperator) != SUCCESS)
+			{
+				printf("ERROR: RPN list stack overflow.\n");
+				return FAIL;
+			}
+		}
+	} while (lastOperator != '(');
+	return SUCCESS;
 }
 
 func_result_t handleOpzListValue(opz_list_el** opzList_headPtr, operator_stack_el** operatorStack_headPtr, char** curChar)
@@ -102,19 +146,11 @@ func_result_t handleOpzListValue(opz_list_el** opzList_headPtr, operator_stack_e
 	}
 	else if (**curChar == '(')
 	{
-		if (handleOpeningBracket(operatorStack_headPtr, **curChar) != SUCCESS)
-		{
-			printf("ERROR: operators stack overflow.\n");
-			return FAIL;
-		}
+		if (handleOpeningBracket(operatorStack_headPtr, **curChar) != SUCCESS) return FAIL;
 	}
 	else if (**curChar == ')')
 	{
-		if (handleClosingBracket(opzList_headPtr, operatorStack_headPtr) != SUCCESS)
-		{
-			printf("ERROR: number of opening and closing brackets is unbalanced or stack overflow.\n");
-			return FAIL;
-		}
+		if (handleClosingBracket(opzList_headPtr, operatorStack_headPtr) != SUCCESS) return FAIL;
 	}
 	return SUCCESS;
 }
