@@ -76,11 +76,30 @@ char getLastFromOperatorStack(operator_stack_el* head)
 	return head->sign;
 }
 
-func_result_t pushIntoOpzList(opz_list_el** head, char value) 
+func_result_t pushIntoOpzList(opz_list_el** head, char sign, number_t* number) 
 {
 	opz_list_el* tmp = (opz_list_el*)malloc(sizeof(opz_list_el));
 	if (tmp == NULL) return FAIL;
-	tmp->value = value;
+	
+	tmp->value = (opz_list_el_value*)malloc(sizeof(opz_list_el_value));
+	if (tmp->value == NULL)
+	{
+		free(tmp);
+		tmp = NULL;
+		return FAIL;
+	}
+
+	if (number != NULL) tmp->value->number = number;
+	else if (sign != NULL_OPERATOR) tmp->value->sign = sign;
+	else
+	{
+		free(tmp->value);
+		tmp->value = NULL;
+		free(tmp);
+		tmp = NULL;
+		return FAIL;
+	}
+
 	tmp->next = (*head);
 	(*head) = tmp;
 	return SUCCESS;
@@ -99,7 +118,7 @@ func_result_t handleOperator(opz_list_el** opzList_headPtr, operator_stack_el** 
 		while ( lastOperator == '*' || lastOperator == '/')
 		{
 			lastOperator = popFromOperatorStack(operatorStack_headPtr);
-			if (pushIntoOpzList(opzList_headPtr, lastOperator) != SUCCESS)
+			if (pushIntoOpzList(opzList_headPtr, lastOperator, NULL) != SUCCESS)
 			{
 				printf("ERROR: RPN list stack overflow.\n");
 				return FAIL;
@@ -139,7 +158,7 @@ func_result_t handleClosingBracket(opz_list_el** opzList_headPtr, operator_stack
 		}
 		if (lastOperator != '(')
 		{
-			if (pushIntoOpzList(opzList_headPtr, lastOperator) != SUCCESS)
+			if (pushIntoOpzList(opzList_headPtr, lastOperator, NULL) != SUCCESS)
 			{
 				printf("ERROR: RPN list stack overflow.\n");
 				return FAIL;
@@ -172,7 +191,7 @@ func_result_t handleOpzListValue(opz_list_el** opzList_headPtr, operator_stack_e
 	return SUCCESS;
 }
 
-opz_list_el* getOpz () //читает входные данные, парсит их в ОПЗ и возвращает указатель на голову полученного списка (вернёт NULL в случае ошибки)
+opz_list_el* getOpz () //парсит данные в ОПЗ, возвращает указатель на голову
 {
 	opz_list_el* opzList_head = NULL;
 	operator_stack_el* operartorStack_head = NULL;
@@ -181,7 +200,7 @@ opz_list_el* getOpz () //читает входные данные, парсит их в ОПЗ и возвращает ука
 	if (!scanf("%c", &curChar)) return opzList_head;
 	while (curChar != '=')
 	{
-		if (handleOpzListValue(&opzList_head, &operartorStack_head, &curChar) != SUCCESS) //добавляет новые элементы в список ОПЗ в соот-вии с семантикой
+		if (handleOpzListValue(&opzList_head, &operartorStack_head, &curChar) != SUCCESS) //добавляет новые элементы в список ОПЗ
 		{
 			printf("ERROR: impossible to build correct RPN.\n");
 			return NULL;
