@@ -1,6 +1,10 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "stdio.h"
+#include "conio.h"
 
+#define DATA_PATH "input.txt"
+#define SIZE_OF_STRING_TO_READ 512
+#define MAX_NUMBER_SYSTEM 16
 #define NULL_OPERATOR '\0'
 
 typedef enum Bool_ { FALSE, TRUE } bool_t;
@@ -41,7 +45,13 @@ bool_t isDigit (char symbol)
 	else return FALSE;
 }
 
-bool_t ifOperator (char symbol)
+bool_t isHexDigit(char symbol)
+{
+	if ( isDigit(symbol) || ('A' <= symbol && symbol <= 'F') )  return TRUE;
+	else return FALSE;
+}
+
+bool_t isOperator (char symbol)
 {
 	if (symbol == '+' || symbol == '-' || symbol == '*' || symbol == '/') return TRUE;
 	else return FALSE;
@@ -69,11 +79,11 @@ char popFromOperatorStack(operator_stack_el** head)
 	return value;
 }
 
-char getLastFromOperatorStack(operator_stack_el* head)
+char getLastFromOperatorStack(operator_stack_el** head)
 {
-	if (head == NULL) return NULL_OPERATOR;
-	while (head->next) head = head->next;
-	return head->sign;
+	if (*head == NULL) return NULL_OPERATOR;
+	while ((*head)->next) *head = (*head)->next;
+	return (*head)->sign;
 }
 
 func_result_t pushIntoOpzList(opz_list_el** head, char sign, number_t* number) 
@@ -105,9 +115,64 @@ func_result_t pushIntoOpzList(opz_list_el** head, char sign, number_t* number)
 	return SUCCESS;
 }
 
+func_result_t getNumberSystem (char* curChar, int* numberSystem)
+{
+	if (*curChar == '_') curChar++;
+	else return FAIL;
+
+	if (isDigit(*curChar)) *numberSystem = *curChar - '0'; //TODO: дополнить проверку: от 2 до 16; отладка
+	if (isDigit(*(++curChar))) *numberSystem = (*numberSystem) * 10 + *curChar - '0';
+
+	if (isDigit(*(++curChar)) || *numberSystem > MAX_NUMBER_SYSTEM) return FAIL;
+	return SUCCESS;
+}
+
 func_result_t handleNumber(opz_list_el** opzList_headPtr, char** curChar)
 {
-	//распарсить число в структуру и добавить в список ОПЗ
+	number_t* number = (number_t*)malloc(sizeof(number_t));
+	if (number == NULL) return FAIL;
+	number->asString = '\0';
+	number->numberSystem = 0;
+	number->stringLen = 0;
+
+	char* sav = *curChar;
+	while (**curChar != '_' && isHexDigit(**curChar))
+	{
+		number->stringLen++;
+		(*curChar)++;
+	}
+	if (**curChar != '_' || (getNumberSystem(*curChar, &(number->numberSystem)) != SUCCESS))
+	{
+		printf("ERROR: found number with incorrect or not mentioned number system.\n");
+		return FAIL;
+	}
+	
+	*curChar = sav;
+	number->asString = (char*)calloc(number->stringLen, sizeof(char));
+	if (number->asString == NULL)
+	{
+		free(number);
+		return FAIL;
+	}
+	number->asString += number->stringLen;
+	while (**curChar != '_')
+	{
+		//TODO проверять на корректность с системой счисления (в троичной нет цифры 4)
+		*(number->asString) = **curChar;
+		(*curChar)++;
+		number->asString--;
+	}
+	number->asString++;
+
+	(*curChar)++;
+	if (number->numberSystem >= 10) (*curChar)++;
+
+	return SUCCESS;
+	//пройти по числу, получить кол-во символов и систему счисления
+	//записать полученное в экземпляр числа
+	//вернуть указатель на начало числа, выделить память под символы числа
+	//записать символы числа с конца строки - в памяти хранится от младших разрядов к старшим (для мат преобразований)
+	//увести курсор за СС (следующее уже оператор)
 }
 
 func_result_t handleOperator(opz_list_el** opzList_headPtr, operator_stack_el** operatorStack_headPtr, char curChar)
@@ -170,10 +235,11 @@ func_result_t handleClosingBracket(opz_list_el** opzList_headPtr, operator_stack
 
 func_result_t handleOpzListValue(opz_list_el** opzList_headPtr, operator_stack_el** operatorStack_headPtr, char** curChar)
 {
-	if (curChar == NULL) return NULL;
+	if (*curChar == NULL) return FAIL;
 	opz_list_el_value* elValue = (opz_list_el_value*)malloc(sizeof(opz_list_el_value));
+	if (elValue == NULL) return FAIL;
 
-	if (isDigit(**curChar) && 
+	if (isHexDigit(**curChar) && 
 		handleNumber(opzList_headPtr, curChar) != SUCCESS) 
 		return FAIL;
 	else if 
@@ -191,36 +257,57 @@ func_result_t handleOpzListValue(opz_list_el** opzList_headPtr, operator_stack_e
 	return SUCCESS;
 }
 
+func_result_t handleDataFromString(char* curChar, opz_list_el** opzList_head, operator_stack_el** operartorStack_head)
+{
+	while (*curChar != '=')
+	{
+		if (handleOpzListValue(opzList_head, operartorStack_head, &curChar) != SUCCESS) //добавляет новые элементы в список ОПЗ
+		{
+			printf("ERROR: impossible to build correct RPN.\n");
+			return FAIL;
+		}
+		if (*(++curChar) == '\0')
+		{
+			printf("ERROR: '=' sign not found.\n");
+			return FAIL;
+		}
+	}
+	return SUCCESS;
+}
+
 opz_list_el* getOpz () //парсит данные в ОПЗ, возвращает указатель на голову
 {
 	opz_list_el* opzList_head = NULL;
 	operator_stack_el* operartorStack_head = NULL;
-	char* curChar = '\0';
+	char curChar = '\0';
 
-	if (!scanf("%c", &curChar)) return opzList_head;
-	while (curChar != '=')
+	FILE *input = fopen(DATA_PATH, "r");
+	if (input == NULL) return NULL;
+	if (fgetc(input) == EOF || feof(input))
 	{
-		if (handleOpzListValue(&opzList_head, &operartorStack_head, &curChar) != SUCCESS) //добавляет новые элементы в список ОПЗ
-		{
-			printf("ERROR: impossible to build correct RPN.\n");
-			return NULL;
-		}
-		if (!scanf("%c", &curChar))
-		{
-			printf("ERROR: '=' sign not found.\n");
-			return NULL;
-		}
-		
+		fclose(input);
+		return NULL;
 	}
-	if (popRestOfOperatorStack(&opzList_head, &operartorStack_head) != SUCCESS) return NULL; //вытащить всё, что осталось в стеке операторов
+	fclose(input);
+	input = fopen(DATA_PATH, "r");
+	char* temp = (char*)calloc(SIZE_OF_STRING_TO_READ, sizeof(char));
+	while (fgets(temp, SIZE_OF_STRING_TO_READ * sizeof(char), input) != NULL)
+		if (handleDataFromString(temp, &opzList_head, &operartorStack_head) != SUCCESS) 
+			return NULL;
+	free(temp);
+	fclose(input);
+
+
+
+	//if (popRestOfOperatorStack(&opzList_head, &operartorStack_head) != SUCCESS) return NULL; //вытащить всё, что осталось в стеке операторов
 
 	return opzList_head;
 }
 
 int main (void)
 {
-	printf("Enter expression to calculate (it must end with '='):\n");
 	opz_list_el* opzListHead = getOpz(); //получить опз
-	calculateOpz(opzListHead); //поссчитать выражение по опз
+	//calculateOpz(opzListHead); //поссчитать выражение по опз
+	_getch();
 	return 0;
 }
