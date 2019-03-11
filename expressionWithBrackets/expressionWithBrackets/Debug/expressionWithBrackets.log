@@ -1,5 +1,5 @@
 ﻿  expressionWithBrackets.cpp
-c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\expressionwithbrackets.cpp(62): warning C4013: 'malloc' undefined; assuming extern returning int
-c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\expressionwithbrackets.cpp(78): warning C4013: 'free' undefined; assuming extern returning int
-c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\expressionwithbrackets.cpp(151): warning C4013: 'calloc' undefined; assuming extern returning int
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\expressionwithbrackets.cpp(69): warning C4013: 'malloc' undefined; assuming extern returning int
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\expressionwithbrackets.cpp(85): warning C4013: 'free' undefined; assuming extern returning int
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\expressionwithbrackets.cpp(170): warning C4013: 'calloc' undefined; assuming extern returning int
   expressionWithBrackets.vcxproj -> C:\Users\angela\source\repos\2_Data-structures\expressionWithBrackets\Debug\expressionWithBrackets.exe

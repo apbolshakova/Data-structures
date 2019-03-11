@@ -18,7 +18,7 @@ typedef struct Number_
 } number_t;
 
 /*Линейный список ОПЗ*/
-typedef union OpzElValue_
+typedef struct OpzElValue_
 {
 	char sign;
 	number_t* number;
@@ -57,6 +57,13 @@ bool_t isOperator (char symbol)
 	else return FALSE;
 }
 
+char getLastFromOperatorStack(operator_stack_el* head)
+{
+	if (head == NULL) return NULL_OPERATOR;
+	while (head->next) head = head->next;
+	return head->sign;
+}
+
 func_result_t pushIntoOperatorStack(operator_stack_el** head, char value)
 {
 	operator_stack_el *tmp = (operator_stack_el*)malloc(sizeof(operator_stack_el));
@@ -79,15 +86,15 @@ char popFromOperatorStack(operator_stack_el** head)
 	return value;
 }
 
-char getLastFromOperatorStack(operator_stack_el** head)
+opz_list_el* getLastFromOpzList(opz_list_el* head)
 {
-	if (*head == NULL) return NULL_OPERATOR;
-	while ((*head)->next) *head = (*head)->next;
-	return (*head)->sign;
+	if (head == NULL) return NULL;
+	while (head->next) head = head->next;
+	return head;
 }
 
 func_result_t pushIntoOpzList(opz_list_el** head, char sign, number_t* number) 
-{
+{	
 	opz_list_el* tmp = (opz_list_el*)malloc(sizeof(opz_list_el));
 	if (tmp == NULL) return FAIL;
 	
@@ -98,9 +105,16 @@ func_result_t pushIntoOpzList(opz_list_el** head, char sign, number_t* number)
 		tmp = NULL;
 		return FAIL;
 	}
-
-	if (number != NULL) tmp->value->number = number;
-	else if (sign != NULL_OPERATOR) tmp->value->sign = sign;
+	if (number != NULL)
+	{
+		tmp->value->number = number;
+		tmp->value->sign = NULL_OPERATOR;
+	}
+	else if (sign != NULL_OPERATOR)
+	{
+		tmp->value->sign = sign;
+		tmp->value->number = NULL;
+	}
 	else
 	{
 		free(tmp->value);
@@ -109,9 +123,11 @@ func_result_t pushIntoOpzList(opz_list_el** head, char sign, number_t* number)
 		tmp = NULL;
 		return FAIL;
 	}
+	tmp->next = NULL;
 
-	tmp->next = (*head);
-	(*head) = tmp;
+	opz_list_el* last = getLastFromOpzList(*head);
+	if (last == NULL) *head = tmp;
+	else last->next = tmp;
 	return SUCCESS;
 }
 
@@ -121,9 +137,12 @@ func_result_t getNumberSystem (char* curChar, int* numberSystem)
 	else return FAIL;
 
 	if (isDigit(*curChar)) *numberSystem = *curChar - '0'; //TODO: дополнить проверку: от 2 до 16; отладка
-	if (isDigit(*(++curChar))) *numberSystem = (*numberSystem) * 10 + *curChar - '0';
+	if (isDigit(*(++curChar))) 
+	{
+		*numberSystem = (*numberSystem) * 10 + *curChar - '0';
+		if (isDigit(*(++curChar)) || *numberSystem > MAX_NUMBER_SYSTEM) return FAIL;
 
-	if (isDigit(*(++curChar)) || *numberSystem > MAX_NUMBER_SYSTEM) return FAIL;
+	}
 	return SUCCESS;
 }
 
@@ -167,19 +186,15 @@ func_result_t handleNumber(opz_list_el** opzList_headPtr, char** curChar)
 	(*curChar)++;
 	if (number->numberSystem >= 10) (*curChar)++;
 
+	pushIntoOpzList(opzList_headPtr, NULL_OPERATOR, number);
 	return SUCCESS;
-	//пройти по числу, получить кол-во символов и систему счисления
-	//записать полученное в экземпляр числа
-	//вернуть указатель на начало числа, выделить память под символы числа
-	//записать символы числа с конца строки - в памяти хранится от младших разрядов к старшим (для мат преобразований)
-	//увести курсор за СС (следующее уже оператор)
 }
 
 func_result_t handleOperator(opz_list_el** opzList_headPtr, operator_stack_el** operatorStack_headPtr, char curChar)
 {
 	if (curChar == '+' || curChar == '-')
 	{
-		char lastOperator = getLastFromOperatorStack(operatorStack_headPtr);
+		char lastOperator = getLastFromOperatorStack(*operatorStack_headPtr);
 		while ( lastOperator == '*' || lastOperator == '/')
 		{
 			lastOperator = popFromOperatorStack(operatorStack_headPtr);
@@ -188,7 +203,7 @@ func_result_t handleOperator(opz_list_el** opzList_headPtr, operator_stack_el** 
 				printf("ERROR: RPN list stack overflow.\n");
 				return FAIL;
 			}
-			lastOperator = getLastFromOperatorStack(operatorStack_headPtr);
+			lastOperator = getLastFromOperatorStack(*operatorStack_headPtr);
 		}
 	}
 
@@ -296,8 +311,6 @@ opz_list_el* getOpz () //парсит данные в ОПЗ, возвращает указатель на голову
 			return NULL;
 	free(temp);
 	fclose(input);
-
-
 
 	//if (popRestOfOperatorStack(&opzList_head, &operartorStack_head) != SUCCESS) return NULL; //вытащить всё, что осталось в стеке операторов
 
