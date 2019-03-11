@@ -4,8 +4,10 @@
 
 #define DATA_PATH "input.txt"
 #define SIZE_OF_STRING_TO_READ 512
+#define MIN_NUMBER_SYSTEM 2
 #define MAX_NUMBER_SYSTEM 16
 #define NULL_OPERATOR '\0'
+#define INVALID_DIGIT -1
 
 typedef enum Bool_ { FALSE, TRUE } bool_t;
 typedef enum FuncResult_ { FAIL, SUCCESS } func_result_t;
@@ -39,6 +41,16 @@ typedef struct OperatorStackEl_
 
 /*TODO: структура стека для подсчёта опз*/
 
+
+
+
+int symbolToInt(char symbol)
+{
+	if ('0' <= symbol && symbol <= '9') return symbol - '0';
+	if ('A' <= symbol && symbol <= 'F') return symbol - 'A' + 10;
+	return INVALID_DIGIT;
+}
+
 bool_t isDigit (char symbol)
 {
 	if ('0' <= symbol && symbol <= '9') return TRUE;
@@ -49,6 +61,19 @@ bool_t isHexDigit(char symbol)
 {
 	if ( isDigit(symbol) || ('A' <= symbol && symbol <= 'F') )  return TRUE;
 	else return FALSE;
+}
+
+bool_t isValidNumberSystem(int num)
+{
+	if (MIN_NUMBER_SYSTEM <= num && num <= MAX_NUMBER_SYSTEM) return TRUE;
+	else return FALSE;
+}
+
+bool_t isValidDigit(int numberSystem, char symbol)
+{
+	int digit = symbolToInt(symbol);
+	if (digit == INVALID_DIGIT || digit >= numberSystem) return FALSE;
+	return TRUE;
 }
 
 bool_t isOperator (char symbol)
@@ -131,18 +156,36 @@ func_result_t pushIntoOpzList(opz_list_el** head, char sign, number_t* number)
 	return SUCCESS;
 }
 
+func_result_t popRestOfOperatorStackIntoOpz(opz_list_el** opz_head, operator_stack_el** operartor_head)
+{
+	char symbol = popFromOperatorStack(operartor_head);
+	while (symbol != NULL_OPERATOR)
+	{
+		if (symbol == '(')
+		{
+			printf("ERROR: number of opening and closing brackets is unbalanced.\n");
+			return FAIL;
+		}
+		pushIntoOpzList(opz_head, symbol, NULL);
+		symbol = popFromOperatorStack(operartor_head);
+	}
+	return SUCCESS;
+}
+
 func_result_t getNumberSystem (char* curChar, int* numberSystem)
 {
 	if (*curChar == '_') curChar++;
 	else return FAIL;
 
-	if (isDigit(*curChar)) *numberSystem = *curChar - '0'; //TODO: дополнить проверку: от 2 до 16; отладка
+	if (isDigit(*curChar)) *numberSystem = *curChar - '0';
 	if (isDigit(*(++curChar))) 
 	{
 		*numberSystem = (*numberSystem) * 10 + *curChar - '0';
 		if (isDigit(*(++curChar)) || *numberSystem > MAX_NUMBER_SYSTEM) return FAIL;
 
 	}
+
+	if (!isValidNumberSystem(*numberSystem)) return FAIL;
 	return SUCCESS;
 }
 
@@ -162,7 +205,7 @@ func_result_t handleNumber(opz_list_el** opzList_headPtr, char** curChar)
 	}
 	if (**curChar != '_' || (getNumberSystem(*curChar, &(number->numberSystem)) != SUCCESS))
 	{
-		printf("ERROR: found number with incorrect or not mentioned number system.\n");
+		printf("ERROR: found number with invalid or not mentioned number system.\n");
 		return FAIL;
 	}
 	
@@ -176,10 +219,18 @@ func_result_t handleNumber(opz_list_el** opzList_headPtr, char** curChar)
 	number->asString += number->stringLen;
 	while (**curChar != '_')
 	{
-		//TODO проверять на корректность с системой счисления (в троичной нет цифры 4)
+		if (!isValidDigit(number->numberSystem, **curChar))
+		{
+			number->asString = NULL;
+			free(number->asString);
+			number = NULL;
+			free(number);
+			printf("ERROR: found incorrect number (digits aren't fit number system.)\n");
+			return FAIL;
+		}
 		*(number->asString) = **curChar;
 		(*curChar)++;
-		number->asString--;
+		number->asString--; //число в памяти с конца
 	}
 	number->asString++;
 
@@ -312,8 +363,8 @@ opz_list_el* getOpz () //парсит данные в ОПЗ, возвращает указатель на голову
 	free(temp);
 	fclose(input);
 
-	//if (popRestOfOperatorStack(&opzList_head, &operartorStack_head) != SUCCESS) return NULL; //вытащить всё, что осталось в стеке операторов
-
+	if (popRestOfOperatorStackIntoOpz(&opzList_head, &operartorStack_head) != SUCCESS) return NULL;
+	//TODO: если в ф-ии произошла ошибка, очистить память на список и стек
 	return opzList_head;
 }
 
