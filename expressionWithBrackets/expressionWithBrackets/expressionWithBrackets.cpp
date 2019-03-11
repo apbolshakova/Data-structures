@@ -41,8 +41,7 @@ typedef struct OperatorStackEl_
 
 /*TODO: структура стека для подсчёта опз*/
 
-
-
+///////////////////////////////////////////////////////////////////////////////////////////////
 
 int symbolToInt(char symbol)
 {
@@ -82,6 +81,8 @@ bool_t isOperator (char symbol)
 	else return FALSE;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+
 char getLastFromOperatorStack(operator_stack_el* head)
 {
 	if (head == NULL) return NULL_OPERATOR;
@@ -110,6 +111,8 @@ char popFromOperatorStack(operator_stack_el** head)
 	free(out);
 	return value;
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////
 
 opz_list_el* getLastFromOpzList(opz_list_el* head)
 {
@@ -156,7 +159,8 @@ func_result_t pushIntoOpzList(opz_list_el** head, char sign, number_t* number)
 	return SUCCESS;
 }
 
-func_result_t popRestOfOperatorStackIntoOpz(opz_list_el** opz_head, operator_stack_el** operartor_head)
+func_result_t popRestOfOperatorStackIntoOpz(opz_list_el** opz_head, 
+	                                        operator_stack_el** operartor_head)
 {
 	char symbol = popFromOperatorStack(operartor_head);
 	while (symbol != NULL_OPERATOR)
@@ -171,6 +175,8 @@ func_result_t popRestOfOperatorStackIntoOpz(opz_list_el** opz_head, operator_sta
 	}
 	return SUCCESS;
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////
 
 func_result_t getNumberSystem (char* curChar, int* numberSystem)
 {
@@ -241,7 +247,8 @@ func_result_t handleNumber(opz_list_el** opzList_headPtr, char** curChar)
 	return SUCCESS;
 }
 
-func_result_t handleOperator(opz_list_el** opzList_headPtr, operator_stack_el** operatorStack_headPtr, char curChar)
+func_result_t handleOperator(opz_list_el** opzList_headPtr, 
+	                         operator_stack_el** operatorStack_headPtr, char curChar)
 {
 	if (curChar == '+' || curChar == '-')
 	{
@@ -276,7 +283,8 @@ func_result_t handleOpeningBracket(operator_stack_el** operatorStack_headPtr, ch
 	return SUCCESS;
 }
 
-func_result_t handleClosingBracket(opz_list_el** opzList_headPtr, operator_stack_el** operatorStack_headPtr)
+func_result_t handleClosingBracket(opz_list_el** opzList_headPtr, 
+	                               operator_stack_el** operatorStack_headPtr)
 {
 	char lastOperator = NULL_OPERATOR;
 	do
@@ -299,7 +307,8 @@ func_result_t handleClosingBracket(opz_list_el** opzList_headPtr, operator_stack
 	return SUCCESS;
 }
 
-func_result_t handleOpzListValue(opz_list_el** opzList_headPtr, operator_stack_el** operatorStack_headPtr, char** curChar)
+func_result_t handleOpzListValue(opz_list_el** opzList_headPtr,  //добавляет новые элементы в список ОПЗ
+	                             operator_stack_el** operatorStack_headPtr, char** curChar)
 {
 	if (*curChar == NULL) return FAIL;
 	opz_list_el_value* elValue = (opz_list_el_value*)malloc(sizeof(opz_list_el_value));
@@ -323,11 +332,12 @@ func_result_t handleOpzListValue(opz_list_el** opzList_headPtr, operator_stack_e
 	return SUCCESS;
 }
 
-func_result_t handleDataFromString(char* curChar, opz_list_el** opzList_head, operator_stack_el** operartorStack_head)
+func_result_t handleDataFromString(char* curChar, opz_list_el** opzList_head, 
+	                               operator_stack_el** operartorStack_head)
 {
 	while (*curChar != '=')
 	{
-		if (handleOpzListValue(opzList_head, operartorStack_head, &curChar) != SUCCESS) //добавляет новые элементы в список ОПЗ
+		if (handleOpzListValue(opzList_head, operartorStack_head, &curChar) != SUCCESS)
 		{
 			printf("ERROR: impossible to build correct RPN.\n");
 			return FAIL;
@@ -363,15 +373,26 @@ opz_list_el* getOpz () //парсит данные в ОПЗ, возвращает указатель на голову
 	free(temp);
 	fclose(input);
 
-	if (popRestOfOperatorStackIntoOpz(&opzList_head, &operartorStack_head) != SUCCESS) return NULL;
-	//TODO: если в ф-ии произошла ошибка, очистить память на список и стек
+	if (popRestOfOperatorStackIntoOpz(&opzList_head, &operartorStack_head) != SUCCESS) 
+		return NULL;
+
+	//TODO: очистка стека операторов
+	//TODO: если в ф-ии произошла ошибка очистить список
 	return opzList_head;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+char* calculateOpz(opz_list_el* opzList_head)
+{
+	return '\0';
 }
 
 int main (void)
 {
-	opz_list_el* opzListHead = getOpz(); //получить опз
-	//calculateOpz(opzListHead); //поссчитать выражение по опз
+	opz_list_el* opzListHead = getOpz();
+	char* result = calculateOpz(opzListHead); //возвращает строку-результат вычислений
+	//write result to output.txt
 	_getch();
 	return 0;
 }
