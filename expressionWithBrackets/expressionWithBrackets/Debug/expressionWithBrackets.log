@@ -1,5 +1,111 @@
-﻿  expressionWithBrackets.cpp
-c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\expressionwithbrackets.cpp(94): warning C4013: 'malloc' undefined; assuming extern returning int
-c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\expressionwithbrackets.cpp(110): warning C4013: 'free' undefined; assuming extern returning int
-c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\expressionwithbrackets.cpp(213): warning C4013: 'calloc' undefined; assuming extern returning int
-  expressionWithBrackets.vcxproj -> C:\Users\angela\source\repos\2_Data-structures\expressionWithBrackets\Debug\expressionWithBrackets.exe
+﻿  Main.c
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(13): error C2065: 'INVALID_DIGIT': undeclared identifier
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(16): error C2061: syntax error: identifier 'isDigit'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(16): error C2059: syntax error: ';'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(16): error C2059: syntax error: '<parameter-list>'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(22): error C2061: syntax error: identifier 'isHexDigit'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(22): error C2059: syntax error: ';'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(22): error C2059: syntax error: '<parameter-list>'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(28): error C2061: syntax error: identifier 'isValidNumberSystem'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(28): error C2059: syntax error: ';'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(28): error C2059: syntax error: '<parameter-list>'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(34): error C2061: syntax error: identifier 'isValidDigit'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(34): error C2059: syntax error: ';'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(34): error C2059: syntax error: '<parameter-list>'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(41): error C2061: syntax error: identifier 'isOperator'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(41): error C2059: syntax error: ';'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(41): error C2059: syntax error: '<parameter-list>'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(49): error C2143: syntax error: missing ')' before '*'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(49): error C2143: syntax error: missing '{' before '*'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(49): error C2059: syntax error: ')'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(50): error C2054: expected '(' to follow 'head'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(56): error C2061: syntax error: identifier 'pushIntoOperatorStack'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(56): error C2059: syntax error: ';'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(56): error C2143: syntax error: missing ')' before '*'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(56): error C2143: syntax error: missing '{' before '*'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(56): error C2040: 'head': 'int **' differs in levels of indirection from 'int *'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(56): error C2059: syntax error: 'type'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(56): error C2059: syntax error: ')'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(66): error C2143: syntax error: missing ')' before '*'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(66): error C2143: syntax error: missing '{' before '*'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(66): error C2059: syntax error: ')'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(67): error C2040: 'head': 'int **' differs in levels of indirection from 'int *'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(67): error C2054: expected '(' to follow 'head'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(80): error C2143: syntax error: missing '{' before '*'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(80): error C2143: syntax error: missing ')' before '*'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(80): error C2059: syntax error: ')'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(81): error C2054: expected '(' to follow 'head'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(87): error C2061: syntax error: identifier 'pushIntoOpzList'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(87): error C2059: syntax error: ';'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(87): error C2143: syntax error: missing ')' before '*'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(87): error C2143: syntax error: missing '{' before '*'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(87): error C2040: 'head': 'int **' differs in levels of indirection from 'int *'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(87): error C2059: syntax error: 'type'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(87): error C2059: syntax error: ')'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(125): error C2061: syntax error: identifier 'popRestOfOperatorStackIntoOpz'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(125): error C2059: syntax error: ';'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(125): error C2143: syntax error: missing ')' before '*'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(125): error C2143: syntax error: missing '{' before '*'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(126): error C2143: syntax error: missing ';' before '*'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(126): error C2059: syntax error: ')'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(127): error C2054: expected '(' to follow 'operartor_head'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(144): error C2061: syntax error: identifier 'getNumberSystem'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(144): error C2059: syntax error: ';'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(144): error C2059: syntax error: '<parameter-list>'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(161): error C2061: syntax error: identifier 'handleNumber'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(161): error C2059: syntax error: ';'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(161): error C2143: syntax error: missing ')' before '*'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(161): error C2143: syntax error: missing '{' before '*'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(161): error C2059: syntax error: 'type'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(161): error C2059: syntax error: ')'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(213): error C2061: syntax error: identifier 'handleOperator'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(213): error C2059: syntax error: ';'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(213): error C2143: syntax error: missing ')' before '*'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(213): error C2143: syntax error: missing '{' before '*'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(214): error C2143: syntax error: missing ';' before '*'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(214): error C2059: syntax error: 'type'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(214): error C2059: syntax error: ')'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(239): error C2061: syntax error: identifier 'handleOpeningBracket'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(239): error C2059: syntax error: ';'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(239): error C2143: syntax error: missing ')' before '*'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(239): error C2143: syntax error: missing '{' before '*'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(239): error C2059: syntax error: 'type'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(239): error C2059: syntax error: ')'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(249): error C2061: syntax error: identifier 'handleClosingBracket'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(249): error C2059: syntax error: ';'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(249): error C2143: syntax error: missing ')' before '*'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(249): error C2143: syntax error: missing '{' before '*'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(250): error C2143: syntax error: missing ';' before '*'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(250): error C2059: syntax error: ')'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(251): error C2054: expected '(' to follow 'operatorStack_headPtr'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(273): error C2061: syntax error: identifier 'handleOpzListValue'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(273): error C2059: syntax error: ';'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(273): error C2143: syntax error: missing ')' before '*'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(273): error C2143: syntax error: missing '{' before '*'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(274): error C2143: syntax error: missing ';' before '*'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(274): error C2059: syntax error: 'type'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(274): error C2059: syntax error: ')'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(298): error C2061: syntax error: identifier 'handleDataFromString'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(298): error C2059: syntax error: ';'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(298): error C2059: syntax error: '<parameter-list>'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(317): error C2143: syntax error: missing '{' before '*'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(319): error C2065: 'opz_list_el': undeclared identifier
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(319): error C2065: 'opzList_head': undeclared identifier
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(319): warning C4047: '=': 'int' differs in levels of indirection from 'void *'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(319): error C2106: '=': left operand must be l-value
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(320): error C2065: 'operartorStack_head': undeclared identifier
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(320): warning C4047: '=': 'int' differs in levels of indirection from 'void *'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(320): error C2106: '=': left operand must be l-value
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(323): error C2065: 'DATA_PATH': undeclared identifier
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(323): warning C4047: 'function': 'const char *' differs in levels of indirection from 'int'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(323): warning C4024: 'fopen': different types for formal and actual parameter 1
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(331): error C2065: 'DATA_PATH': undeclared identifier
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(331): warning C4047: 'function': 'const char *' differs in levels of indirection from 'int'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(331): warning C4024: 'fopen': different types for formal and actual parameter 1
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(332): warning C4013: 'calloc' undefined; assuming extern returning int
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(332): error C2065: 'SIZE_OF_STRING_TO_READ': undeclared identifier
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(333): error C2065: 'SIZE_OF_STRING_TO_READ': undeclared identifier
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(334): warning C4013: 'handleDataFromString' undefined; assuming extern returning int
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(334): error C2065: 'opzList_head': undeclared identifier
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(334): error C2065: 'operartorStack_head': undeclared identifier
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\main.c(334): fatal error C1003: error count exceeds 100; stopping compilation

@@ -76,6 +76,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <CompileAs>CompileAsC</CompileAs>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -115,9 +116,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="expressionWithBrackets.cpp">
+    <ClCompile Include="Circs.c" />
+    <ClCompile Include="DataParsing.c" />
+    <ClCompile Include="Main.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
     </ClCompile>
+    <ClCompile Include="NumberStack.c" />
+    <ClCompile Include="OperatorStack.c" />
+    <ClCompile Include="OpzCalculation.c" />
+    <ClCompile Include="OpzList.c" />
+    <ClCompile Include="Types.h" />
+    <ClInclude Include="Header.h" />
+    <ClInclude Include="Constants.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
