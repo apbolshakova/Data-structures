@@ -42,5 +42,8 @@ func_result_t handleDataFromString(char* curChar, opz_list_el** opzList_head,
 	operator_stack_el** operartorStack_head);
 opz_list_el* getOpz(); //парсит данные в ОПЗ, возвращает указатель на голову
 
+int getNumOfPositions(long value);
+void reverseStr(char* str);
 func_result_t* convertToDec(number_t** number);
+func_result_t handleOperation(number_stack_el** numberStack_head, char sign);
 number_t* calculateOpz(opz_list_el* opzList_head);

@@ -39,6 +39,9 @@
     <ClCompile Include="NumberStack.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="StrMath.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header.h">
