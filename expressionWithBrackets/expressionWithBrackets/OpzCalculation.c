@@ -1,20 +1,36 @@
 #include "Header.h"
 
-char* calculateOpz(opz_list_el* opzList_head)
+number_t* calculateOpz(opz_list_el* opzList_head)
 {
-	char* result = '0';
+	number_t* result = (number_t*)malloc(sizeof(number_t));
 	number_stack_el* numberStack_head = NULL;
+    if (opzList_head == NULL || opzList_head->value->sign)
+	{
+		free(result);
+		return NULL;
+	}
+	
+	opz_list_el_value* data = popFromOpzList(&opzList_head);
+	while (data != NULL)
+	{
+		if (data->number != NULL)
+		{
+			convertToDec(data);
+			pushIntoNumberStack(numberStack_head, data->number);
+		}
+		else if (data->sign != NULL_OPERATOR)
+		{
+			if (handleOperation(numberStack_head, data->sign) != SUCCESS) return NULL;
+		}
+	}
 
-	//взять 1-й эл-т (взять - перевести в 10сс и иметь переменную на нём)
-	//NULL -> печать сообщения об ошибке и выход
-	//выделить память для результата размером эл-та (malloc)
-	//перейти на 2-й эл-т
-	//если символ - ошибка
-
-	//пока не дошли до конца списка
-	//число - перевести в 10сс и кинуть в стек чисел
-	//знак - взять 2 эл-та со стека чисел и провести действие
-	//расширить память результата в завис-ти от порядков чисел, с которыми проводится действие, записать результат туда 
-
-	//вернуть результат
+	if (numberStack_head != NULL && numberStack_head->next == NULL)
+	{
+		return popFromNumberStack(numberStack_head);
+	}
+	else
+	{
+		printf("ERROR: Unable to calculate RPN because of invalid RPN\n");
+		return NULL;
+	}
 }

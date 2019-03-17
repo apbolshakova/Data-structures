@@ -61,3 +61,15 @@ func_result_t popRestOfOperatorStackIntoOpz(opz_list_el** opz_head,
 	}
 	return SUCCESS;
 }
+
+opz_list_el_value* popFromOpzList(opz_list_el** head)
+{
+	opz_list_el* out;
+	opz_list_el_value* value = NULL;
+	if (*head == NULL) return value;
+	out = *head;
+	*head = (*head)->next;
+	value = out->value;
+	free(out);
+	return value;
+}

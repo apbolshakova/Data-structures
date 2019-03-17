@@ -34,7 +34,7 @@ typedef struct OperatorStackEl_
 /*стек чисел для подсчёта опз*/
 typedef struct NumberStackEl_
 {
-	number_t data;
+	number_t* data;
 	struct NumberStackEl_* next;
 } number_stack_el;
 
