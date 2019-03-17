@@ -95,13 +95,15 @@ func_result_t handleNumber(opz_list_el** opzList_headPtr, char** curChar)
 	}
 
 	*curChar = sav;
-	number->asString = (char*)calloc(number->stringLen, sizeof(char));
+	number->asString = (char*)calloc(number->stringLen + 1, sizeof(char));
 	if (number->asString == NULL)
 	{
 		free(number);
 		return FAIL;
 	}
-	number->asString += number->stringLen;
+	number->asString += number->stringLen + 1;
+	*(number->asString) = '\0';
+	number->asString--;
 	while (**curChar != '_')
 	{
 		if (!isValidDigit(number->numberSystem, **curChar))

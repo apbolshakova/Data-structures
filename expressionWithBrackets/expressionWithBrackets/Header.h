@@ -2,6 +2,7 @@
 
 #include "stdio.h"
 #include "conio.h"
+#include "math.h"
 
 #include "Constants.h"
 #include "Types.h"
@@ -41,4 +42,5 @@ func_result_t handleDataFromString(char* curChar, opz_list_el** opzList_head,
 	operator_stack_el** operartorStack_head);
 opz_list_el* getOpz(); //парсит данные в ОПЗ, возвращает указатель на голову
 
+func_result_t* convertToDec(number_t** number);
 number_t* calculateOpz(opz_list_el* opzList_head);

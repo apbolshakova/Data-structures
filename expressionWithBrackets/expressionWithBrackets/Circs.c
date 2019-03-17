@@ -37,3 +37,10 @@ int symbolToInt(char symbol)
 	if ('A' <= symbol && symbol <= 'F') return symbol - 'A' + 10;
 	return INVALID_DIGIT;
 }
+
+int intToSymbol(int digit)
+{
+	if (0 <= digit && digit <= 9) return '0' + digit;
+	if (10 <= digit && digit <= 15) return  'A' + digit - 10;
+	return INVALID_DIGIT;
+}
