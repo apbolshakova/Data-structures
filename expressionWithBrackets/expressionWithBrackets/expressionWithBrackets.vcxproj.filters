@@ -39,7 +39,7 @@
     <ClCompile Include="NumberStack.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="StrMath.c">
+    <ClCompile Include="BigMath.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

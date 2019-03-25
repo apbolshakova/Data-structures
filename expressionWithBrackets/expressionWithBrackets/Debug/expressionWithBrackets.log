@@ -1,6 +1,14 @@
-﻿  StrMath.c
-c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\strmath.c(7): warning C4013: 'malloc' undefined; assuming extern returning int
-c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\strmath.c(10): warning C4013: 'max' undefined; assuming extern returning int
-c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\strmath.c(11): warning C4013: 'calloc' undefined; assuming extern returning int
-c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\strmath.c(59): warning C4013: 'free' undefined; assuming extern returning int
+﻿  OpzCalculation.c
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\opzcalculation.c(5): warning C4013: 'malloc' undefined; assuming extern returning int
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\opzcalculation.c(9): warning C4013: 'free' undefined; assuming extern returning int
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\opzcalculation.c(18): warning C4047: '!=': 'func_result_t *' differs in levels of indirection from 'int'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\opzcalculation.c(50): warning C4047: 'return': 'func_result_t *' differs in levels of indirection from 'int'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\opzcalculation.c(51): warning C4047: 'return': 'func_result_t *' differs in levels of indirection from 'int'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\opzcalculation.c(56): warning C4047: 'return': 'func_result_t *' differs in levels of indirection from 'int'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\opzcalculation.c(69): warning C4013: 'calloc' undefined; assuming extern returning int
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\opzcalculation.c(70): warning C4047: 'return': 'func_result_t *' differs in levels of indirection from 'int'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\opzcalculation.c(74): warning C4013: 'bigAdd' undefined; assuming extern returning int
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\opzcalculation.c(88): warning C4047: 'return': 'func_result_t *' differs in levels of indirection from 'int'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\opzcalculation.c(64): warning C4244: 'initializing': conversion from 'double' to 'long', possible loss of data
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\opzcalculation.c(104): warning C4013: 'strlen' undefined; assuming extern returning int
   expressionWithBrackets.vcxproj -> C:\Users\angela\source\repos\2_Data-structures\expressionWithBrackets\Debug\expressionWithBrackets.exe

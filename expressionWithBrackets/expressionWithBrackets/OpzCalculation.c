@@ -15,8 +15,16 @@ number_t* calculateOpz(opz_list_el* opzList_head)
 	{
 		if (data->number != NULL)
 		{
-			if (convertToDec(&(data->number)) != SUCCESS) return NULL;
-			pushIntoNumberStack(&numberStack_head, data->number);
+			if (convertToDec(&(data->number)) != SUCCESS)
+			{
+				printf("ERROR: Unable to convert number into needed number system.\n");
+				return NULL;
+			}
+			if (pushIntoNumberStack(&numberStack_head, data->number) != SUCCESS)
+			{
+				printf("ERROR: Number stack overflow while calculating RPN.\n");
+				return NULL;
+			};
 		}
 		else if (data->sign != NULL_OPERATOR)
 		{
@@ -63,7 +71,7 @@ func_result_t* convertToDec(number_t** number)
 		sprintf(buf->asString, "%lu", value);
 		reverseStr(buf->asString);
 
-		add(&converted, buf);
+		bigAdd(&converted, buf);
 		(*number)->asString++;
 		digitPos++;
 
@@ -112,5 +120,26 @@ void reverseStr(char* str)
 
 func_result_t handleOperation(number_stack_el** numberStack_head, char sign)
 {
-	//TODO
+	number_t* a = popFromNumberStack(numberStack_head);
+	number_t* b = popFromNumberStack(numberStack_head);
+	if (a == NULL || b == NULL)
+	{
+		printf("ERROR: attempt to calculate undefined value because of invalid RPN.\n");
+		return FAIL;
+	}
+
+	switch (sign)
+	{
+	case '+': bigAdd(&a, b); break;
+	//case '-': bigSub(a, b); break;
+	//case '*': bigMul(a, b); break;
+	//case '/': bigDiv(a, b); break;
+	default: break;
+	}
+	if (pushIntoNumberStack(numberStack_head, a) != SUCCESS)
+	{
+		printf("ERROR: Number stack overflow while calculating RPN.\n");
+		return FAIL;
+	}
+	return SUCCESS;
 }

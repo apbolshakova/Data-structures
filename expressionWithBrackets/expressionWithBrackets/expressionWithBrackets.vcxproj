@@ -125,7 +125,7 @@
     <ClCompile Include="OperatorStack.c" />
     <ClCompile Include="OpzCalculation.c" />
     <ClCompile Include="OpzList.c" />
-    <ClCompile Include="StrMath.c" />
+    <ClCompile Include="BigMath.c" />
     <ClCompile Include="Types.h" />
     <ClInclude Include="Header.h" />
     <ClInclude Include="Constants.h">

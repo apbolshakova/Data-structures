@@ -1,6 +1,6 @@
 #include "Header.h"
 
-void add(number_t** numPtr, number_t* numToAdd)
+void bigAdd(number_t** numPtr, number_t* numToAdd)
 {
 	int num1 = 0, num2 = 0, carry = 0, temp = 0;
 	number_t* num = *numPtr;
