@@ -9,6 +9,7 @@ int main (void)
 		if (result != NULL)
 		{
 			reverseStr(result->asString);
+			if (result->sign == NEGATIVE) printf("-");
 			puts(result->asString);
 			//write result to output.txt
 		}

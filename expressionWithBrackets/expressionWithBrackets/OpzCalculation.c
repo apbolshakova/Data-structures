@@ -72,8 +72,12 @@ func_result_t* convertToDec(number_t** number)
 		if (buf == NULL) return FAIL;
 		sprintf(buf->asString, "%lu", value);
 		reverseStr(buf->asString);
-
-		converted = handleBigAdd(converted, buf);
+		if (*(converted->asString) == '\0')
+		{
+			converted->stringLen = buf->stringLen;
+			strcpy(converted->asString, buf->asString);
+		}
+		else converted = handleBigAdd(converted, buf);
 		(*number)->asString++;
 		digitPos++;
 
@@ -133,7 +137,7 @@ func_result_t handleOperation(number_stack_el** numberStack_head, char sign)
 	switch (sign)
 	{
 	case '+': a = handleBigAdd(a, b); break;
-	//case '-': a = handleBigSub(a, b); break;
+	case '-': a = handleBigSub(a, b); break;
 	//case '*': a = handleBigMul(a, b); break;
 	//case '/': a = handleBigDiv(a, b); break;
 	default: break;

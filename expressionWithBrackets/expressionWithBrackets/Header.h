@@ -3,6 +3,7 @@
 #include "stdio.h"
 #include "conio.h"
 #include "math.h"
+#include "string.h"
 
 #include "Constants.h"
 #include "Types.h"
