@@ -78,6 +78,7 @@ func_result_t handleNumber(opz_list_el** opzList_headPtr, char** curChar)
 {
 	number_t* number = (number_t*)malloc(sizeof(number_t));
 	if (number == NULL) return FAIL;
+	number->sign = POSITIVE;
 	number->asString = '\0';
 	number->numberSystem = 0;
 	number->stringLen = 0;

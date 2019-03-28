@@ -47,3 +47,10 @@ void reverseStr(char* str);
 func_result_t* convertToDec(number_t** number);
 func_result_t handleOperation(number_stack_el** numberStack_head, char sign);
 number_t* calculateOpz(opz_list_el* opzList_head);
+
+number_t* bigAdd(number_t* num1, number_t* num2); //сложение по модулю
+number_t* bigSub(number_t* minuend, number_t* subtrahend); //вычитание из 1-го 2-го
+
+
+number_t* handleBigAdd(number_t* num1, number_t* num2);
+number_t* handleBigSub(number_t* num1, number_t* num2);

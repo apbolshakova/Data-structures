@@ -49,6 +49,7 @@ func_result_t* convertToDec(number_t** number)
 	number_t* converted = (number_t*)malloc(sizeof(number_t));
 	if (converted == NULL) return FAIL;
 	if (number == NULL || (*number)->numberSystem == 10) return SUCCESS;
+	converted->sign = POSITIVE;
 	converted->numberSystem = CALC_NUMBER_SYSTEM;
 	converted->stringLen = 0;
 
@@ -64,6 +65,7 @@ func_result_t* convertToDec(number_t** number)
 		long value = digit * pow((double)(*number)->numberSystem, digitPos); //перевод цифры в нужную СС
 
 		number_t* buf = (number_t*)malloc(sizeof(number_t));
+		buf->sign = POSITIVE;
 		buf->numberSystem = CALC_NUMBER_SYSTEM;
 		buf->stringLen = getNumOfPositions(value);
 		buf->asString = (char*)calloc(buf->stringLen + 1, sizeof(char));
@@ -71,7 +73,7 @@ func_result_t* convertToDec(number_t** number)
 		sprintf(buf->asString, "%lu", value);
 		reverseStr(buf->asString);
 
-		bigAdd(&converted, buf);
+		converted = handleBigAdd(converted, buf);
 		(*number)->asString++;
 		digitPos++;
 
@@ -130,12 +132,13 @@ func_result_t handleOperation(number_stack_el** numberStack_head, char sign)
 
 	switch (sign)
 	{
-	case '+': bigAdd(&a, b); break;
-	//case '-': bigSub(a, b); break;
-	//case '*': bigMul(a, b); break;
-	//case '/': bigDiv(a, b); break;
+	case '+': a = handleBigAdd(a, b); break;
+	//case '-': a = handleBigSub(a, b); break;
+	//case '*': a = handleBigMul(a, b); break;
+	//case '/': a = handleBigDiv(a, b); break;
 	default: break;
 	}
+	if (a == NULL) return FAIL;
 	if (pushIntoNumberStack(numberStack_head, a) != SUCCESS)
 	{
 		printf("ERROR: Number stack overflow while calculating RPN.\n");
