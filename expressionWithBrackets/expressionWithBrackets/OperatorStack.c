@@ -3,7 +3,6 @@
 char getLastFromOperatorStack(operator_stack_el* head)
 {
 	if (head == NULL) return NULL_OPERATOR;
-	while (head->next) head = head->next;
 	return head->sign;
 }
 
