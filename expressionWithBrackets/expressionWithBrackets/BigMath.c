@@ -49,7 +49,7 @@ number_t* handleBigSub(number_t* num1, number_t* num2)
 		
 }
 
-/*number_t* handleBigMul(number_t* num1, number_t* num2)
+number_t* handleBigMul(number_t* num1, number_t* num2)
 {
 	number_t* result = bigMul(num1, num2);
 	if (num1->sign != num2->sign)
@@ -59,7 +59,7 @@ number_t* handleBigSub(number_t* num1, number_t* num2)
 	return result;
 }
 
-number_t* handleBigDiv(number_t* num1, number_t* num2)
+/*number_t* handleBigDiv(number_t* num1, number_t* num2)
 {
 	if (num2->asString == '0')
 	{
@@ -83,12 +83,14 @@ number_t* bigAdd(number_t* num1, number_t* num2)
 	result->stringLen = max(num1->stringLen, num2->stringLen) + 1; //+1 для учёта переноса
 	result->asString = (char*)calloc(result->stringLen + 1, sizeof(char)); //+1 для нулевого символа
 	char* sav = result->asString;
+	char* numStr1 = num1->asString;
+	char* numStr2 = num2->asString;
 
-	while (*(num1->asString) || *(num2->asString)) //основной цикл
+	while (*numStr1 || *numStr2) //основной цикл
 	{
-		if (*(num1->asString)) digit1 = *(num1->asString) - '0';
+		if (*numStr1) digit1 = *numStr1 - '0';
 		else digit1 = 0;
-		if (*(num2->asString)) digit2 = *(num2->asString) - '0';
+		if (*numStr2) digit2 = *numStr2 - '0';
 		else digit2 = 0;
 		temp = carry + digit1 + digit2;
 
@@ -96,10 +98,9 @@ number_t* bigAdd(number_t* num1, number_t* num2)
 		carry = temp / CALC_NUMBER_SYSTEM;
 		
 		result->asString++;
-		if (*(num1->asString)) num1->asString++;
-		if (*(num2->asString)) num2->asString++;
+		if (*numStr1) numStr1++;
+		if (*numStr2) numStr2++;
 	}
-
 	if (carry) //остаток
 	{
 		*(result->asString) = carry + '0';
@@ -143,4 +144,35 @@ number_t* bigSub(number_t* minuend, number_t* subtrahend)
 	*(result->asString) = '\0';
 	result->asString = sav;
 	return result;
+}
+
+number_t* bigMul(number_t* num1, number_t* num2)
+{
+	number_t* result = (number_t*)malloc(sizeof(number_t));
+	result->numberSystem = CALC_NUMBER_SYSTEM;
+	result->sign = POSITIVE;
+	result->stringLen = num1->stringLen + num2->stringLen;
+	result->asString = (char*)calloc(result->stringLen + 1, sizeof(char)); //+1 для нулевого символа
+	number_t* row = num1;	
+	for (int i = 0; i < num2->stringLen; i++) 
+	{
+		for (int j = 1; j <= num2->asString[i] - '0'; j++) 
+		{
+			result = bigAdd(result, row);
+		}
+		digitShift(row, 1);
+	}
+	return result;
+}
+
+void digitShift(number_t* n, int d)		/* multiply n by 10^d */
+{
+	int i;
+	if ((n->stringLen == 0) && (n->asString[0] == 0)) return;
+	for (i = n->stringLen; i >= 0; i--)
+		n->asString[i + d] = n->asString[i];
+
+	for (i = 0; i < d; i++) n->asString[i] = '0';
+
+	n->stringLen = n->stringLen + d;
 }

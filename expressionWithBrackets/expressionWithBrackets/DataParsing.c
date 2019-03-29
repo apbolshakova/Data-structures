@@ -56,7 +56,7 @@ func_result_t handleOpzListValue(opz_list_el** opzList_headPtr,  //добавляет нов
 	opz_list_el_value* elValue = (opz_list_el_value*)malloc(sizeof(opz_list_el_value));
 	if (elValue == NULL) return FAIL;
 
-	if (isHexDigit(**curChar) &&
+	if (isHexDigit(**curChar) && //TODO: починить работу со скобками
 		handleNumber(opzList_headPtr, curChar) != SUCCESS)
 		return FAIL;
 	else if
@@ -152,7 +152,7 @@ func_result_t handleOperator(opz_list_el** opzList_headPtr,
 	if (curChar == '+' || curChar == '-')
 	{
 		char lastOperator = getLastFromOperatorStack(*operatorStack_headPtr);
-		while (lastOperator)
+		while (lastOperator && lastOperator != '(')
 		{
 			lastOperator = popFromOperatorStack(operatorStack_headPtr);
 			if (pushIntoOpzList(opzList_headPtr, lastOperator, NULL) != SUCCESS)
