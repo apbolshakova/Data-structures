@@ -15,6 +15,9 @@ bool_t isHexDigit(char symbol);
 bool_t isValidNumberSystem(int num);
 bool_t isValidDigit(int numberSystem, char symbol);
 bool_t isOperator(char symbol);
+int max(int a, int b);
+int min(int a, int b);
+int maxNumber(number_t* num1, number_t* num2);
 
 char getLastFromOperatorStack(operator_stack_el* head);
 func_result_t pushIntoOperatorStack(operator_stack_el** head, char value);

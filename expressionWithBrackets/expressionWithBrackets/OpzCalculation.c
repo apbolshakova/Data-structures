@@ -136,8 +136,8 @@ func_result_t handleOperation(number_stack_el** numberStack_head, char sign)
 
 	switch (sign)
 	{
-	case '+': a = handleBigAdd(a, b); break;
-	case '-': a = handleBigSub(a, b); break;
+	case '+': a = handleBigAdd(b, a); break;
+	case '-': a = handleBigSub(b, a); break;
 	//case '*': a = handleBigMul(a, b); break;
 	//case '/': a = handleBigDiv(a, b); break;
 	default: break;

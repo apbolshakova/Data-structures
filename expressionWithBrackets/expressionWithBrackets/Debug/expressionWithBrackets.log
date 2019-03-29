@@ -1,5 +1,5 @@
-﻿  BigMath.c
-c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\bigmath.c(63): warning C4013: 'malloc' undefined; assuming extern returning int
-c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\bigmath.c(66): warning C4013: 'max' undefined; assuming extern returning int
-c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\bigmath.c(67): warning C4013: 'calloc' undefined; assuming extern returning int
+﻿  DataParsing.c
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\dataparsing.c(18): warning C4013: 'calloc' undefined; assuming extern returning int
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\dataparsing.c(22): warning C4013: 'free' undefined; assuming extern returning int
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\dataparsing.c(56): warning C4013: 'malloc' undefined; assuming extern returning int
   expressionWithBrackets.vcxproj -> C:\Users\angela\source\repos\2_Data-structures\expressionWithBrackets\Debug\expressionWithBrackets.exe

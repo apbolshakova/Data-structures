@@ -152,6 +152,20 @@ func_result_t handleOperator(opz_list_el** opzList_headPtr,
 	if (curChar == '+' || curChar == '-')
 	{
 		char lastOperator = getLastFromOperatorStack(*operatorStack_headPtr);
+		while (lastOperator)
+		{
+			lastOperator = popFromOperatorStack(operatorStack_headPtr);
+			if (pushIntoOpzList(opzList_headPtr, lastOperator, NULL) != SUCCESS)
+			{
+				printf("ERROR: RPN list stack overflow.\n");
+				return FAIL;
+			}
+			lastOperator = getLastFromOperatorStack(*operatorStack_headPtr);
+		}
+	}
+	else if (curChar == '*' || curChar == '/')
+	{
+		char lastOperator = getLastFromOperatorStack(*operatorStack_headPtr);
 		while (lastOperator == '*' || lastOperator == '/')
 		{
 			lastOperator = popFromOperatorStack(operatorStack_headPtr);

@@ -37,3 +37,30 @@ int symbolToInt(char symbol)
 	if ('A' <= symbol && symbol <= 'F') return symbol - 'A' + 10;
 	return INVALID_DIGIT;
 }
+
+int max(int a, int b)
+{
+	if (a >= b) return a;
+	return b;
+}
+
+int min(int a, int b)
+{
+	if (a <= b) return a;
+	return b;
+}
+
+int maxNumber(number_t* num1, number_t* num2) //-1 <, 0 =, 1 >
+{
+	int index = min(num1->stringLen, num2->stringLen);
+	if (num1->asString[index] != '\0' && num1->asString[index] != '0') return 1;
+	if (num2->asString[index] != '\0' && num2->asString[index] != '0') return -1;
+	--index;
+	while (index >= 0)
+	{
+		if (num1->asString[index] > num2->asString[index]) return 1;
+		if (num1->asString[index] < num2->asString[index]) return -1;
+		--index;
+	}
+	return 0;
+}
