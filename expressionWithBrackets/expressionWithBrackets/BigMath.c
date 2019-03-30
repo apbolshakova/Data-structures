@@ -166,6 +166,7 @@ number_t* bigMul(number_t* num1, number_t* num2)
 		}
 		digitShift(row, 1);
 	}
+	trimZeros(result);
 	return result;
 }
 
@@ -196,7 +197,7 @@ number_t* bigDiv(number_t* dividend, number_t* divisor)
 	}
 	trimZeros(result);
 
-	free(row->asString);
+	//free(row->asString); TODO: узнать, почему не почистить
 	row->asString = NULL;
 	free(row);
 	row = NULL;
