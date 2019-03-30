@@ -59,7 +59,7 @@ number_t* handleBigMul(number_t* num1, number_t* num2)
 	return result;
 }
 
-/*number_t* handleBigDiv(number_t* num1, number_t* num2)
+number_t* handleBigDiv(number_t* num1, number_t* num2)
 {
 	if (num2->asString == '0')
 	{
@@ -72,7 +72,7 @@ number_t* handleBigMul(number_t* num1, number_t* num2)
 		result->sign = NEGATIVE;
 	}
 	return result;
-}*/
+}
 
 number_t* bigAdd(number_t* num1, number_t* num2)
 {
@@ -108,6 +108,7 @@ number_t* bigAdd(number_t* num1, number_t* num2)
 	}
 	*(result->asString) = '\0';
 	result->asString = sav;
+	trimZeros(result);
 	return result;
 }
 
@@ -121,12 +122,14 @@ number_t* bigSub(number_t* minuend, number_t* subtrahend)
 	result->stringLen = max(minuend->stringLen, subtrahend->stringLen);
 	result->asString = (char*)calloc(result->stringLen + 1, sizeof(char)); //+1 для нулевого символа
 	char* sav = result->asString;
+	char* mString = minuend->asString;
+	char* sString = subtrahend->asString;
 
-	while (*(minuend->asString) || *(subtrahend->asString))
+	while (*mString || *sString)
 	{
-		if (*(minuend->asString)) mDigit = *(minuend->asString) - '0';
+		if (*mString) mDigit = *mString - '0';
 		else mDigit = 0;
-		if (*(subtrahend->asString)) sDigit = *(subtrahend->asString) - '0';
+		if (*sString) sDigit = *sString - '0';
 		else sDigit = 0;
 		temp = mDigit - borrow - sDigit;
 		if (temp >= 0) borrow = 0;
@@ -138,11 +141,12 @@ number_t* bigSub(number_t* minuend, number_t* subtrahend)
 		*(result->asString) = (char)temp % 10 + '0';
 
 		++result->asString;
-		if (*(minuend->asString)) minuend->asString++;
-		if (*(subtrahend->asString)) subtrahend->asString++;
+		if (*mString) mString++;
+		if (*sString) sString++;
 	}
 	*(result->asString) = '\0';
 	result->asString = sav;
+	trimZeros(result);
 	return result;
 }
 
@@ -165,14 +169,60 @@ number_t* bigMul(number_t* num1, number_t* num2)
 	return result;
 }
 
-void digitShift(number_t* n, int d)		/* multiply n by 10^d */
+number_t* bigDiv(number_t* dividend, number_t* divisor)
+{
+	number_t* result = (number_t*)malloc(sizeof(number_t));
+	result->numberSystem = CALC_NUMBER_SYSTEM;
+	result->sign = POSITIVE;
+	result->stringLen = dividend->stringLen;
+	result->asString = (char*)calloc(result->stringLen + 1, sizeof(char)); //+1 для нулевого символа
+	
+	number_t* row = (number_t*)malloc(sizeof(number_t));
+	row->numberSystem = CALC_NUMBER_SYSTEM;
+	row->sign = POSITIVE;
+	row->stringLen = dividend->stringLen;
+	row->asString = (char*)calloc(result->stringLen + 1, sizeof(char));
+
+	for (int i = dividend->stringLen - 1; i >= 0; i--) 
+	{
+		digitShift(row, 1);
+		row->asString[0] = dividend->asString[i];
+		result->asString[i] = '0';
+		while (maxNumber(row, divisor) >= 0)
+		{
+			result->asString[i]++;
+			row = handleBigSub(row, divisor);
+		}
+	}
+	trimZeros(result);
+
+	free(row->asString);
+	row->asString = NULL;
+	free(row);
+	row = NULL;
+	return result;
+}
+
+void digitShift(number_t* n, int d) //умножить n на 10^d
 {
 	int i;
 	if ((n->stringLen == 0) && (n->asString[0] == 0)) return;
 	for (i = n->stringLen; i >= 0; i--)
+	{
 		n->asString[i + d] = n->asString[i];
-
+	}
 	for (i = 0; i < d; i++) n->asString[i] = '0';
-
 	n->stringLen = n->stringLen + d;
+}
+
+void trimZeros(number_t* num)
+{
+	while ((num->stringLen > 1) && ((num->asString[num->stringLen - 1] == 0) || 
+		                             num->asString[num->stringLen - 1] == '0'))
+		num->stringLen--;
+
+	if ((num->stringLen == 1) && (num->asString[0] == '0'))
+		num->sign = POSITIVE;
+	num->asString = (char*)realloc(num->asString, num->stringLen + 1);
+	num->asString[num->stringLen] = '\0';
 }

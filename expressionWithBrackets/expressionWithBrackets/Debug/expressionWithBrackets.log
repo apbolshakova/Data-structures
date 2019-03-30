@@ -1,4 +1,7 @@
-﻿  OperatorStack.c
-c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\operatorstack.c(11): warning C4013: 'malloc' undefined; assuming extern returning int
-c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\operatorstack.c(27): warning C4013: 'free' undefined; assuming extern returning int
+﻿  BigMath.c
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\bigmath.c(64): warning C4047: '==': 'char *' differs in levels of indirection from 'int'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\bigmath.c(80): warning C4013: 'malloc' undefined; assuming extern returning int
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\bigmath.c(84): warning C4013: 'calloc' undefined; assuming extern returning int
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\bigmath.c(199): warning C4013: 'free' undefined; assuming extern returning int
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\bigmath.c(226): warning C4013: 'realloc' undefined; assuming extern returning int
   expressionWithBrackets.vcxproj -> C:\Users\angela\source\repos\2_Data-structures\expressionWithBrackets\Debug\expressionWithBrackets.exe

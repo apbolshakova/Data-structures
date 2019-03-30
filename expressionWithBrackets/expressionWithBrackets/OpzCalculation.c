@@ -35,7 +35,9 @@ number_t* calculateOpz(opz_list_el* opzList_head)
 
 	if (numberStack_head != NULL && numberStack_head->next == NULL)
 	{
-		return popFromNumberStack(&numberStack_head);
+		number_t* result = popFromNumberStack(&numberStack_head);
+		trimZeros(result);
+		return result;
 	}
 	else
 	{
@@ -139,7 +141,7 @@ func_result_t handleOperation(number_stack_el** numberStack_head, char sign)
 	case '+': a = handleBigAdd(b, a); break;
 	case '-': a = handleBigSub(b, a); break;
 	case '*': a = handleBigMul(b, a); break;
-	//case '/': a = handleBigDiv(a, b); break;
+	case '/': a = handleBigDiv(b, a); break;
 	default: break;
 	}
 	if (a == NULL) return FAIL;
