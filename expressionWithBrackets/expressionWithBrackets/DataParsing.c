@@ -1,6 +1,6 @@
 #include "Header.h"
 
-opz_list_el* getOpz() //парсит данные в ОПЗ, возвращает указатель на голову
+opz_list_el* getOpz()
 {
 	opz_list_el* opzList_head = NULL;
 	operator_stack_el* operartorStack_head = NULL;
@@ -53,7 +53,7 @@ func_result_t handleDataFromString(char* curChar, opz_list_el** opzList_head,
 	return SUCCESS;
 }
 
-func_result_t handleOpzListValue(opz_list_el** opzList_headPtr,  //добавляет новые элементы в список ОПЗ
+func_result_t handleOpzListValue(opz_list_el** opzList_headPtr,
 	operator_stack_el** operatorStack_headPtr, char** curChar)
 {
 	if (*curChar == NULL) return FAIL;

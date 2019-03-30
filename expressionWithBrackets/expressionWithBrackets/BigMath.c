@@ -61,9 +61,9 @@ number_t* handleBigMul(number_t* num1, number_t* num2)
 
 number_t* handleBigDiv(number_t* num1, number_t* num2)
 {
-	if (num2->asString == '0')
+	if (num2->stringLen == 1 && num2->asString[0] == '0')
 	{
-		printf("ERROR: attempt to dizide by zero.\n");
+		printf("ERROR: attempt to divide by zero.\n");
 		return NULL;
 	}
 	number_t* result = bigDiv(num1, num2);
@@ -181,7 +181,7 @@ number_t* bigDiv(number_t* dividend, number_t* divisor)
 	number_t* row = (number_t*)malloc(sizeof(number_t));
 	row->numberSystem = CALC_NUMBER_SYSTEM;
 	row->sign = POSITIVE;
-	row->stringLen = dividend->stringLen;
+	row->stringLen = 0;
 	row->asString = (char*)calloc(result->stringLen + 1, sizeof(char));
 
 	for (int i = dividend->stringLen - 1; i >= 0; i--) 
@@ -194,11 +194,10 @@ number_t* bigDiv(number_t* dividend, number_t* divisor)
 			result->asString[i]++;
 			row = handleBigSub(row, divisor);
 		}
+		if (!(isDigit(result->asString[i]))) result->asString[i] = '0';
 	}
 	trimZeros(result);
 
-	//free(row->asString); TODO: узнать, почему не почистить
-	row->asString = NULL;
 	free(row);
 	row = NULL;
 	return result;
@@ -206,13 +205,11 @@ number_t* bigDiv(number_t* dividend, number_t* divisor)
 
 void digitShift(number_t* n, int d) //умножить n на 10^d
 {
-	int i;
-	if ((n->stringLen == 0) && (n->asString[0] == 0)) return;
-	for (i = n->stringLen; i >= 0; i--)
+	for (int i = n->stringLen; i >= 0; i--)
 	{
 		n->asString[i + d] = n->asString[i];
 	}
-	for (i = 0; i < d; i++) n->asString[i] = '0';
+	for (int i = 0; i < d; i++) n->asString[i] = '0';
 	n->stringLen = n->stringLen + d;
 }
 

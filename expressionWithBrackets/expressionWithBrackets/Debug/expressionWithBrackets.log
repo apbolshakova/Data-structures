@@ -1,7 +1,20 @@
-﻿  BigMath.c
-c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\bigmath.c(64): warning C4047: '==': 'char *' differs in levels of indirection from 'int'
-c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\bigmath.c(80): warning C4013: 'malloc' undefined; assuming extern returning int
-c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\bigmath.c(84): warning C4013: 'calloc' undefined; assuming extern returning int
-c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\bigmath.c(202): warning C4013: 'free' undefined; assuming extern returning int
-c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\bigmath.c(227): warning C4013: 'realloc' undefined; assuming extern returning int
+﻿  DataParsing.c
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\dataparsing.c(18): warning C4013: 'calloc' undefined; assuming extern returning int
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\dataparsing.c(22): warning C4013: 'deleteOperatorStack' undefined; assuming extern returning int
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\dataparsing.c(25): warning C4013: 'free' undefined; assuming extern returning int
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\dataparsing.c(60): warning C4013: 'malloc' undefined; assuming extern returning int
+  OpzCalculation.c
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\opzcalculation.c(4): warning C4028: formal parameter 1 different from declaration
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\opzcalculation.c(5): warning C4013: 'malloc' undefined; assuming extern returning int
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\opzcalculation.c(9): warning C4013: 'free' undefined; assuming extern returning int
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\opzcalculation.c(18): warning C4047: '!=': 'func_result_t *' differs in levels of indirection from 'int'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\opzcalculation.c(21): warning C4013: 'deleteNumberStack' undefined; assuming extern returning int
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\opzcalculation.c(58): warning C4047: 'return': 'func_result_t *' differs in levels of indirection from 'int'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\opzcalculation.c(59): warning C4047: 'return': 'func_result_t *' differs in levels of indirection from 'int'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\opzcalculation.c(65): warning C4047: 'return': 'func_result_t *' differs in levels of indirection from 'int'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\opzcalculation.c(79): warning C4013: 'calloc' undefined; assuming extern returning int
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\opzcalculation.c(80): warning C4047: 'return': 'func_result_t *' differs in levels of indirection from 'int'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\opzcalculation.c(102): warning C4047: 'return': 'func_result_t *' differs in levels of indirection from 'int'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\opzcalculation.c(73): warning C4244: 'initializing': conversion from 'double' to 'long', possible loss of data
+  Generating Code...
   expressionWithBrackets.vcxproj -> C:\Users\angela\source\repos\2_Data-structures\expressionWithBrackets\Debug\expressionWithBrackets.exe

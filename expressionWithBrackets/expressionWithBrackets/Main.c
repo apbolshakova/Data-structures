@@ -5,13 +5,12 @@ int main (void)
 	opz_list_el* opzListHead = getOpz();
 	if (opzListHead != NULL)
 	{
-		number_t* result = calculateOpz(&opzListHead); //возвращает строку-результат вычислений
+		number_t* result = calculateOpz(&opzListHead);
 		if (result != NULL)
 		{
 			reverseStr(result->asString);
 			if (result->sign == NEGATIVE) printf("-");
 			puts(result->asString);
-			//write result to output.txt
 		}
 	}
 	deleteOpzList(&opzListHead);

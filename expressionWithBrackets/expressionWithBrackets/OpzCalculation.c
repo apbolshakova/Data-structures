@@ -125,10 +125,7 @@ void reverseStr(char* str)
 	}
 
 	//сдвиг второй половины влево на 1 символ
-	for (int i = len / 2; i <= len; i++)
-	{
-		*(str + i) = *(str + i + 1);
-	}
+	for (int i = len / 2; i <= len; i++) *(str + i) = *(str + i + 1);
 	*(str + len) = '\0';
 }
 

@@ -44,18 +44,17 @@ int max(int a, int b)
 	return b;
 }
 
-int min(int a, int b)
+int numCmp(int a, int b)
 {
-	if (a <= b) return a;
-	return b;
+	return a - b;
 }
 
 int maxNumber(number_t* num1, number_t* num2) //-1 <, 0 =, 1 >
 {
-	int index = min(num1->stringLen, num2->stringLen);
-	if (num1->asString[index] != '\0' && num1->asString[index] != '0') return 1;
-	if (num2->asString[index] != '\0' && num2->asString[index] != '0') return -1;
-	--index;
+	if (numCmp(num1->stringLen, num2->stringLen)) 
+		return numCmp(num1->stringLen, num2->stringLen);
+
+	int index = num1->stringLen - 1;
 	while (index >= 0)
 	{
 		if (num1->asString[index] > num2->asString[index]) return 1;
