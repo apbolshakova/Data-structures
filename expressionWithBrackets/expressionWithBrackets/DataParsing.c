@@ -18,15 +18,19 @@ opz_list_el* getOpz() //парсит данные в ОПЗ, возвращает указатель на голову
 	char* temp = (char*)calloc(SIZE_OF_STRING_TO_READ, sizeof(char));
 	while (fgets(temp, SIZE_OF_STRING_TO_READ * sizeof(char), input) != NULL)
 		if (handleDataFromString(temp, &opzList_head, &operartorStack_head) != SUCCESS)
+		{
+			deleteOperatorStack(&operartorStack_head);
 			return NULL;
+		}
 	free(temp);
 	fclose(input);
 
 	if (popRestOfOperatorStackIntoOpz(&opzList_head, &operartorStack_head) != SUCCESS)
+	{
+		deleteOperatorStack(&operartorStack_head);
 		return NULL;
-
-	//TODO: очистка стека операторов
-	//TODO: если в ф-ии произошла ошибка очистить список
+	}
+	deleteOperatorStack(&operartorStack_head);
 	return opzList_head;
 }
 
@@ -56,7 +60,7 @@ func_result_t handleOpzListValue(opz_list_el** opzList_headPtr,  //добавляет нов
 	opz_list_el_value* elValue = (opz_list_el_value*)malloc(sizeof(opz_list_el_value));
 	if (elValue == NULL) return FAIL;
 
-	if (isHexDigit(**curChar) && //TODO: починить работу со скобками
+	if (isHexDigit(**curChar) &&
 		handleNumber(opzList_headPtr, curChar) != SUCCESS)
 		return FAIL;
 	else if

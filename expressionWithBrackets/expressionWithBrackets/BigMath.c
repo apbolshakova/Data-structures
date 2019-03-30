@@ -224,6 +224,7 @@ void trimZeros(number_t* num)
 
 	if ((num->stringLen == 1) && (num->asString[0] == '0'))
 		num->sign = POSITIVE;
-	num->asString = (char*)realloc(num->asString, num->stringLen + 1);
+	char* temp = (char*)realloc(num->asString, num->stringLen + 1);
+	num->asString = temp;
 	num->asString[num->stringLen] = '\0';
 }

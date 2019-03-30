@@ -5,7 +5,7 @@ int main (void)
 	opz_list_el* opzListHead = getOpz();
 	if (opzListHead != NULL)
 	{
-		number_t* result = calculateOpz(opzListHead); //возвращает строку-результат вычислений
+		number_t* result = calculateOpz(&opzListHead); //возвращает строку-результат вычислений
 		if (result != NULL)
 		{
 			reverseStr(result->asString);
@@ -13,8 +13,8 @@ int main (void)
 			puts(result->asString);
 			//write result to output.txt
 		}
-
 	}
+	deleteOpzList(&opzListHead);
 	_getch();
 	return 0;
 }

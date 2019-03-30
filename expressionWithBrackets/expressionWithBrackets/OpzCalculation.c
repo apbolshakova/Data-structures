@@ -1,16 +1,16 @@
 #include "Header.h"
 
-number_t* calculateOpz(opz_list_el* opzList_head)
+number_t* calculateOpz(opz_list_el** opzList_head)
 {
 	number_t* result = (number_t*)malloc(sizeof(number_t));
 	number_stack_el* numberStack_head = NULL;
-    if (opzList_head == NULL || opzList_head->value->sign)
+    if (*opzList_head == NULL || (*opzList_head)->value->sign)
 	{
 		free(result);
 		return NULL;
 	}
 	
-	opz_list_el_value* data = popFromOpzList(&opzList_head);
+	opz_list_el_value* data = popFromOpzList(opzList_head);
 	while (data != NULL)
 	{
 		if (data->number != NULL)
@@ -18,30 +18,36 @@ number_t* calculateOpz(opz_list_el* opzList_head)
 			if (convertToDec(&(data->number)) != SUCCESS)
 			{
 				printf("ERROR: Unable to convert number into needed number system.\n");
+				deleteNumberStack(&numberStack_head);
 				return NULL;
 			}
 			if (pushIntoNumberStack(&numberStack_head, data->number) != SUCCESS)
 			{
 				printf("ERROR: Number stack overflow while calculating RPN.\n");
+				deleteNumberStack(&numberStack_head);
 				return NULL;
 			};
 		}
 		else if (data->sign != NULL_OPERATOR)
 		{
-			if (handleOperation(&numberStack_head, data->sign) != SUCCESS) return NULL;
+			if (handleOperation(&numberStack_head, data->sign) != SUCCESS)
+			{
+				deleteNumberStack(&numberStack_head);
+				return NULL;
+			}
 		}
-		data = popFromOpzList(&opzList_head);
+		data = popFromOpzList(opzList_head);
 	}
 
 	if (numberStack_head != NULL && numberStack_head->next == NULL)
 	{
 		number_t* result = popFromNumberStack(&numberStack_head);
-		trimZeros(result);
 		return result;
 	}
 	else
 	{
 		printf("ERROR: Unable to calculate RPN because of invalid RPN\n");
+		deleteNumberStack(&numberStack_head);
 		return NULL;
 	}
 }

@@ -21,3 +21,15 @@ number_t* popFromNumberStack(number_stack_el** head)
 	free(out);
 	return data;
 }
+
+void deleteNumberStack(number_stack_el** head)
+{
+	number_stack_el* pv = NULL;
+	while (*head)
+	{
+		pv = *head;
+		*head = (*head)->next;
+		free(pv);
+		pv = NULL;
+	}
+}

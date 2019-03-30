@@ -73,3 +73,26 @@ opz_list_el_value* popFromOpzList(opz_list_el** head)
 	free(out);
 	return value;
 }
+
+void deleteOpzList(opz_list_el** head)
+{
+	opz_list_el* pv = NULL;
+	while (*head)
+	{
+		pv = *head;
+		*head = (*head)->next;
+		
+		if (pv->value->number)
+		{
+			if (pv->value->number->asString)
+			{
+				free(pv->value->number->asString);
+				pv->value->number->asString = NULL;
+			}
+			free(pv->value->number);
+			pv->value->number = NULL;
+		}
+		free(pv);
+		pv = NULL;
+	}
+}

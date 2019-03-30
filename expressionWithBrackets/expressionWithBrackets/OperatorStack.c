@@ -27,3 +27,15 @@ char popFromOperatorStack(operator_stack_el** head)
 	free(out);
 	return value;
 }
+
+void deleteOperatorStack(operator_stack_el** head)
+{
+	operator_stack_el* pv = NULL;
+	while (*head)
+	{
+		pv = *head;
+		*head = (*head)->next;
+		free(pv);
+		pv = NULL;
+	}
+}
