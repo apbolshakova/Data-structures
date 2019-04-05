@@ -191,7 +191,7 @@ number_t* bigDiv(number_t* dividend, number_t* divisor)
 		while (maxNumber(row, divisor) >= 0)
 		{
 			result->asString[i]++;
-			row = handleBigSub(row, divisor);
+			row = bigSub(row, divisor);
 		}
 		if (!(isDigit(result->asString[i]))) result->asString[i] = '0';
 	}
@@ -225,13 +225,14 @@ void trimZeros(number_t* num)
 	num->asString[num->stringLen] = '\0';
 }
 
-number_t* bigPow(int base, long exponent) //base от 2 до 16
+number_t* bigPow(int base, long exponent) //base от 2 до 16 нужнл base^exponent
 {
 	number_t* baseNum = (number_t*)malloc(sizeof(number_t));
 	baseNum->numberSystem = CALC_NUMBER_SYSTEM;
 	baseNum->sign = POSITIVE;
 	baseNum->asString = (char*)calloc(2, sizeof(char));
 	sprintf(baseNum->asString, "%lu", base);
+	reverseStr(baseNum->asString);
 	baseNum->stringLen = 1;
 	if (baseNum->asString[1]) baseNum->stringLen++; //число двузначно
 
@@ -240,12 +241,10 @@ number_t* bigPow(int base, long exponent) //base от 2 до 16
 	result->sign = POSITIVE;
 	result->stringLen = 1 + base * exponent;
 	result->asString = (char*)calloc(result->stringLen + 1, sizeof(char)); //+1 для нулевого символа
+	
 	result->asString[0] = '1';
 	result->asString[1] = '\0';
-	for (int i = 0; i < exponent; i++)
-	{
-		result = bigMul(result, baseNum);
-	}
+	for (int i = 0; i < exponent; i++) result = bigMul(result, baseNum);
 	trimZeros(result);
 	return result;
 }

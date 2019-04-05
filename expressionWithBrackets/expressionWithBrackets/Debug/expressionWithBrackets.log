@@ -9,5 +9,5 @@ c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expression
 c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\opzcalculation.c(77): warning C4013: 'bigPow' undefined; assuming extern returning int
 c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\opzcalculation.c(77): warning C4047: 'function': 'number_t *' differs in levels of indirection from 'int'
 c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\opzcalculation.c(77): warning C4024: 'bigMul': different types for formal and actual parameter 2
-c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\opzcalculation.c(99): warning C4047: 'return': 'func_result_t *' differs in levels of indirection from 'int'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\opzcalculation.c(98): warning C4047: 'return': 'func_result_t *' differs in levels of indirection from 'int'
   expressionWithBrackets.vcxproj -> C:\Users\angela\source\repos\2_Data-structures\expressionWithBrackets\Debug\expressionWithBrackets.exe
