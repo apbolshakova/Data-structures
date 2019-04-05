@@ -69,17 +69,14 @@ func_result_t* convertToDec(number_t** number)
 	char* sav = (*number)->asString;
 	while (*((*number)->asString))
 	{
-		long digit = (long)symbolToInt(*((*number)->asString)); //цифра в исходной СС
-		long value = digit * pow((double)(*number)->numberSystem, digitPos); //перевод цифры в нужную СС
+		number_t* digitNum = (number_t*)malloc(sizeof(number_t));
+		digitNum->asString = (char*)calloc(2, sizeof(char));
+		digitNum->asString[0] = *((*number)->asString); //цифра в исходной СС
+		digitNum->asString[1] = '\0';
+		digitNum->stringLen = 1;
+		number_t* buf = bigMul(digitNum, bigPow((*number)->numberSystem, digitPos));
+		free(digitNum);
 
-		number_t* buf = (number_t*)malloc(sizeof(number_t));
-		buf->sign = POSITIVE;
-		buf->numberSystem = CALC_NUMBER_SYSTEM;
-		buf->stringLen = getNumOfPositions(value);
-		buf->asString = (char*)calloc(buf->stringLen + 1, sizeof(char));
-		if (buf == NULL) return FAIL;
-		sprintf(buf->asString, "%lu", value);
-		reverseStr(buf->asString);
 		if (*(converted->asString) == '\0')
 		{
 			converted->stringLen = buf->stringLen;
@@ -94,7 +91,6 @@ func_result_t* convertToDec(number_t** number)
 		buf = NULL;
 		free(buf);
 	}
-
 	sav = NULL;
 	free(sav);
 	free(*number);
