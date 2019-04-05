@@ -225,7 +225,7 @@ void trimZeros(number_t* num)
 	num->asString[num->stringLen] = '\0';
 }
 
-number_t* bigPow(int base, long exponent) //base от 2 до 16 нужнл base^exponent
+number_t* bigPow(int base, long exponent)
 {
 	number_t* baseNum = (number_t*)malloc(sizeof(number_t));
 	baseNum->numberSystem = CALC_NUMBER_SYSTEM;

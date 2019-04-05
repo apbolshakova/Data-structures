@@ -69,14 +69,9 @@ func_result_t* convertToDec(number_t** number)
 	char* sav = (*number)->asString;
 	while (*((*number)->asString))
 	{
-		number_t* digitNum = (number_t*)malloc(sizeof(number_t));
-		digitNum->asString = (char*)calloc(2, sizeof(char));
-		digitNum->asString[0] = *((*number)->asString); //цифра в исходной СС
-		digitNum->asString[1] = '\0';
-		digitNum->stringLen = 1;
+		number_t* digitNum = getDigitAsNumber(*((*number)->asString));
 		number_t* buf = bigMul(digitNum, bigPow((*number)->numberSystem, digitPos));
 		free(digitNum);
-
 		if (*(converted->asString) == '\0')
 		{
 			converted->stringLen = buf->stringLen;
@@ -96,6 +91,32 @@ func_result_t* convertToDec(number_t** number)
 	free(*number);
 	*number = converted;
 	return SUCCESS;
+}
+
+number_t* getDigitAsNumber(char digit)
+{
+	number_t* digitNum = (number_t*)malloc(sizeof(number_t));
+	if (isDigit(digit))
+	{
+		digitNum->asString = (char*)calloc(2, sizeof(char));
+		digitNum->asString[0] = digit;
+		digitNum->asString[1] = '\0';
+		digitNum->stringLen = 1;
+	}
+	else if (isHexDigit(digit))
+	{
+		digitNum->asString = (char*)calloc(3, sizeof(char));
+		digitNum->asString[0] = digit - 'A' + '0';
+		digitNum->asString[1] = '1';
+		digitNum->asString[2] = '\0';
+		digitNum->stringLen = 2;
+	}
+	else
+	{
+		free(digitNum);
+		digitNum = NULL;
+	}
+	return digitNum;
 }
 
 int getNumOfPositions(long value)
