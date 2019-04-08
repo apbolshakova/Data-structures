@@ -1,17 +1,7 @@
-﻿  DataParsing.c
-c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\dataparsing.c(19): warning C4013: 'calloc' undefined; assuming extern returning int
-c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\dataparsing.c(21): warning C4020: 'handleDataFromString': too many actual parameters
-c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\dataparsing.c(26): warning C4013: 'free' undefined; assuming extern returning int
-c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\dataparsing.c(40): warning C4029: declared formal parameter list different from definition
-c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\dataparsing.c(43): warning C4020: 'handleOpzListValue': too many actual parameters
-c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\dataparsing.c(59): warning C4029: declared formal parameter list different from definition
-c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\dataparsing.c(61): warning C4013: 'malloc' undefined; assuming extern returning int
-c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\dataparsing.c(65): warning C4020: 'handleNumber': too many actual parameters
-c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\dataparsing.c(69): warning C4020: 'handleOperator': too many actual parameters
-c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\dataparsing.c(73): warning C4020: 'handleOpeningBracket': too many actual parameters
-c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\dataparsing.c(77): warning C4020: 'handleClosingBracket': too many actual parameters
-c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\dataparsing.c(84): warning C4029: declared formal parameter list different from definition
-c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\dataparsing.c(158): warning C4029: declared formal parameter list different from definition
-c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\dataparsing.c(203): warning C4029: declared formal parameter list different from definition
-c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\dataparsing.c(215): warning C4029: declared formal parameter list different from definition
+﻿  BigMath.c
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\bigmath.c(95): warning C4013: 'malloc' undefined; assuming extern returning int
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\bigmath.c(99): warning C4013: 'calloc' undefined; assuming extern returning int
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\bigmath.c(216): warning C4013: 'free' undefined; assuming extern returning int
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\bigmath.c(239): warning C4013: 'realloc' undefined; assuming extern returning int
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\bigmath.c(33): warning C4715: 'handleBigAdd': not all control paths return a value
   expressionWithBrackets.vcxproj -> C:\Users\angela\source\repos\2_Data-structures\expressionWithBrackets\Debug\expressionWithBrackets.exe

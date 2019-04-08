@@ -4,15 +4,31 @@ number_t* handleBigAdd(number_t* num1, number_t* num2)
 {
 	if (num1->sign == POSITIVE && num2->sign == POSITIVE)
 		return bigAdd(num1, num2);
-	else if (num1->sign == NEGATIVE)
-		return bigSub(num2, num1);
-	else if (num2->sign == NEGATIVE)
-		return bigSub(num1, num2);
-	else
+	else if ((num1->sign == NEGATIVE) && (num2->sign == NEGATIVE))
 	{
 		number_t* result = bigAdd(num1, num2);
 		result->sign = NEGATIVE;
 		return result;
+	}
+	else if (num1->sign == NEGATIVE)
+	{
+		if (maxNumber(num2, num1) >= 0) return bigSub(num2, num1);
+		else
+		{
+			number_t* result = bigSub(num1, num2);
+			result->sign = NEGATIVE;
+			return result;
+		}
+	}
+	else if (num2->sign == NEGATIVE)
+	{
+		if (maxNumber(num1, num2) >= 0) return bigSub(num1, num2);
+		else
+		{
+			number_t* result = bigSub(num2, num1);
+			result->sign = NEGATIVE;
+			return result;
+		}
 	}
 }
 
