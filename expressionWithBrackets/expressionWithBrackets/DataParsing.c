@@ -5,6 +5,7 @@ opz_list_el* getOpz()
 	opz_list_el* opzList_head = NULL;
 	operator_stack_el* operartorStack_head = NULL;
 	char curChar = '\0';
+	bool_t prevIsNum = FALSE;
 
 	FILE *input = fopen(DATA_PATH, "r");
 	if (input == NULL) return NULL;
@@ -17,7 +18,7 @@ opz_list_el* getOpz()
 	input = fopen(DATA_PATH, "r");
 	char* temp = (char*)calloc(SIZE_OF_STRING_TO_READ, sizeof(char));
 	while (fgets(temp, SIZE_OF_STRING_TO_READ * sizeof(char), input) != NULL)
-		if (handleDataFromString(temp, &opzList_head, &operartorStack_head) != SUCCESS)
+		if (handleDataFromString(temp, &opzList_head, &operartorStack_head, &prevIsNum) != SUCCESS)
 		{
 			deleteOperatorStack(&operartorStack_head);
 			return NULL;
@@ -35,11 +36,11 @@ opz_list_el* getOpz()
 }
 
 func_result_t handleDataFromString(char* curChar, opz_list_el** opzList_head,
-	operator_stack_el** operartorStack_head)
+	operator_stack_el** operartorStack_head, bool_t* prevIsNum)
 {
 	while (*curChar != '=')
 	{
-		if (handleOpzListValue(opzList_head, operartorStack_head, &curChar) != SUCCESS)
+		if (handleOpzListValue(opzList_head, operartorStack_head, &curChar, prevIsNum) != SUCCESS)
 		{
 			printf("ERROR: impossible to build correct RPN.\n");
 			return FAIL;
@@ -54,31 +55,32 @@ func_result_t handleDataFromString(char* curChar, opz_list_el** opzList_head,
 }
 
 func_result_t handleOpzListValue(opz_list_el** opzList_headPtr,
-	operator_stack_el** operatorStack_headPtr, char** curChar)
+	operator_stack_el** operatorStack_headPtr, char** curChar, bool_t* prevIsNum)
 {
 	if (*curChar == NULL) return FAIL;
 	opz_list_el_value* elValue = (opz_list_el_value*)malloc(sizeof(opz_list_el_value));
 	if (elValue == NULL) return FAIL;
 
 	if (isHexDigit(**curChar) &&
-		handleNumber(opzList_headPtr, curChar) != SUCCESS)
+		handleNumber(opzList_headPtr, curChar, prevIsNum) != SUCCESS)
 		return FAIL;
 	else if
 		(isOperator(**curChar) &&
-			handleOperator(opzList_headPtr, operatorStack_headPtr, **curChar) != SUCCESS)
+			handleOperator(opzList_headPtr, operatorStack_headPtr, **curChar, prevIsNum) != SUCCESS)
 		return FAIL;
 	else if
 		(**curChar == '(' &&
-			handleOpeningBracket(operatorStack_headPtr, **curChar) != SUCCESS)
+			handleOpeningBracket(operatorStack_headPtr, **curChar, prevIsNum) != SUCCESS)
 		return FAIL;
 	else if
 		(**curChar == ')' &&
-			handleClosingBracket(opzList_headPtr, operatorStack_headPtr) != SUCCESS)
+			handleClosingBracket(opzList_headPtr, operatorStack_headPtr, prevIsNum) != SUCCESS)
 		return FAIL;
+
 	return SUCCESS;
 }
 
-func_result_t handleNumber(opz_list_el** opzList_headPtr, char** curChar)
+func_result_t handleNumber(opz_list_el** opzList_headPtr, char** curChar, bool_t* prevIsNum)
 {
 	number_t* number = (number_t*)malloc(sizeof(number_t));
 	if (number == NULL) return FAIL;
@@ -130,6 +132,7 @@ func_result_t handleNumber(opz_list_el** opzList_headPtr, char** curChar)
 	if (number->numberSystem >= 10) (*curChar)++;
 
 	pushIntoOpzList(opzList_headPtr, NULL_OPERATOR, number);
+	*prevIsNum = TRUE;
 	return SUCCESS;
 }
 
@@ -151,8 +154,13 @@ func_result_t getNumberSystem(char* curChar, int* numberSystem)
 }
 
 func_result_t handleOperator(opz_list_el** opzList_headPtr,
-	operator_stack_el** operatorStack_headPtr, char curChar)
+	operator_stack_el** operatorStack_headPtr, char curChar, bool_t* prevIsNum)
 {
+	if (!(*prevIsNum))
+	{
+		printf("ERROR: Invalid RPN.\n");
+		return FAIL;
+	}
 	if (curChar == '+' || curChar == '-')
 	{
 		char lastOperator = getLastFromOperatorStack(*operatorStack_headPtr);
@@ -187,21 +195,23 @@ func_result_t handleOperator(opz_list_el** opzList_headPtr,
 		printf("ERROR: operator stack overflow.\n");
 		return FAIL;
 	}
+	*prevIsNum = FALSE;
 	return SUCCESS;
 }
 
-func_result_t handleOpeningBracket(operator_stack_el** operatorStack_headPtr, char curChar)
+func_result_t handleOpeningBracket(operator_stack_el** operatorStack_headPtr, char curChar, bool_t* prevIsNum)
 {
 	if (pushIntoOperatorStack(operatorStack_headPtr, curChar) != SUCCESS)
 	{
 		printf("ERROR: operator stack overflow.\n");
 		return FAIL;
 	}
+	*prevIsNum = FALSE;
 	return SUCCESS;
 }
 
 func_result_t handleClosingBracket(opz_list_el** opzList_headPtr,
-	operator_stack_el** operatorStack_headPtr)
+	operator_stack_el** operatorStack_headPtr, bool_t* prevIsNum)
 {
 	char lastOperator = NULL_OPERATOR;
 	do
@@ -221,5 +231,6 @@ func_result_t handleClosingBracket(opz_list_el** opzList_headPtr,
 			}
 		}
 	} while (lastOperator != '(');
+	*prevIsNum = TRUE;
 	return SUCCESS;
 }
