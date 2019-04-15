@@ -1,7 +1,43 @@
-﻿  BigMath.c
+﻿  Circs.c
+  DataParsing.c
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\dataparsing.c(19): warning C4013: 'calloc' undefined; assuming extern returning int
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\dataparsing.c(21): warning C4020: 'handleDataFromString': too many actual parameters
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\dataparsing.c(26): warning C4013: 'free' undefined; assuming extern returning int
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\dataparsing.c(41): warning C4029: declared formal parameter list different from definition
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\dataparsing.c(44): warning C4020: 'handleOpzListValue': too many actual parameters
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\dataparsing.c(60): warning C4029: declared formal parameter list different from definition
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\dataparsing.c(62): warning C4013: 'malloc' undefined; assuming extern returning int
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\dataparsing.c(66): warning C4020: 'handleNumber': too many actual parameters
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\dataparsing.c(70): warning C4020: 'handleOperator': too many actual parameters
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\dataparsing.c(74): warning C4020: 'handleOpeningBracket': too many actual parameters
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\dataparsing.c(78): warning C4020: 'handleClosingBracket': too many actual parameters
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\dataparsing.c(85): warning C4029: declared formal parameter list different from definition
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\dataparsing.c(160): warning C4029: declared formal parameter list different from definition
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\dataparsing.c(205): warning C4029: declared formal parameter list different from definition
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\dataparsing.c(217): warning C4029: declared formal parameter list different from definition
+  Main.c
+  NumberStack.c
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\numberstack.c(5): warning C4013: 'malloc' undefined; assuming extern returning int
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\numberstack.c(21): warning C4013: 'free' undefined; assuming extern returning int
+  OperatorStack.c
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\operatorstack.c(11): warning C4013: 'malloc' undefined; assuming extern returning int
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\operatorstack.c(27): warning C4013: 'free' undefined; assuming extern returning int
+  OpzCalculation.c
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\opzcalculation.c(5): warning C4013: 'malloc' undefined; assuming extern returning int
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\opzcalculation.c(9): warning C4013: 'free' undefined; assuming extern returning int
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\opzcalculation.c(19): warning C4047: '!=': 'func_result_t *' differs in levels of indirection from 'int'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\opzcalculation.c(59): warning C4047: 'return': 'func_result_t *' differs in levels of indirection from 'int'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\opzcalculation.c(60): warning C4047: 'return': 'func_result_t *' differs in levels of indirection from 'int'
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\opzcalculation.c(108): warning C4047: 'return': 'func_result_t *' differs in levels of indirection from 'int'
+  OpzList.c
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\opzlist.c(12): warning C4013: 'malloc' undefined; assuming extern returning int
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\opzlist.c(18): warning C4013: 'free' undefined; assuming extern returning int
+  BigMath.c
 c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\bigmath.c(95): warning C4013: 'malloc' undefined; assuming extern returning int
 c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\bigmath.c(138): warning C4013: 'calloc' undefined; assuming extern returning int
 c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\bigmath.c(181): warning C4013: 'free' undefined; assuming extern returning int
 c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\bigmath.c(231): warning C4013: 'realloc' undefined; assuming extern returning int
+  Types.h
+  Generating Code...
 c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\bigmath.c(33): warning C4715: 'handleBigAdd': not all control paths return a value
   expressionWithBrackets.vcxproj -> C:\Users\angela\source\repos\2_Data-structures\expressionWithBrackets\Debug\expressionWithBrackets.exe

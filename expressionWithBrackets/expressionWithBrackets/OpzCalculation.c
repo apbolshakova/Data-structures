@@ -64,10 +64,10 @@ func_result_t* convertToDec(number_t** number)
 	converted->asString = NULL;
 
 	long digitPos = 0; //разряд числа
-	char* sav = (*number)->asString;
-	while (*((*number)->asString))
+	char* numAsString = (*number)->asString;
+	while (*numAsString)
 	{
-		number_t* digitNum = getDigitAsNumber(*((*number)->asString));
+		number_t* digitNum = getDigitAsNumber(*numAsString);
 		number_t* base = bigPow((*number)->numberSystem, digitPos);
 		number_t* buf = bigMul(digitNum, base);
 		
@@ -95,7 +95,7 @@ func_result_t* convertToDec(number_t** number)
 			free(converted);
 			converted = result;
 		}
-		(*number)->asString++;
+		numAsString++;
 		digitPos++;
 
 		free(buf->asString);
@@ -103,8 +103,6 @@ func_result_t* convertToDec(number_t** number)
 		free(buf);
 		buf = NULL;
 	}
-	free(sav);
-	sav = NULL;
 	free(*number);
 	*number = converted;
 	return SUCCESS;
