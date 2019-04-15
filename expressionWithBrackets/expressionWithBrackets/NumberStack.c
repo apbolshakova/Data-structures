@@ -19,6 +19,7 @@ number_t* popFromNumberStack(number_stack_el** head)
 	*head = (*head)->next;
 	data = out->data;
 	free(out);
+	out = NULL;
 	return data;
 }
 

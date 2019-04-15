@@ -7,6 +7,7 @@ number_t* calculateOpz(opz_list_el** opzList_head)
     if (*opzList_head == NULL || (*opzList_head)->value->sign)
 	{
 		free(result);
+		result = NULL;
 		return NULL;
 	}
 	
@@ -60,34 +61,50 @@ func_result_t* convertToDec(number_t** number)
 	converted->sign = POSITIVE;
 	converted->numberSystem = CALC_NUMBER_SYSTEM;
 	converted->stringLen = 0;
-
-	converted->asString = (char*)malloc(sizeof(char));
-	if (converted->asString == NULL) return FAIL;
-	*(converted->asString) = '\0';
+	converted->asString = NULL;
 
 	long digitPos = 0; //разряд числа
 	char* sav = (*number)->asString;
 	while (*((*number)->asString))
 	{
 		number_t* digitNum = getDigitAsNumber(*((*number)->asString));
-		number_t* buf = bigMul(digitNum, bigPow((*number)->numberSystem, digitPos));
+		number_t* base = bigPow((*number)->numberSystem, digitPos);
+		number_t* buf = bigMul(digitNum, base);
+		
+		free(digitNum->asString);
+		digitNum->asString = NULL;
 		free(digitNum);
-		if (*(converted->asString) == '\0')
+		digitNum = NULL;
+
+		free(base->asString);
+		base->asString = NULL;
+		free(base);
+		base = NULL;
+		
+		if (converted->asString == NULL)
 		{
 			converted->stringLen = buf->stringLen;
+			converted->asString = (char*)malloc(buf->stringLen + 1 * sizeof(char));
 			strcpy(converted->asString, buf->asString);
 		}
-		else converted = handleBigAdd(converted, buf);
+		else
+		{
+			number_t* result = handleBigAdd(converted, buf);
+			free(converted->asString);
+			converted->asString = NULL;
+			free(converted);
+			converted = result;
+		}
 		(*number)->asString++;
 		digitPos++;
 
-		buf->asString = NULL;
 		free(buf->asString);
-		buf = NULL;
+		buf->asString = NULL;
 		free(buf);
+		buf = NULL;
 	}
-	sav = NULL;
 	free(sav);
+	sav = NULL;
 	free(*number);
 	*number = converted;
 	return SUCCESS;
@@ -98,14 +115,14 @@ number_t* getDigitAsNumber(char digit)
 	number_t* digitNum = (number_t*)malloc(sizeof(number_t));
 	if (isDigit(digit))
 	{
-		digitNum->asString = (char*)calloc(2, sizeof(char));
+		digitNum->asString = (char*)malloc(2 * sizeof(char));
 		digitNum->asString[0] = digit;
 		digitNum->asString[1] = '\0';
 		digitNum->stringLen = 1;
 	}
 	else if (isHexDigit(digit))
 	{
-		digitNum->asString = (char*)calloc(3, sizeof(char));
+		digitNum->asString = (char*)malloc(3 * sizeof(char));
 		digitNum->asString[0] = digit - 'A' + '0';
 		digitNum->asString[1] = '1';
 		digitNum->asString[2] = '\0';

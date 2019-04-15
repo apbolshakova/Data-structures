@@ -96,7 +96,7 @@ number_t* bigAdd(number_t* num1, number_t* num2)
 	result->numberSystem = CALC_NUMBER_SYSTEM;
 	result->sign = POSITIVE;
 	result->stringLen = max(num1->stringLen, num2->stringLen) + 1; //+1 для учёта переноса
-	result->asString = (char*)calloc(result->stringLen + 1, sizeof(char)); //+1 для нулевого символа
+	result->asString = (char*)malloc((result->stringLen + 1) * sizeof(char)); //+1 для нулевого символа
 	char* sav = result->asString;
 	char* numStr1 = num1->asString;
 	char* numStr2 = num2->asString;
@@ -177,7 +177,11 @@ number_t* bigMul(number_t* num1, number_t* num2)
 	{
 		for (int j = 1; j <= num2->asString[i] - '0'; j++) 
 		{
-			result = bigAdd(result, row);
+			number_t* temp = bigAdd(result, row);
+			free(result->asString);
+			result->asString = NULL;
+			free(result);
+			result = temp;
 		}
 		digitShift(row, 1);
 	}
@@ -207,7 +211,11 @@ number_t* bigDiv(number_t* dividend, number_t* divisor)
 		while (maxNumber(row, divisor) >= 0)
 		{
 			result->asString[i]++;
-			row = bigSub(row, divisor);
+			number_t* temp = bigSub(row, divisor);
+			free(row->asString);
+			row->asString = NULL;
+			free(row);
+			row = temp;
 		}
 		if (!(isDigit(result->asString[i]))) result->asString[i] = '0';
 	}
@@ -220,6 +228,8 @@ number_t* bigDiv(number_t* dividend, number_t* divisor)
 
 void digitShift(number_t* n, int d) //умножить n на 10^d
 {
+	char* temp = (char*)realloc(n->asString, n->stringLen + d + 1);
+	n->asString = temp; 
 	for (int i = n->stringLen; i >= 0; i--)
 	{
 		n->asString[i + d] = n->asString[i];
@@ -230,7 +240,7 @@ void digitShift(number_t* n, int d) //умножить n на 10^d
 
 void trimZeros(number_t* num)
 {
-	while ((num->stringLen > 1) && ((num->asString[num->stringLen - 1] == 0) || 
+	while ((num->stringLen > 1) && ((num->asString[num->stringLen - 1] <= 0) || 
 		                             num->asString[num->stringLen - 1] == '0'))
 		num->stringLen--;
 
@@ -246,7 +256,7 @@ number_t* bigPow(int base, long exponent)
 	number_t* baseNum = (number_t*)malloc(sizeof(number_t));
 	baseNum->numberSystem = CALC_NUMBER_SYSTEM;
 	baseNum->sign = POSITIVE;
-	baseNum->asString = (char*)calloc(2, sizeof(char));
+	baseNum->asString = (char*)calloc(3, sizeof(char));
 	sprintf(baseNum->asString, "%lu", base);
 	reverseStr(baseNum->asString);
 	baseNum->stringLen = 1;
@@ -260,7 +270,25 @@ number_t* bigPow(int base, long exponent)
 	
 	result->asString[0] = '1';
 	result->asString[1] = '\0';
-	for (int i = 0; i < exponent; i++) result = bigMul(result, baseNum);
+	for (int i = 0; i < exponent; i++)
+	{
+		number_t* temp = bigMul(result, baseNum);
+		free(result->asString);
+		result->asString = NULL;
+		free(result);
+		result = temp;
+	}
 	trimZeros(result);
+
+	free(baseNum->asString);
+	baseNum->asString = NULL;
+	free(baseNum);
+	baseNum = NULL;
 	return result;
 }
+
+/*number_t* freeNum(number_t* num) //TODO: возможно удалить
+{
+	free(num);
+	return NULL;
+}*/

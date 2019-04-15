@@ -1,7 +1,7 @@
 ﻿  BigMath.c
 c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\bigmath.c(95): warning C4013: 'malloc' undefined; assuming extern returning int
-c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\bigmath.c(99): warning C4013: 'calloc' undefined; assuming extern returning int
-c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\bigmath.c(216): warning C4013: 'free' undefined; assuming extern returning int
-c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\bigmath.c(239): warning C4013: 'realloc' undefined; assuming extern returning int
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\bigmath.c(138): warning C4013: 'calloc' undefined; assuming extern returning int
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\bigmath.c(181): warning C4013: 'free' undefined; assuming extern returning int
+c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\bigmath.c(231): warning C4013: 'realloc' undefined; assuming extern returning int
 c:\users\angela\source\repos\2_data-structures\expressionwithbrackets\expressionwithbrackets\bigmath.c(33): warning C4715: 'handleBigAdd': not all control paths return a value
   expressionWithBrackets.vcxproj -> C:\Users\angela\source\repos\2_Data-structures\expressionWithBrackets\Debug\expressionWithBrackets.exe

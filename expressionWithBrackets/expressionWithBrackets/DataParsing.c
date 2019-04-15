@@ -24,6 +24,7 @@ opz_list_el* getOpz()
 			return NULL;
 		}
 	free(temp);
+	temp = NULL;
 	fclose(input);
 
 	if (popRestOfOperatorStackIntoOpz(&opzList_head, &operartorStack_head) != SUCCESS)
@@ -106,6 +107,7 @@ func_result_t handleNumber(opz_list_el** opzList_headPtr, char** curChar, bool_t
 	if (number->asString == NULL)
 	{
 		free(number);
+		number = NULL;
 		return FAIL;
 	}
 	number->asString += number->stringLen + 1;
@@ -115,10 +117,10 @@ func_result_t handleNumber(opz_list_el** opzList_headPtr, char** curChar, bool_t
 	{
 		if (!isValidDigit(number->numberSystem, **curChar))
 		{
-			number->asString = NULL;
 			free(number->asString);
-			number = NULL;
+			number->asString = NULL;
 			free(number);
+			number = NULL;
 			printf("ERROR: found incorrect number (digits aren't fit number system.)\n");
 			return FAIL;
 		}

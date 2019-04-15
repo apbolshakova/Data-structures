@@ -71,6 +71,7 @@ opz_list_el_value* popFromOpzList(opz_list_el** head)
 	*head = (*head)->next;
 	value = out->value;
 	free(out);
+	out = NULL;
 	return value;
 }
 
