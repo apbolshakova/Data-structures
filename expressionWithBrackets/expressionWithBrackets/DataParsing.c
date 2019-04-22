@@ -103,16 +103,17 @@ func_result_t handleNumber(opz_list_el** opzList_headPtr, char** curChar, bool_t
 	}
 
 	*curChar = sav;
-	number->asString = (char*)calloc(number->stringLen + 1, sizeof(char));
-	if (number->asString == NULL)
+	number->asString = (char*)malloc((number->stringLen + 1) * sizeof(char));
+	char* temp = number->asString;
+	if (temp == NULL)
 	{
 		free(number);
 		number = NULL;
 		return FAIL;
 	}
-	number->asString += number->stringLen + 1;
-	*(number->asString) = '\0';
-	number->asString--;
+	temp += number->stringLen;
+	*temp = '\0';
+	temp--;
 	while (**curChar != '_')
 	{
 		if (!isValidDigit(number->numberSystem, **curChar))
@@ -124,11 +125,11 @@ func_result_t handleNumber(opz_list_el** opzList_headPtr, char** curChar, bool_t
 			printf("ERROR: found incorrect number (digits aren't fit number system.)\n");
 			return FAIL;
 		}
-		*(number->asString) = **curChar;
+		*temp = **curChar;
 		(*curChar)++;
-		number->asString--; //число в памяти с конца
+		temp--; //число в памяти с конца
 	}
-	number->asString++;
+	temp++;
 
 	(*curChar)++;
 	if (number->numberSystem >= 10) (*curChar)++;
