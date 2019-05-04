@@ -3,19 +3,20 @@
 
 typedef enum FuncResult_ { FAIL, SUCCESS } func_result_t;
 
-typedef struct Change
+typedef struct Change //операция над текстом
 {
 	char type;
-	size_t beginIndex;
-	size_t endIndex;
+	int beginIndex;
+	int endIndex;
 	char* data;
 } change_t;
 
-typedef struct Buf
+typedef struct Buf //несохранённая версия со всеми изменениями в неё
 {
 	char* text;
-	size_t textLen;
-	size_t parentVersion;
+	int textLen;
+	int verNum;
+	int parentVer;
 	change_t* unsavedChange;
 } buf_t;
 

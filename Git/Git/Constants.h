@@ -2,6 +2,8 @@
 
 #define OPERATION_LEN 15
 #define FNAME_LEN 200
+#define VERSION_CHARS_NUM 4
+#define DEC_NUMBER_SYSTEM 10
 
 #define OPEN           "open"
 #define PRINT          "print"

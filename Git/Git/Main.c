@@ -4,30 +4,25 @@ int main(void)
 {
 	char operation[OPERATION_LEN] = { 0 };
 	char fname[FNAME_LEN] = { 0 };
-	size_t version = 0;
+	int version = 0;
 	printf("Type \"open <fname> <version>\" to start:\n");
 	scanf("%s %s %i", operation, fname, &version);
 	
 	if (!strcmp(operation, OPEN))
 	{
-		buf_t* buf = (buf_t*)malloc(sizeof(buf_t));
-		if (openFile(fname, version, buf) == FAIL)
+		buf_t* verInfo = (buf_t*)malloc(sizeof(buf_t));
+		verInfo->verNum = version;
+		if (handleFile(fname, version, verInfo) == FAIL)
 		{
-			printf("ERROR: Unable to open required file.\n"); //TODO: вынести всё в ещё одну функцию для 1-й точки выхода из программы
+			free(verInfo);
+			printf("ERROR: Unable to open required file.\n");
 			_getch();
 			return 0;
 		};
 	}
 	else printf("ERROR: Invalid operation. File opening required.\n");
-	
-	//запуск основного цикла
+	handleMainCycle(); //запуск основного цикла
 	_getch();
+	//TODO: cleanup
 	return 0;
-}
-
-func_result_t openFile(char fname[FNAME_LEN], size_t version, buf_t* buf)
-{
-    //открыть файл fname.version
-	//если существует - сформировать буфер
-	//если не существует - ошибка
 }
