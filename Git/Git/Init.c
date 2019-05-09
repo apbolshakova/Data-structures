@@ -8,7 +8,17 @@ func_result_t initGeneralInfo(char fname[FNAME_LEN])
 		printf("ERROR: memory allocation problem.\n");
 		return FAIL;
 	}
-	strcpy(generalInfo->name, fname);
+
+	size_t nameLen = strlen(fname) - strlen(getFileExt(fname)) - 1;
+	generalInfo->name = (char*)malloc((nameLen + 1) * sizeof(char));
+	if (!generalInfo->name)
+	{
+		printf("ERROR: memory allocation problem.\n");
+		return FAIL;
+	}
+	strncpy(generalInfo->name, fname, nameLen);
+	generalInfo->name[nameLen] = '\0';
+	
 	if (buildVerTree() == FAIL) //получетает generalInfo->root и lastCreatedVersion
 	{
 		printf("ERROR: unable to correctly build tree of versions.\n");

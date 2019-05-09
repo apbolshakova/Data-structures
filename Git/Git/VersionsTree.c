@@ -13,6 +13,12 @@ void deleteVerTree()
 //ѕробегает по существующим файлам и строит дерево, корень и последний номер версии складывает в generalInfo
 func_result_t buildVerTree() 
 {
-	
-	//if (!version) initVerTree();
+	if (!exists(getNameOfVerFile(ROOT_VER)))
+	{
+		initVerTree();
+	}
+	else
+	{
+		//load existing tree
+	}
 }

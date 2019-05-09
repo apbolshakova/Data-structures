@@ -10,9 +10,14 @@ extern general_t* generalInfo;
 extern version_t* buf;
 extern version_t* verTree;
 
-const char* getFileExt(const char* filename);
+void strcatInt(char fileName[FNAME_LEN], int version);
+char* getNameOfVerFile(int version);
 
-void deleteOperationList(operation_t* root);
+bool_t exists(const char *fname);
+const char* getFileExt(const char* filename);
+void cleanup(); //очистить глобальные переменные
+
+void deleteOperationList(operation_t** root);
 
 func_result_t initVerTree(); //создать новую системы версий
 void deleteVerTree();

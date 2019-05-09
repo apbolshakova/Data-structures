@@ -6,6 +6,8 @@
 #define DEC_NUMBER_SYSTEM 10
 #define NOT_DEFINED_PARENT -1
 #define TEXT_EXT "txt"
+#define ROOT_VER 0
+#define VER_FILE_EXT ".ver"
 
 #define OPEN           "open"
 #define PRINT          "print"
