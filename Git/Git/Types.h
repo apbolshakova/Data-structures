@@ -2,22 +2,30 @@
 #define TYPES
 
 typedef enum FuncResult_ { FAIL, SUCCESS } func_result_t;
+typedef enum Bool_ { FALSE, TRUE } bool_t;
 
-typedef struct Change //операция над текстом
+typedef struct operation_ //операция над текстом
 {
 	char type;
 	int beginIndex;
 	int endIndex;
 	char* data;
-} change_t;
+} operation_t;
 
-typedef struct Buf //несохранённая версия со всеми изменениями в неё
+typedef struct Version_ //версия
 {
-	char* text;
-	int textLen;
 	int verNum;
-	int parentVer;
-	change_t* unsavedChange;
-} buf_t;
+	bool_t isDeleted; //версия удалена, если её родитель NOT_DEFINED_PARENT, флаг для удобства
+	int parentVerNum;
+	struct Version_* parentPtr;
+	operation_t* operation; //линейный список изменений в этой версии
+} version_t;
+
+typedef struct General_ //главная информация о дереве
+{
+	char* name;
+	int lastCreatedVersion;
+	version_t* root; //корень дерева версий
+} general_t;
 
 #endif

@@ -4,6 +4,8 @@
 #define FNAME_LEN 200
 #define VERSION_CHARS_NUM 4
 #define DEC_NUMBER_SYSTEM 10
+#define NOT_DEFINED_PARENT -1
+#define TEXT_EXT "txt"
 
 #define OPEN           "open"
 #define PRINT          "print"

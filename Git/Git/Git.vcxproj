@@ -116,10 +116,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="DataLoad.c" />
+    <ClCompile Include="Init.c" />
     <ClCompile Include="Main.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
     </ClCompile>
+    <ClCompile Include="Misc.c" />
+    <ClCompile Include="OperationList.c" />
+    <ClCompile Include="VersionsTree.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Constants.h" />
