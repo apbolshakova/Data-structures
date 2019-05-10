@@ -30,6 +30,12 @@ func_result_t initTextAsOpearationInRootVer()
 		return FAIL;
 	}
 	//положить в операции буфера команду add текста из файла
+	if (add(BEGIN_POS, text) == FAIL)
+	{
+		printf("ERROR: Unable to create an operation entry.\n");
+		return FAIL;
+	}
+	
 }
 
 func_result_t getSourceText(char** text)

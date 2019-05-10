@@ -30,6 +30,9 @@
     <ClCompile Include="OperationList.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Editing.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Constants.h">

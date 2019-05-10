@@ -63,3 +63,12 @@ const char* getFileExt(const char* filename)
 	if (!dot || dot == filename) return "";
 	return dot + 1;
 }
+
+long int getFileSize(FILE *f)
+{
+	long int sav = ftell(f);
+	fseek(f, 0L, SEEK_END);
+	long int fileSize = ftell(f);
+	fseek(f, sav, SEEK_SET);
+	return(fileSize);
+}

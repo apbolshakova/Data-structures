@@ -20,6 +20,7 @@ void strcatInt(char fileName[FNAME_LEN], int version);
 bool_t exists(const char *fname);
 void cleanup();
 const char* getFileExt(const char* filename);
+long int getFileSize(FILE *f);
 
 /*OperationList.c*/
 void deleteOperationList(operation_t** root);
