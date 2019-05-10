@@ -6,7 +6,6 @@ char* getNameOfVerFile(int version)
 	strcpy(fileName, generalInfo->name);
 	strcat(fileName, ".");
 	strcatInt(fileName, version);
-	strcat(fileName, VER_FILE_EXT);
 	return fileName;
 }
 

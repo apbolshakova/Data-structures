@@ -9,7 +9,7 @@ func_result_t initGeneralInfo(char fname[FNAME_LEN])
 		return FAIL;
 	}
 
-	size_t nameLen = strlen(fname) - strlen(getFileExt(fname)) - 1;
+	size_t nameLen = strlen(fname);
 	generalInfo->name = (char*)malloc((nameLen + 1) * sizeof(char));
 	if (!generalInfo->name)
 	{
@@ -19,7 +19,7 @@ func_result_t initGeneralInfo(char fname[FNAME_LEN])
 	strncpy(generalInfo->name, fname, nameLen);
 	generalInfo->name[nameLen] = '\0';
 	
-	if (buildVerTree() == FAIL) //получетает generalInfo->root и lastCreatedVersion
+	if (buildVerTree() == FAIL) //получить generalInfo->root и lastCreatedVersion
 	{
 		printf("ERROR: unable to correctly build tree of versions.\n");
 		return FAIL;
@@ -37,11 +37,11 @@ func_result_t initBuf(int version)
 	}
 	buf->verNum = generalInfo->lastCreatedVersion + 1;
 	buf->parentVerNum = version;
-	//buf->parentPtr = getVersionPtr(version); //TODO: реализовать
 	buf->operation = NULL;
 	return SUCCESS;
 }
 
+//TODO: maybe delete
 /*func_result_t handleFile(char fname[FNAME_LEN], int version, version_t* verInfo)
 {
 	char* fileName = (char*)malloc((FNAME_LEN + VERSION_CHARS_NUM) * sizeof(char));
