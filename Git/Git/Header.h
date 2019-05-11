@@ -12,7 +12,8 @@ extern version_t* verTree;
 
 /*Editing.c*/
 func_result_t add(int i, char* data);
-bool_t indexIsCorrect(int i); //проверить индекс на корректность (<= длине текста на текущей итерации) TODO
+bool_t indexIsCorrect(int i); //проверить индекс на корректность
+int getTextLen(); //получить длину текста на текущей итерации
 
 /*Init.c*/
 func_result_t initGeneralInfo(char fname[FNAME_LEN]);

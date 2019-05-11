@@ -2,7 +2,14 @@
 
 void deleteOperationList(operation_t** root)
 {
-	//TODO
+	operation_t* temp = *root;
+	while (*root)
+	{
+		*root = (*root)->next;
+		free(temp);
+		temp = NULL;
+		temp = *root;
+	}
 }
 
 func_result_t pushIntoOpList(operation_t* opBuf)

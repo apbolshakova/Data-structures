@@ -4,12 +4,13 @@
 typedef enum FuncResult_ { FAIL, SUCCESS } func_result_t;
 typedef enum Bool_ { FALSE, TRUE } bool_t;
 
-typedef struct operation_ //операция над текстом
+typedef struct Operation_ //операция над текстом
 {
 	char type;
 	int beginIndex;
 	int endIndex;
 	char* data;
+	struct Operation_* next;
 } operation_t;
 
 typedef struct Version_ //версия

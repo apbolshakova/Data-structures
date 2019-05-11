@@ -37,6 +37,7 @@ func_result_t initBuf(int version)
 	}
 	buf->verNum = generalInfo->lastCreatedVersion + 1;
 	buf->parentVerNum = version;
+	buf->parentPtr = getVerPtr(version);
 	buf->operation = NULL;
 	return SUCCESS;
 }

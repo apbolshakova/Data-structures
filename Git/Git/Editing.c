@@ -31,5 +31,23 @@ func_result_t add(int i, char* data)
 
 bool_t indexIsCorrect(int i)
 {
-	//TODO
+	int textLen = getTextLen();
+	if (i > textLen) return FALSE;
+	return TRUE;
+}
+
+int getTextLen()
+{ 
+	int result = 0;
+	//TODO: finish; учесть, что буфер тут может быть пустым (идти только по дереву)
+	/*result += getLenDiffFromVer(buf->operation); //текущая рассматриваемая функция - буфер
+
+	version_t* ver = getVerPtr(buf->parentVerNum);
+	while (verNum != NOT_DEFINED_PARENT) //пока элемент валидный
+	{
+		//просуммировать длины операций из этой версии
+ 		//новая текущая версия - родитель текущей
+	}*/
+		
+	return result;
 }
