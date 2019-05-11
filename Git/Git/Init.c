@@ -19,7 +19,7 @@ func_result_t initGeneralInfo(char fname[FNAME_LEN])
 	strncpy(generalInfo->name, fname, nameLen);
 	generalInfo->name[nameLen] = '\0';
 	
-	if (buildVerTree() == FAIL) //получить generalInfo->root и lastCreatedVersion
+	if (buildVerTree() == FAIL)
 	{
 		printf("ERROR: unable to correctly build tree of versions.\n");
 		return FAIL;

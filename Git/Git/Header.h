@@ -10,6 +10,10 @@ extern general_t* generalInfo;
 extern version_t* buf;
 extern version_t* verTree;
 
+/*Editing.c*/
+func_result_t add(int i, char* data);
+bool_t indexIsCorrect(int i); //проверить индекс на корректность (<= длине текста на текущей итерации) TODO
+
 /*Init.c*/
 func_result_t initGeneralInfo(char fname[FNAME_LEN]);
 func_result_t initBuf(int version);
@@ -24,10 +28,11 @@ long int getFileSize(FILE *f);
 
 /*OperationList.c*/
 void deleteOperationList(operation_t** root);
+func_result_t pushIntoOpList(operation_t* opBuf);
 
 /*VersionsTree.c*/
 func_result_t initVerTree();
 func_result_t initTextAsOpearationInRootVer();
 func_result_t getSourceText(char** text);
 void deleteVerTree();
-func_result_t buildVerTree();
+func_result_t buildVerTree(); //получить generalInfo->root, lastCreatedVersion и curText

@@ -14,15 +14,14 @@ func_result_t initVerTree()
 		printf("ERROR: Unable to create init version of file because of invalid operation building.\n");
 		return FAIL;
 	}
-	//записать версию в файл
-	
+	//записать версию в файл (push)
 	//последняя созданная версия - 0
 	//успех
 }
 
 func_result_t initTextAsOpearationInRootVer()
 {
-	//открыть файл generalInfo->fileName
+	//открыть файл generalInfo->fileName и получить из него текст
 	char* text = NULL;
 	if (getSourceText(&text) == FAIL)
 	{
@@ -68,7 +67,6 @@ void deleteVerTree()
 	//TODO
 }
 
-//Пробегает по существующим файлам и строит дерево, корень и последний номер версии складывает в generalInfo
 func_result_t buildVerTree() 
 {
 	if (!exists(getNameOfVerFile(ROOT_VER)))

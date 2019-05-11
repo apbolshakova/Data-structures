@@ -9,6 +9,7 @@
 #define ROOT_VER 0
 #define INIT_VERSION -1
 #define BEGIN_POS 0
+#define INVALID_INDEX -1
 
 #define OPEN           "open"
 #define PRINT          "print"
