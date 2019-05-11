@@ -36,8 +36,9 @@ func_result_t initBuf(int version)
 		return FAIL;
 	}
 	buf->verNum = generalInfo->lastCreatedVersion + 1;
-	buf->parentVerNum = version;
-	buf->parentPtr = getVerPtr(version);
+	buf->parentPtr = getVerPtr(generalInfo->root, version); //TODO: добавить обработку, если вернётся NULL 
+	buf->childNum = 0;
+	buf->child = NULL;
 	buf->operation = NULL;
 	return SUCCESS;
 }

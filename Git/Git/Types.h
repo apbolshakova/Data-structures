@@ -17,8 +17,9 @@ typedef struct Version_ //версия
 {
 	int verNum;
 	bool_t isDeleted; //версия удалена, если её родитель NOT_DEFINED_PARENT, флаг для удобства
-	int parentVerNum;
 	struct Version_* parentPtr;
+	int childNum;
+	struct Version_** child;
 	operation_t* operation; //линейный список изменений в этой версии
 } version_t;
 

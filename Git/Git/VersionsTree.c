@@ -78,3 +78,13 @@ func_result_t buildVerTree()
 		//load existing tree
 	}
 }
+
+version_t* getVerPtr(version_t* p, int verNum)
+{
+	//обойти дерево, найти вершину и вернуть либо указатель на неё, либо NULL
+	if (p->verNum == verNum) return p;
+	else
+	{
+		version_t
+	}
+}

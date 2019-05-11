@@ -37,3 +37,4 @@ func_result_t initTextAsOpearationInRootVer();
 func_result_t getSourceText(char** text);
 void deleteVerTree();
 func_result_t buildVerTree(); //получить generalInfo->root, lastCreatedVersion и curText
+version_t* getVerPtr(int verNum); //обойти дерево, найти вершину и вернуть либо указатель на неё, либо NULL
