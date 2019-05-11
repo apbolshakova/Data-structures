@@ -35,8 +35,15 @@ func_result_t initBuf(int version)
 		printf("ERROR: memory allocation problem.\n");
 		return FAIL;
 	}
+	buf->parentPtr = getVerPtr(generalInfo->root, version); //TODO: добавить обработку, если вернётся NULL
+	if (!(buf->parentPtr))
+	{
+		free(buf);
+		buf = NULL;
+		printf("ERROR: Attempt to use invalid version as parent.\n");
+		return FAIL;
+	}
 	buf->verNum = generalInfo->lastCreatedVersion + 1;
-	buf->parentPtr = getVerPtr(generalInfo->root, version); //TODO: добавить обработку, если вернётся NULL 
 	buf->childNum = 0;
 	buf->child = NULL;
 	buf->operation = NULL;

@@ -81,10 +81,15 @@ func_result_t buildVerTree()
 
 version_t* getVerPtr(version_t* p, int verNum)
 {
-	//обойти дерево, найти вершину и вернуть либо указатель на неё, либо NULL
-	if (p->verNum == verNum) return p;
+	version_t* result = p;
+	if (result->verNum == verNum) return p;
 	else
 	{
-		version_t
+		for (int i = 0; i < p->childNum; i++)
+		{
+			result = getVerPtr(p->child[i], verNum);
+			if (result == verNum) break;
+		}
 	}
+	return result;
 }
