@@ -5,18 +5,18 @@ func_res_t initVerTree()
 	generalInfo->lastCreatedVersion = INIT_VERSION;
 	if (initBuf(ROOT_VER) == FAIL) 	//создать буфер с нулевой версией
 	{
-		printf("ERROR: Unable to create init version of file because of invalid buffer initialization.\n");
+		printf("ERROR: invalid buffer initialization.\n");
 		return FAIL;
 	}
 	generalInfo->root = buf;
 	if (initTextAsOpearationInRootVer() == FAIL)
 	{
-		printf("ERROR: Unable to create init version of file because of invalid operation building.\n");
+		printf("ERROR: invalid operation building.\n");
 		return FAIL;
 	}
 	if (push() == FAIL) //записать версию в файл (push), последн€€ созданна€ верси€ - 0
 	{
-		printf("ERROR: Unsuccessful attempt to push init version.\n");
+		printf("ERROR: unsuccessful attempt to push init version.\n");
 		return FAIL;
 	} 
 	return SUCCESS;
@@ -44,6 +44,7 @@ func_res_t getSourceText(char** text)
 	FILE* source = fopen(generalInfo->name, "r");
 	if (!source)
 	{
+		fclose(source);
 		printf("ERROR: Unable to open source file.\n");
 		return FAIL;
 	}
@@ -51,12 +52,14 @@ func_res_t getSourceText(char** text)
 	*text = (char*)calloc(fileSize, sizeof(char));
 	if (!(*text))
 	{
+		fclose(source);
 		printf("ERROR: Memory allocation error.\n");
 		return FAIL;
 	}
 	char* temp = (char*)calloc(fileSize, sizeof(char));
 	if (!temp)
 	{
+		fclose(source);
 		printf("ERROR: Memory allocation error.\n");
 		return FAIL;
 	}
@@ -74,12 +77,13 @@ func_res_t buildVerTree()
 {
 	if (!exists(getNameOfVerFile(ROOT_VER)))
 	{
-		initVerTree();
+		if (initVerTree() == FAIL)
+		{
+			printf("ERROR: Unable to create init version of file.\n");
+			return FAIL;
+		}
 	}
-	else
-	{
-		//TODO: load existing tree
-	}
+	//TODO: load existing tree
 }
 
 version_t* getVerPtr(version_t* p, int verNum)
@@ -101,7 +105,25 @@ version_t* getVerPtr(version_t* p, int verNum)
 
 func_res_t push()
 {
-	//сохранить буфер как ребЄнка потенциального родител€
-	//увеличить номер последней сохранЄнной версии
-	//очистить и создать новый буфер
+	if (buf->parentPtr) //сохранить буфер как ребЄнка потенциального родител€
+	{
+		(buf->parentPtr->childNum)++;
+		buf->parentPtr->child[buf->parentPtr->childNum - 1] = buf; 
+	}
+	generalInfo->lastCreatedVersion = buf->verNum; //увеличить номер последней сохранЄнной версии
+	if (updateFilesAttachedToBuf() == FAIL)
+	{
+		printf("ERROR: unable to update version files after pushing new version.\n");
+		return FAIL;
+	}
+	if (initBuf(generalInfo->lastCreatedVersion) == FAIL) //очистить и создать новый буфер
+	{
+		printf("ERROR: unable to create new buffer.\n");
+		return FAIL;
+	}
+}
+
+func_res_t updateFilesAttachedToBuf()
+{
+	return SUCCESS;
 }

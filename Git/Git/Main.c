@@ -26,11 +26,6 @@ int main(void)
 		printf("ERROR: unable to get general info about tree of versions.\n");
 		goto End;
 	}
-	if (initBuf(version) == FAIL)
-	{
-		printf("ERROR: memory allocation problem.\n");
-		goto End;
-	};
 	//handleMainCycle(); //запуск основного цикла
 End:
 	cleanup();

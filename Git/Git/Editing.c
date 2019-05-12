@@ -19,6 +19,7 @@ func_res_t add(int i, char* data)
 	opBuf->beginIndex = i;
 	opBuf->endIndex = INVALID_INDEX;
 	opBuf->data = data;
+	opBuf->next = NULL;
 
 	//добавить операцию в линейный список буфера
 	pushIntoOpList(&(buf->operation), opBuf);

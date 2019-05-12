@@ -2,8 +2,8 @@
 
 func_res_t initBuf(int version)
 {
-	if (buf) deleteBuf();
-	buf = (version_t*)malloc(sizeof(buf));
+	if (buf) buf = NULL;
+	buf = (version_t*)malloc(sizeof(version_t));
 	if (!buf)
 	{
 		printf("ERROR: memory allocation problem.\n");
@@ -15,8 +15,7 @@ func_res_t initBuf(int version)
 		buf->parentPtr = getVerPtr(generalInfo->root, version); //TODO: ÏÐÎÒÅÑÒÈÐÎÂÀÒÜ
 		if (!(buf->parentPtr))
 		{
-			free(buf);
-			buf = NULL;
+			deleteBuf();
 			printf("ERROR: Attempt to use invalid version as parent.\n");
 			return FAIL;
 		}
@@ -30,5 +29,10 @@ func_res_t initBuf(int version)
 
 void deleteBuf()
 {
-	//TODO: î÷èñòêà áóôåðà
+	if (buf)
+	{
+		if (buf->operation) deleteOperationList(&(buf->operation));
+		free(buf);
+		buf = NULL;
+	}
 }

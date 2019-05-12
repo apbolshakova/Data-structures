@@ -28,6 +28,25 @@ func_res_t initGeneralInfo(char fname[FNAME_LEN])
 	return SUCCESS;
 }
 
+void deleteGeneralInfo()
+{
+	if (generalInfo)
+	{
+		if (generalInfo->name)
+		{
+			free(generalInfo->name);
+			generalInfo->name = NULL;
+		}
+		if (generalInfo->root)
+		{
+			deleteVerTree();
+			generalInfo->root = NULL;
+		}
+		free(generalInfo);
+		generalInfo = NULL;
+	}
+}
+
 //TODO: maybe delete
 /*func_res_t handleFile(char fname[FNAME_LEN], int version, version_t* verInfo)
 {

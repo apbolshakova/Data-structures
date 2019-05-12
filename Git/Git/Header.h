@@ -21,7 +21,8 @@ int getTextLen(); //получить длину текста на текущей итерации
 int getLenDiff(operation_t* operation); //получить изменение длины текста после применения операций из массива operation
 
 /*GeneralInfo.c*/
-func_res_t initGeneralInfo(char fname[FNAME_LEN]);
+func_res_t initGeneralInfo(char fname[FNAME_LEN]); //парсит главную информацию, дерево, создаёт буфер
+void deleteGeneralInfo();
 
 /*Misc.c*/
 char* getNameOfVerFile(int version);

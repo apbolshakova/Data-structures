@@ -34,27 +34,8 @@ bool_t exists(const char *fname)
 
 void cleanup()
 {
-	if (generalInfo)
-	{
-		if (generalInfo->name)
-		{
-			free(generalInfo->name);
-			generalInfo->name = NULL;
-		}
-		if (generalInfo->root)
-		{
-			deleteVerTree();
-			generalInfo->root = NULL;
-		}
-		free(generalInfo);
-		generalInfo = NULL;
-	}
-	if (buf)
-	{
-		if (buf->operation) deleteOperationList(&(buf->operation));
-		free(buf);
-		buf = NULL;
-	}
+	deleteGeneralInfo();
+	deleteBuf();
 }
 
 const char* getFileExt(const char* filename) 
