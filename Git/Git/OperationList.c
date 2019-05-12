@@ -12,7 +12,8 @@ void deleteOperationList(operation_t** root)
 	}
 }
 
-func_result_t pushIntoOpList(operation_t* opBuf)
+func_res_t pushIntoOpList(operation_t** root, operation_t* operation)
 {
-	//TODO
+	//добавить новый элемент 
+	return SUCCESS;
 }

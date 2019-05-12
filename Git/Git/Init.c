@@ -1,6 +1,6 @@
 #include "Header.h"
 
-func_result_t initGeneralInfo(char fname[FNAME_LEN])
+func_res_t initGeneralInfo(char fname[FNAME_LEN])
 {
 	generalInfo = (general_t*)malloc(sizeof(general_t));
 	if (!generalInfo)
@@ -18,7 +18,8 @@ func_result_t initGeneralInfo(char fname[FNAME_LEN])
 	}
 	strncpy(generalInfo->name, fname, nameLen);
 	generalInfo->name[nameLen] = '\0';
-	
+	generalInfo->root = NULL;
+
 	if (buildVerTree() == FAIL)
 	{
 		printf("ERROR: unable to correctly build tree of versions.\n");
@@ -27,7 +28,7 @@ func_result_t initGeneralInfo(char fname[FNAME_LEN])
 	return SUCCESS;
 }
 
-func_result_t initBuf(int version)
+func_res_t initBuf(int version)
 {
 	buf = (version_t*)malloc(sizeof(buf));
 	if (!buf)
@@ -35,13 +36,17 @@ func_result_t initBuf(int version)
 		printf("ERROR: memory allocation problem.\n");
 		return FAIL;
 	}
-	buf->parentPtr = getVerPtr(generalInfo->root, version); //TODO: ÏÐÎÒÅÑÒÈÐÎÂÀÒÜ
-	if (!(buf->parentPtr))
+	buf->parentPtr = NULL;
+	if (generalInfo->root) //äåðåâî óæå ñóùåñòâóåò
 	{
-		free(buf);
-		buf = NULL;
-		printf("ERROR: Attempt to use invalid version as parent.\n");
-		return FAIL;
+		buf->parentPtr = getVerPtr(generalInfo->root, version); //TODO: ÏÐÎÒÅÑÒÈÐÎÂÀÒÜ
+		if (!(buf->parentPtr))
+		{
+			free(buf);
+			buf = NULL;
+			printf("ERROR: Attempt to use invalid version as parent.\n");
+			return FAIL;
+		}
 	}
 	buf->verNum = generalInfo->lastCreatedVersion + 1;
 	buf->childNum = 0;
@@ -51,7 +56,7 @@ func_result_t initBuf(int version)
 }
 
 //TODO: maybe delete
-/*func_result_t handleFile(char fname[FNAME_LEN], int version, version_t* verInfo)
+/*func_res_t handleFile(char fname[FNAME_LEN], int version, version_t* verInfo)
 {
 	char* fileName = (char*)malloc((FNAME_LEN + VERSION_CHARS_NUM) * sizeof(char));
 	strncpy(fileName, fname, strlen(fname));
@@ -63,7 +68,7 @@ func_result_t initBuf(int version)
 	return SUCCESS;
 }
 
-func_result_t loadVersion(version_t* verInfo, FILE* verFile) 
+func_res_t loadVersion(version_t* verInfo, FILE* verFile) 
 {
 	fscanf(verFile, "%i", &(verInfo->parentVer));
 	verInfo->operation = (operation_t*)malloc(sizeof(operation_t));

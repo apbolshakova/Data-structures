@@ -11,14 +11,14 @@ extern version_t* buf;
 extern version_t* verTree;
 
 /*Editing.c*/
-func_result_t add(int i, char* data);
+func_res_t add(int i, char* data);
 bool_t indexIsCorrect(int i); //проверить индекс на корректность
 int getTextLen(); //получить длину текста на текущей итерации
 int getLenDiff(operation_t* operation); //получить изменение длины текста после применения операций из массива operation
 
 /*Init.c*/
-func_result_t initGeneralInfo(char fname[FNAME_LEN]);
-func_result_t initBuf(int version);
+func_res_t initGeneralInfo(char fname[FNAME_LEN]);
+func_res_t initBuf(int version);
 
 /*Misc.c*/
 char* getNameOfVerFile(int version);
@@ -30,12 +30,12 @@ long int getFileSize(FILE *f);
 
 /*OperationList.c*/
 void deleteOperationList(operation_t** root);
-func_result_t pushIntoOpList(operation_t* opBuf);
+func_res_t pushIntoOpList(operation_t** root, operation_t* operation);
 
 /*VersionsTree.c*/
-func_result_t initVerTree();
-func_result_t initTextAsOpearationInRootVer();
-func_result_t getSourceText(char** text);
+func_res_t initVerTree();
+func_res_t initTextAsOpearationInRootVer();
+func_res_t getSourceText(char** text);
 void deleteVerTree();
-func_result_t buildVerTree(); //получить generalInfo->root, lastCreatedVersion и curText
+func_res_t buildVerTree(); //получить generalInfo->root, lastCreatedVersion и curText
 version_t* getVerPtr(version_t* p, int verNum); //обойти дерево, найти вершину и вернуть либо указатель на неё, либо NULL

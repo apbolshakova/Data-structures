@@ -1,6 +1,6 @@
 #include "Header.h"
 
-func_result_t initVerTree()
+func_res_t initVerTree()
 {
 	generalInfo->lastCreatedVersion = INIT_VERSION;
 	if (initBuf(ROOT_VER) == FAIL) 	//создать буфер с нулевой версией
@@ -19,7 +19,7 @@ func_result_t initVerTree()
 	//успех
 }
 
-func_result_t initTextAsOpearationInRootVer()
+func_res_t initTextAsOpearationInRootVer()
 {
 	//открыть файл generalInfo->fileName и получить из него текст
 	char* text = NULL;
@@ -37,7 +37,7 @@ func_result_t initTextAsOpearationInRootVer()
 	
 }
 
-func_result_t getSourceText(char** text)
+func_res_t getSourceText(char** text)
 {
 	FILE* source = fopen(generalInfo->name, "r");
 	if (!source)
@@ -67,7 +67,7 @@ void deleteVerTree()
 	//TODO
 }
 
-func_result_t buildVerTree() 
+func_res_t buildVerTree() 
 {
 	if (!exists(getNameOfVerFile(ROOT_VER)))
 	{
@@ -81,6 +81,8 @@ func_result_t buildVerTree()
 
 version_t* getVerPtr(version_t* p, int verNum)
 {
+	if (!p) return NULL;
+
 	version_t* result = p;
 	if (result->verNum == verNum) return p;
 	else

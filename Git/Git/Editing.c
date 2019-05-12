@@ -1,6 +1,6 @@
 #include "Header.h"
 
-func_result_t add(int i, char* data)
+func_res_t add(int i, char* data)
 {
 	if (!indexIsCorrect(i)) 
 	{
@@ -21,7 +21,7 @@ func_result_t add(int i, char* data)
 	opBuf->data = data;
 
 	//добавить операцию в линейный список буфера
-	if (!pushIntoOpList(opBuf) == FAIL)
+	if (!pushIntoOpList(buf->operation, opBuf) == FAIL)
 	{
 		printf("ERROR: Unable to push into operation list.\n");
 		return FAIL;
@@ -48,7 +48,7 @@ int getTextLen()
 	}
 	while (ver)
 	{
-		result += getLenDiffFromVer(ver->operation); //просуммировать длины операций из этой версии
+		result += getLenDiff(ver->operation); //просуммировать длины операций из этой версии
 		ver = ver->parentPtr; //новая текущая версия - родитель текущей
 	}
 	return result;

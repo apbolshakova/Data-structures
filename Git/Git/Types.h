@@ -1,7 +1,7 @@
 #ifndef TYPES
 #define TYPES
 
-typedef enum FuncResult_ { FAIL, SUCCESS } func_result_t;
+typedef enum FuncResult_ { FAIL, SUCCESS } func_res_t;
 typedef enum Bool_ { FALSE, TRUE } bool_t;
 
 typedef struct Operation_ //операция над текстом
@@ -16,8 +16,8 @@ typedef struct Operation_ //операция над текстом
 typedef struct Version_ //версия
 {
 	int verNum;
-	bool_t isDeleted; //версия удалена, если её родитель NOT_DEFINED_PARENT, флаг для удобства
-	struct Version_* parentPtr;
+	//bool_t isDeleted; TODO: maybe delete and add function that returns TRUE if ver is deleted
+	struct Version_* parentPtr; //версия удалена, если её родитель NOT_DEFINED_PARENT
 	int childNum;
 	struct Version_** child;
 	operation_t* operation; //линейный список изменений в этой версии
