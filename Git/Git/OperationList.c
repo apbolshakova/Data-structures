@@ -12,8 +12,17 @@ void deleteOperationList(operation_t** root)
 	}
 }
 
-func_res_t pushIntoOpList(operation_t** root, operation_t* operation)
+void pushIntoOpList(operation_t** root, operation_t* operation)
 {
-	//добавить новый элемент 
+	operation_t* last = getLastOperation(root); 
+	if (!last) *root = operation;
+	else last->next = operation;
 	return SUCCESS;
+}
+
+operation_t* getLastOperation(operation_t** root)
+{
+	operation_t* result = *root;
+	if (result) while (result->next) result = result->next;
+	return result;
 }

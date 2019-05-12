@@ -29,7 +29,7 @@ func_res_t initTextAsOpearationInRootVer()
 		return FAIL;
 	}
 	//положить в операции буфера команду add текста из файла
-	if (add(BEGIN_POS, text) == FAIL)
+	if (add(0, text) == FAIL)
 	{
 		printf("ERROR: Unable to create an operation entry.\n");
 		return FAIL;
@@ -59,6 +59,7 @@ func_res_t getSourceText(char** text)
 		return FAIL;
 	}
 	while (fgets(temp, fileSize, source) != NULL) strcat(*text, temp);
+	fclose(source);
 	return SUCCESS;
 }
 

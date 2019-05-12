@@ -21,11 +21,7 @@ func_res_t add(int i, char* data)
 	opBuf->data = data;
 
 	//добавить операцию в линейный список буфера
-	if (!pushIntoOpList(buf->operation, opBuf) == FAIL)
-	{
-		printf("ERROR: Unable to push into operation list.\n");
-		return FAIL;
-	}
+	pushIntoOpList(&(buf->operation), opBuf);
 	return SUCCESS;
 }
 

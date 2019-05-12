@@ -30,7 +30,8 @@ long int getFileSize(FILE *f);
 
 /*OperationList.c*/
 void deleteOperationList(operation_t** root);
-func_res_t pushIntoOpList(operation_t** root, operation_t* operation);
+void pushIntoOpList(operation_t** root, operation_t* operation);
+operation_t* getLastOperation(operation_t** root);
 
 /*VersionsTree.c*/
 func_res_t initVerTree();
