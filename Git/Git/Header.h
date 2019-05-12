@@ -25,6 +25,10 @@ int getLenDiff(operation_t* operation); //получить изменение длины текста после 
 func_res_t initGeneralInfo(char fname[FNAME_LEN]); //парсит главную информацию, дерево, создаёт буфер
 void deleteGeneralInfo();
 
+/*Main.c*/
+void handleMainCycle();
+void printMainMenu();
+
 /*Misc.c*/
 char* getNameOfVerFile(int version);
 void strcatInt(char fileName[FNAME_LEN], int version);
