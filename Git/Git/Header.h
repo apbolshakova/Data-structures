@@ -18,15 +18,13 @@ func_res_t createVerFile(); //формирует из буфера новый файл
 /*Editing.c*/
 func_res_t add(int i, char* data);
 bool_t indexIsCorrect(int i); //проверить индекс на корректность
-int getTextLen(); //получить длину текста на текущей итерации
-int getLenDiff(operation_t* operation); //получить изменение длины текста после применения операций из массива operation
 
 /*GeneralInfo.c*/
 func_res_t initGeneralInfo(char fname[FNAME_LEN]); //парсит главную информацию, дерево, создаёт буфер
 void deleteGeneralInfo();
 
 /*Main.c*/
-void handleMainCycle();
+void handleMainCycle(); //запуск основного цикла
 void printMainMenu();
 
 /*Misc.c*/
@@ -36,6 +34,9 @@ bool_t exists(const char *fname);
 void cleanup();
 const char* getFileExt(const char* filename);
 long int getFileSize(FILE *f);
+int getTextLen(); //получить длину текста на текущей итерации
+int getLenDiff(operation_t* operation); //получить изменение длины текста после применения операций из массива operation
+func_res_t print(); //выводит текст на текущей итерации
 
 /*OperationList.c*/
 void deleteOperationList(operation_t** root);

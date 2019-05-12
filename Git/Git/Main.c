@@ -29,10 +29,9 @@ int main(void)
 		printf("ERROR: unable to get general info about tree of versions.\n");
 		goto End;
 	}
-	handleMainCycle(); //запуск основного цикла
+	handleMainCycle();
 End:
 	cleanup();
-	_getch();
 	return 0;
 }
 
@@ -43,7 +42,9 @@ void handleMainCycle()
 		system("cls");
 		printMainMenu();
 		scanf("%s", action);
-		if (isAction(action)) handleAction(action);
+		if (handleAction(action) == FAIL) printf("\nAction wasn't completed.\n");
+		printf("Press any button to continue.\n");
+		_getch();
 	} while (!strcmp(action, CLOSE));
 }
 
@@ -64,4 +65,43 @@ void printMainMenu()
 	printf("- pull\n");
 	printf("- delete_version\n");
 	printf("- rebase\n");
+}
+
+func_res_t handleAction(char action[ACTION_LEN])
+{
+	if (strcmp(action, PRINT) && print() != FAIL) return SUCCESS;
+	if (strcmp(action, EDIT))
+	{
+
+	}
+	if (strcmp(action, ADD))
+	{
+
+	}
+	if (strcmp(action, REMOVE))
+	{
+
+	}
+	if (strcmp(action, MERGE))
+	{
+
+	}
+	if (strcmp(action, PUSH))
+	{
+
+	}
+	if (strcmp(action, PULL))
+	{
+
+	}
+	if (strcmp(action, DELETE_VERSION))
+	{
+
+	}
+	if (strcmp(action, REBASE))
+	{
+
+	}
+	printf("ERROR: Invalid action.\n");
+	return FAIL;
 }

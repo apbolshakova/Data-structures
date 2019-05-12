@@ -32,34 +32,3 @@ bool_t indexIsCorrect(int i)
 	if (i > textLen) return FALSE;
 	return TRUE;
 }
-
-int getTextLen()
-{ 
-	int result = 0;
-	version_t* ver = generalInfo->root;
-
-	if (buf)
-	{
-		result += getLenDiff(buf->operation);
-		ver = buf->parentPtr;
-	}
-	while (ver)
-	{
-		result += getLenDiff(ver->operation); //просуммировать длины операций из этой версии
-		ver = ver->parentPtr; //новая текущая версия - родитель текущей
-	}
-	return result;
-}
-
-int getLenDiff(operation_t* list)
-{
-	int result = 0;
-	operation_t* op = list;
-	while (op)
-	{
-		if (op->type == '+') result += strlen(op->data);
-		if (op->type == '-') result -= op->endIndex + op->beginIndex;
-		op = op->next;
-	}
-	return result;
-}
