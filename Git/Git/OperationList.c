@@ -17,7 +17,6 @@ void pushIntoOpList(operation_t** root, operation_t* operation)
 	operation_t* last = getLastOperation(root); 
 	if (!last) *root = operation;
 	else last->next = operation;
-	return SUCCESS;
 }
 
 operation_t* getLastOperation(operation_t** root)

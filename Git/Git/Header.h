@@ -10,15 +10,18 @@ extern general_t* generalInfo;
 extern version_t* buf;
 extern version_t* verTree;
 
+/*Buf.c*/
+func_res_t initBuf(int version); //создаёт буфер с потенциальным родителем version, если буфер был - стирается
+void deleteBuf();
+
 /*Editing.c*/
 func_res_t add(int i, char* data);
 bool_t indexIsCorrect(int i); //проверить индекс на корректность
 int getTextLen(); //получить длину текста на текущей итерации
 int getLenDiff(operation_t* operation); //получить изменение длины текста после применения операций из массива operation
 
-/*Init.c*/
+/*GeneralInfo.c*/
 func_res_t initGeneralInfo(char fname[FNAME_LEN]);
-func_res_t initBuf(int version);
 
 /*Misc.c*/
 char* getNameOfVerFile(int version);
@@ -38,5 +41,5 @@ func_res_t initVerTree();
 func_res_t initTextAsOpearationInRootVer();
 func_res_t getSourceText(char** text);
 void deleteVerTree();
-func_res_t buildVerTree(); //получить generalInfo->root, lastCreatedVersion и curText
+func_res_t buildVerTree(); //получить generalInfo->root, lastCreatedVersion
 version_t* getVerPtr(version_t* p, int verNum); //обойти дерево, найти вершину и вернуть либо указатель на неё, либо NULL

@@ -18,9 +18,6 @@
     <ClCompile Include="Main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Init.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="VersionsTree.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -31,6 +28,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Editing.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Buf.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneralInfo.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

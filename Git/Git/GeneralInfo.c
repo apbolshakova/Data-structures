@@ -28,33 +28,6 @@ func_res_t initGeneralInfo(char fname[FNAME_LEN])
 	return SUCCESS;
 }
 
-func_res_t initBuf(int version)
-{
-	buf = (version_t*)malloc(sizeof(buf));
-	if (!buf)
-	{
-		printf("ERROR: memory allocation problem.\n");
-		return FAIL;
-	}
-	buf->parentPtr = NULL;
-	if (generalInfo->root) //äåðåâî óæå ñóùåñòâóåò
-	{
-		buf->parentPtr = getVerPtr(generalInfo->root, version); //TODO: ÏÐÎÒÅÑÒÈÐÎÂÀÒÜ
-		if (!(buf->parentPtr))
-		{
-			free(buf);
-			buf = NULL;
-			printf("ERROR: Attempt to use invalid version as parent.\n");
-			return FAIL;
-		}
-	}
-	buf->verNum = generalInfo->lastCreatedVersion + 1;
-	buf->childNum = 0;
-	buf->child = NULL;
-	buf->operation = NULL;
-	return SUCCESS;
-}
-
 //TODO: maybe delete
 /*func_res_t handleFile(char fname[FNAME_LEN], int version, version_t* verInfo)
 {

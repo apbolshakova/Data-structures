@@ -14,9 +14,12 @@ func_res_t initVerTree()
 		printf("ERROR: Unable to create init version of file because of invalid operation building.\n");
 		return FAIL;
 	}
-	//записать версию в файл (push)
-	//последн€€ созданна€ верси€ - 0
-	//успех
+	if (push() == FAIL) //записать версию в файл (push), последн€€ созданна€ верси€ - 0
+	{
+		printf("ERROR: Unsuccessful attempt to push init version.\n");
+		return FAIL;
+	} 
+	return SUCCESS;
 }
 
 func_res_t initTextAsOpearationInRootVer()
@@ -34,7 +37,6 @@ func_res_t initTextAsOpearationInRootVer()
 		printf("ERROR: Unable to create an operation entry.\n");
 		return FAIL;
 	}
-	
 }
 
 func_res_t getSourceText(char** text)
@@ -76,7 +78,7 @@ func_res_t buildVerTree()
 	}
 	else
 	{
-		//load existing tree
+		//TODO: load existing tree
 	}
 }
 
@@ -95,4 +97,11 @@ version_t* getVerPtr(version_t* p, int verNum)
 		}
 	}
 	return result;
+}
+
+func_res_t push()
+{
+	//сохранить буфер как ребЄнка потенциального родител€
+	//увеличить номер последней сохранЄнной версии
+	//очистить и создать новый буфер
 }
