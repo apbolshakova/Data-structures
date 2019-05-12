@@ -2,10 +2,11 @@
 
 char* getNameOfVerFile(int version)
 {
-	char fileName[FNAME_LEN] = { 0 };
-	strcpy(fileName, generalInfo->name);
-	strcat(fileName, ".");
+	char* fileName = (char*)calloc(FNAME_LEN, sizeof(char));
+	strncpy(fileName, generalInfo->name, 
+		strlen(generalInfo->name) - strlen(getFileExt(generalInfo->name)));
 	strcatInt(fileName, version);
+	strcat(fileName, ".%s", TEXT_EXT);
 	return fileName;
 }
 

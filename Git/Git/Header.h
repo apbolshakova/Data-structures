@@ -13,6 +13,7 @@ extern version_t* verTree;
 /*Buf.c*/
 func_res_t initBuf(int version); //создаёт буфер с потенциальным родителем version, если буфер был - стирается
 void deleteBuf();
+func_res_t createVerFile(); //формирует из буфера новый файл
 
 /*Editing.c*/
 func_res_t add(int i, char* data);
@@ -36,6 +37,7 @@ long int getFileSize(FILE *f);
 void deleteOperationList(operation_t** root);
 void pushIntoOpList(operation_t** root, operation_t* operation);
 operation_t* getLastOperation(operation_t** root);
+func_res_t printOperations(FILE* file);
 
 /*VersionsTree.c*/
 func_res_t initVerTree();
@@ -44,3 +46,4 @@ func_res_t getSourceText(char** text);
 void deleteVerTree();
 func_res_t buildVerTree(); //получить generalInfo->root, lastCreatedVersion
 version_t* getVerPtr(version_t* p, int verNum); //обойти дерево, найти вершину и вернуть либо указатель на неё, либо NULL
+func_res_t push();

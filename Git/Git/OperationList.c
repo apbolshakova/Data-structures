@@ -25,3 +25,16 @@ operation_t* getLastOperation(operation_t** root)
 	if (result) while (result->next) result = result->next;
 	return result;
 }
+
+func_res_t printOperations(FILE* file)
+{
+	operation_t* op = buf->operation;
+	while (op)
+	{
+		if (op->type == '+') fprintf(file, "+ %i %s\n", op->beginIndex, op->data);
+		else if (op->type == '-') fprintf(file, "- %i %i\n", op->beginIndex, op->endIndex);
+		else return FAIL;
+		op = op->next;
+	}
+	return SUCCESS;
+}

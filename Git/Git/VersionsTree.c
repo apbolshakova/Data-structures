@@ -75,15 +75,23 @@ void deleteVerTree()
 
 func_res_t buildVerTree() 
 {
-	if (!exists(getNameOfVerFile(ROOT_VER)))
+	char* fileName = getNameOfVerFile(ROOT_VER);
+	if (!exists(fileName))
 	{
+		free(fileName);
 		if (initVerTree() == FAIL)
 		{
+			
 			printf("ERROR: Unable to create init version of file.\n");
 			return FAIL;
 		}
 	}
-	//TODO: load existing tree
+	else
+	{
+		free(fileName);
+		//TODO: load existing tree
+	}
+	return SUCCESS;
 }
 
 version_t* getVerPtr(version_t* p, int verNum)
@@ -111,7 +119,7 @@ func_res_t push()
 		buf->parentPtr->child[buf->parentPtr->childNum - 1] = buf; 
 	}
 	generalInfo->lastCreatedVersion = buf->verNum; //увеличить номер последней сохранённой версии
-	if (updateFilesAttachedToBuf() == FAIL)
+	if (createVerFile() == FAIL)
 	{
 		printf("ERROR: unable to update version files after pushing new version.\n");
 		return FAIL;
@@ -121,9 +129,5 @@ func_res_t push()
 		printf("ERROR: unable to create new buffer.\n");
 		return FAIL;
 	}
-}
-
-func_res_t updateFilesAttachedToBuf()
-{
 	return SUCCESS;
 }

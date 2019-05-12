@@ -36,3 +36,24 @@ void deleteBuf()
 		buf = NULL;
 	}
 }
+
+func_res_t createVerFile()
+{
+	const char* fileName = getNameOfVerFile(buf->verNum);
+	FILE* file = fopen(fileName, "w");
+	free(fileName);
+	if (!file)
+	{
+		printf("ERROR: unable to create new version file.\n");
+		return FAIL;
+	}
+	if (buf->parentPtr) fprintf(file, "%i\n", buf->parentPtr->verNum);
+	else fprintf(file, "-1\n");
+	if (printOperations(file) == FAIL)
+	{
+		printf("ERROR: operations data is corrupted.\n");
+		return FAIL;
+	};
+	fclose(file);
+	return SUCCESS;
+}
