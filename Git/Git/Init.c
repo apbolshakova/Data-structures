@@ -35,7 +35,7 @@ func_result_t initBuf(int version)
 		printf("ERROR: memory allocation problem.\n");
 		return FAIL;
 	}
-	buf->parentPtr = getVerPtr(generalInfo->root, version); //TODO: äîáàâèòü îáðàáîòêó, åñëè âåðí¸òñÿ NULL
+	buf->parentPtr = getVerPtr(generalInfo->root, version); //TODO: ÏÐÎÒÅÑÒÈÐÎÂÀÒÜ
 	if (!(buf->parentPtr))
 	{
 		free(buf);

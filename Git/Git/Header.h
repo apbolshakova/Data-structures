@@ -14,6 +14,7 @@ extern version_t* verTree;
 func_result_t add(int i, char* data);
 bool_t indexIsCorrect(int i); //проверить индекс на корректность
 int getTextLen(); //получить длину текста на текущей итерации
+int getLenDiff(operation_t* operation); //получить изменение длины текста после применения операций из массива operation
 
 /*Init.c*/
 func_result_t initGeneralInfo(char fname[FNAME_LEN]);
@@ -37,4 +38,4 @@ func_result_t initTextAsOpearationInRootVer();
 func_result_t getSourceText(char** text);
 void deleteVerTree();
 func_result_t buildVerTree(); //получить generalInfo->root, lastCreatedVersion и curText
-version_t* getVerPtr(int verNum); //обойти дерево, найти вершину и вернуть либо указатель на неё, либо NULL
+version_t* getVerPtr(version_t* p, int verNum); //обойти дерево, найти вершину и вернуть либо указатель на неё, либо NULL

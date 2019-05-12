@@ -39,15 +39,30 @@ bool_t indexIsCorrect(int i)
 int getTextLen()
 { 
 	int result = 0;
-	//TODO: finish; учесть, что буфер тут может быть пустым (идти только по дереву)
-	/*result += getLenDiffFromVer(buf->operation); //текущая рассматриваемая функция - буфер
+	version_t* ver = generalInfo->root;
 
-	version_t* ver = getVerPtr(buf->parentVerNum);
-	while (verNum != NOT_DEFINED_PARENT) //пока элемент валидный
+	if (buf)
 	{
-		//просуммировать длины операций из этой версии
- 		//новая текущая версия - родитель текущей
-	}*/
-		
+		result += getLenDiff(buf->operation);
+		ver = buf->parentPtr;
+	}
+	while (ver)
+	{
+		result += getLenDiffFromVer(ver->operation); //просуммировать длины операций из этой версии
+		ver = ver->parentPtr; //новая текущая версия - родитель текущей
+	}
+	return result;
+}
+
+int getLenDiff(operation_t* list)
+{
+	int result = 0;
+	operation_t* op = list;
+	while (op)
+	{
+		if (op->type == '+') result += strlen(op->data);
+		if (op->type == '-') result -= op->endIndex + op->beginIndex;
+		op = op->next;
+	}
 	return result;
 }
