@@ -34,8 +34,8 @@ int getLenDiff(operation_t* list)
 func_res_t print()
 {
 	int textLen = getTextLen();
-	char* text = (char*)malloc(sizeof(char) * textLen + 1);
-	if (getCurText(text) == FAIL)
+	char* text = (char*)calloc(textLen + 1, sizeof(char));
+	if (getCurText(text, textLen) == FAIL)
 	{
 		free(text);
 		printf("ERROR: unable to print text.\n");
@@ -46,7 +46,7 @@ func_res_t print()
 	return SUCCESS;
 }
 
-func_res_t getCurText(char* text)
+func_res_t getCurText(char* text, int textLen)
 {
 	path_t* pathToBuf = NULL;
 	if (getPath(&pathToBuf) == FAIL)
@@ -54,7 +54,7 @@ func_res_t getCurText(char* text)
 		printf("ERROR: unable to get path to buffer.\n");
 		return FAIL;
 	}
-	if (applyChanges(text, pathToBuf) == FAIL)
+	if (applyChanges(text, textLen, pathToBuf) == FAIL)
 	{
 		printf("ERROR: unable to apply all operations that were made.\n");
 		return FAIL;
@@ -63,29 +63,73 @@ func_res_t getCurText(char* text)
 	return SUCCESS;
 }
 
-func_res_t applyChanges(char* text, path_t* el)
+func_res_t applyChanges(char* text, int textLen, path_t* el)
 {
 	while (el)
 	{
-		if (applyVerChanges(text, el->ver->operation) == FAIL) return FAIL;
+		if (applyVerChanges(text, textLen, el->ver->operation) == FAIL) return FAIL;
 		el = el->next;
 	}
 	return SUCCESS;
 }
 
-func_res_t applyVerChanges(char* text, operation_t* opEl)
+func_res_t applyVerChanges(char* text, int textLen, operation_t* opEl)
 {
 	while (opEl)
 	{
-		     if (opEl->type == '+') addToText(text, opEl);
-		else if (opEl->type == '-') removeFromText(text, opEl);
-		else
+		if ((opEl->type == '+' && addToText(text, textLen, opEl) == FAIL))
+		{
+			printf("ERROR: invalid operation found.\n");
+			return FALSE;
+		}
+		if (opEl->type == '-' && removeFromText(text, textLen, opEl) == FAIL)
 		{
 			printf("ERROR: invalid operation found.\n");
 			return FALSE;
 		}
 		opEl = opEl->next;
 	}
+	return SUCCESS;
+}
+
+func_res_t addToText(char* text, int textLen, operation_t* opEl)
+{
+	if (!opEl || opEl->type != '+')
+	{
+		printf("ERROR: invalid operation.\n");
+		return FAIL;
+	}
+	char* temp = (char*)calloc(textLen + 1, sizeof(char));
+	if (!temp)
+	{
+		printf("ERROR: memory allocation error.\n");
+		return FAIL;
+	}
+
+	strcpy(temp, text + opEl->beginIndex);
+	strcpy(text + opEl->beginIndex, opEl->data);
+	strcpy(text + opEl->beginIndex + strlen(opEl->data), temp);
+	free(temp);
+	return SUCCESS;
+}
+
+func_res_t removeFromText(char* text, int textLen, operation_t* opEl) //TODO: протестировать
+{
+	if (!opEl || opEl->type != '-')
+	{
+		printf("ERROR: invalid operation.\n");
+		return FAIL;
+	}
+	char* temp = (char*)calloc(textLen + 1, sizeof(char));
+	if (!temp)
+	{
+		printf("ERROR: memory allocation error.\n");
+		return FAIL;
+	}
+	strcpy(temp, text[opEl->beginIndex + opEl->endIndex]); 
+	strcpy(text[opEl->beginIndex], temp);
+	text[opEl->beginIndex + opEl->endIndex + 1] = '\0';
+	free(temp);
 	return SUCCESS;
 }
 
@@ -96,4 +140,5 @@ void printText(char* text)
 		printf("%c", *text);
 		text++;
 	}
+	printf("\n");
 }

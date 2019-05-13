@@ -45,7 +45,7 @@ void handleMainCycle()
 		if (handleAction(action) == FAIL) printf("\nAction wasn't completed.\n");
 		printf("Press any button to continue.\n");
 		_getch();
-	} while (!strcmp(action, CLOSE));
+	} while (strcmp(action, CLOSE));
 }
 
 void printMainMenu()
@@ -69,6 +69,7 @@ void printMainMenu()
 
 func_res_t handleAction(char action[ACTION_LEN])
 {
+	system("cls");
 	if (!strcmp(action, PRINT) && print() != FAIL) return SUCCESS;
 	if (strcmp(action, EDIT))
 	{

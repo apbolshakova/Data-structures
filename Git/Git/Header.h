@@ -52,6 +52,7 @@ func_res_t print(); //выводит текст на текущей итерации
 func_res_t getCurText(char* text);
 func_res_t applyChanges(char* text, path_t* el);
 func_res_t applyVerChanges(char* text, operation_t* opList); //пройти по пути и собрать операции, применяя их к text
+void printText(char* text);
 
 /*VersionsTree.c*/
 func_res_t initVerTree();
