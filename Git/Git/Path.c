@@ -2,7 +2,6 @@
 
 func_res_t getPath(path_t** path)
 {
-	*path = NULL;
 	version_t* ver = generalInfo->root;
 
 	if (buf)
@@ -26,7 +25,7 @@ func_res_t getPath(path_t** path)
 	return SUCCESS;
 }
 
-func_res_t pushVerIntoPath(path_t** root, int verNum)
+func_res_t pushIntoPath(path_t** root, int verNum)
 {
 	path_t* newEl = (path_t*)malloc(sizeof(path_t));
 	if (!newEl)
@@ -35,8 +34,8 @@ func_res_t pushVerIntoPath(path_t** root, int verNum)
 		return FAIL;
 	}
 	newEl->verNum = verNum;
-	if (!root) newEl->next = NULL;
+	if (!(*root)) newEl->next = NULL;
 	else newEl->next = *root;
-	root = &newEl;
+	*root = newEl;
 	return SUCCESS;
 }

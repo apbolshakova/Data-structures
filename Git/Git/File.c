@@ -6,7 +6,7 @@ char* getNameOfVerFile(int version)
 	strncpy(fileName, generalInfo->name, 
 		strlen(generalInfo->name) - strlen(getFileExt(generalInfo->name)));
 	strcatInt(fileName, version);
-	strcat(fileName, ".%s", TEXT_EXT);
+	strcat(fileName, ".txt");
 	return fileName;
 }
 

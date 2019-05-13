@@ -50,26 +50,26 @@ void handleMainCycle()
 
 void printMainMenu()
 {
-	printf("Enter required action:\n\n");
-	printf("Basic:\n");
+	printf("Enter required action:\n");
+	printf("\nBasic:\n");
 	printf("- print\n");
 
-	printf("Editing:\n");
+	printf("\nEditing:\n");
 	printf("- edit\n");
 	printf("- add\n");
 	printf("- remove\n");
 	printf("- merge\n");
 
-	printf("Versions handling:\n");
+	printf("\nVersions handling:\n");
 	printf("- push\n");
 	printf("- pull\n");
 	printf("- delete_version\n");
-	printf("- rebase\n");
+	printf("- rebase\n\n");
 }
 
 func_res_t handleAction(char action[ACTION_LEN])
 {
-	if (strcmp(action, PRINT) && print() != FAIL) return SUCCESS;
+	if (!strcmp(action, PRINT) && print() != FAIL) return SUCCESS;
 	if (strcmp(action, EDIT))
 	{
 

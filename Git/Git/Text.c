@@ -41,7 +41,7 @@ func_res_t print()
 		printf("ERROR: unable to print text.\n");
 		return FAIL;
 	}
-	printText(text);
+	//printText(text); TODO
 	free(text);
 	return SUCCESS;
 }
@@ -49,12 +49,12 @@ func_res_t print()
 func_res_t getCurText(char* text)
 {
 	path_t* pathToBuf = NULL;
-	if (getPath(&pathToBuf) == FAIL) //TODO: протестировать
+	if (getPath(&pathToBuf) == FAIL)
 	{
 		printf("ERROR: unable to get text as it's look now.\n");
 		return FAIL;
 	}
-	applyOperationsToText(text); //пройти по пути и собрать операции, применяя их к text TODO
+	//applyOperationsToText(text); //пройти по пути и собрать операции, применяя их к text TODO
 
 	//TODO: not forget to clean pathToBuf
 	return SUCCESS;

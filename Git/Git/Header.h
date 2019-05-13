@@ -43,7 +43,7 @@ func_res_t printOperations(FILE* file);
 
 /*Path.c*/
 func_res_t getPath(path_t** path); //получить путь от корня до буфера
-func_res_t pushVerIntoPath(path_t** root, int verNum);
+func_res_t pushIntoPath(path_t** root, int verNum);
 
 /*Text.c*/
 int getTextLen(); //получить длину текста на текущей итерации
