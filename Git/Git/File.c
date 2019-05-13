@@ -12,13 +12,13 @@ char* getNameOfVerFile(int version)
 
 void strcatInt(char fileName[FNAME_LEN], int version)
 {
-	char* digitAsChar = "0";
-	if (!version) strcat(fileName, digitAsChar);
+	char digitAsChar = '0';
+	if (!version) strncat(fileName, &digitAsChar, 1);
 	while (version)
 	{
 		digitAsChar = (version % DEC_NUMBER_SYSTEM) + '0';
 		version /= DEC_NUMBER_SYSTEM;
-		strcat(fileName, digitAsChar);
+		strncat(fileName, &digitAsChar, 1);
 	}
 }
 

@@ -85,10 +85,7 @@ func_res_t handleAction(char action[ACTION_LEN])
 	{
 		//TODO
 	}
-	if (!strcmp(action, PUSH))
-	{
-		//TODO
-	}
+	if (!strcmp(action, PUSH) && push() != FAIL) return SUCCESS;
 	if (!strcmp(action, PULL))
 	{
 		//TODO

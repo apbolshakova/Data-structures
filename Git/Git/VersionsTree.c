@@ -116,6 +116,7 @@ func_res_t push()
 	if (buf->parentPtr) //сохранить буфер как ребёнка потенциального родителя
 	{
 		(buf->parentPtr->childNum)++;
+		buf->parentPtr->child = (version_t**)realloc(buf->parentPtr->child, buf->parentPtr->childNum * sizeof(version_t*));
 		buf->parentPtr->child[buf->parentPtr->childNum - 1] = buf; 
 	}
 	generalInfo->lastCreatedVersion = buf->verNum; //увеличить номер последней сохранённой версии
