@@ -77,10 +77,7 @@ func_res_t handleAction(char action[ACTION_LEN])
 		//TODO
 	}
 	if (!strcmp(action, ADD) && handleAdd() != FAIL) return SUCCESS;
-	if (!strcmp(action, REMOVE))
-	{
-		//TODO
-	}
+	if (!strcmp(action, REMOVE) && handleRemoving() != FAIL) return SUCCESS;
 	if (!strcmp(action, MERGE))
 	{
 		//TODO

@@ -25,7 +25,7 @@ int getLenDiff(operation_t* list)
 	while (op)
 	{
 		if (op->type == '+') result += strlen(op->data);
-		if (op->type == '-') result -= op->endIndex + op->beginIndex;
+		if (op->type == '-') result -= op->endIndex + op->beginIndex - 1;
 		op = op->next;
 	}
 	return result;
@@ -33,7 +33,7 @@ int getLenDiff(operation_t* list)
 
 func_res_t print()
 {
-	int textLen = getTextLen();
+	int textLen = getTextLen(); //also get maximum detected - that would be size of char* size
 	char* text = (char*)calloc(textLen + 1, sizeof(char));
 	if (getCurText(text, textLen) == FAIL)
 	{
@@ -105,7 +105,6 @@ func_res_t addToText(char* text, int textLen, operation_t* opEl)
 		printf("ERROR: memory allocation error.\n");
 		return FAIL;
 	}
-
 	strcpy(temp, text + opEl->beginIndex);
 	strcpy(text + opEl->beginIndex, opEl->data);
 	strcpy(text + opEl->beginIndex + strlen(opEl->data), temp);
@@ -126,9 +125,8 @@ func_res_t removeFromText(char* text, int textLen, operation_t* opEl) //TODO: пр
 		printf("ERROR: memory allocation error.\n");
 		return FAIL;
 	}
-	strcpy(temp, text[opEl->beginIndex + opEl->endIndex]); 
-	strcpy(text[opEl->beginIndex], temp);
-	text[opEl->beginIndex + opEl->endIndex + 1] = '\0';
+	strcpy(temp, text + opEl->endIndex); 
+	strcpy(text + opEl->beginIndex, temp);
 	free(temp);
 	return SUCCESS;
 }

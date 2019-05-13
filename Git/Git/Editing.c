@@ -60,6 +60,53 @@ func_res_t add(int i, char* data)
 	return SUCCESS;
 }
 
+func_res_t handleRemoving()
+{
+	int i = 0;
+	printf("Enter starting index or any negative number to cancel (no number -> index = 0): ");
+	scanf("%i", &i);
+	if (i < 0) return SUCCESS;
+
+	int j = 0;
+	printf("Enter ending index or any negative number to cancel (no number -> index = 0): ");
+	scanf("%i", &j);
+	if (j < 0) return SUCCESS;
+
+	if (remove(i, j) == FAIL)
+	{
+		printf("ERROR: unable to save a removing operation.\n");
+		return FAIL;
+	}
+	return SUCCESS;
+}
+
+func_res_t remove(int i, int j)
+{
+	if (j < i || !indexIsCorrect(i) || !indexIsCorrect(j))
+	{
+		printf("ERROR: invalid indexes for removing.\n");
+		return FAIL;
+	}
+
+	//создать операцию
+	operation_t* opBuf = (operation_t*)malloc(sizeof(operation_t));
+	if (!opBuf)
+	{
+		printf("ERROR: memory allocation problem.\n");
+		return FAIL;
+	}
+	opBuf->type = '-';
+	opBuf->beginIndex = i;
+	opBuf->endIndex = j;
+	opBuf->data = NULL;
+	opBuf->next = NULL;
+
+	//добавить операцию в линейный список буфера
+	pushIntoOpList(&(buf->operation), opBuf);
+
+	return SUCCESS;
+}
+
 bool_t indexIsCorrect(int i)
 {
 	int textLen = getTextLen();

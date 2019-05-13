@@ -19,6 +19,8 @@ func_res_t createVerFile(); //формирует из буфера новый файл
 func_res_t handleAdd();
 char* getData();
 func_res_t add(int i, char* data);
+func_res_t handleRemoving();
+func_res_t remove(int i, int j);
 bool_t indexIsCorrect(int i); //проверить индекс на корректность
 
 /*GeneralInfo.c*/
