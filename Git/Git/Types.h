@@ -30,4 +30,9 @@ typedef struct General_ //главная информация о дереве
 	version_t* root; //корень дерева версий
 } general_t;
 
+typedef struct Path_ //путь до определённой версии от корня, линейный список номеров версий, -1 - буфер
+{
+	int verNum;
+	struct Path_* next;
+} path_t;
 #endif

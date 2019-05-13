@@ -122,8 +122,10 @@
     <ClCompile Include="Main.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
     </ClCompile>
-    <ClCompile Include="Misc.c" />
+    <ClCompile Include="File.c" />
     <ClCompile Include="OperationList.c" />
+    <ClCompile Include="Path.c" />
+    <ClCompile Include="Text.c" />
     <ClCompile Include="VersionsTree.c" />
   </ItemGroup>
   <ItemGroup>

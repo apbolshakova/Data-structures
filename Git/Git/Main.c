@@ -105,3 +105,9 @@ func_res_t handleAction(char action[ACTION_LEN])
 	printf("ERROR: Invalid action.\n");
 	return FAIL;
 }
+
+void cleanup()
+{
+	deleteGeneralInfo();
+	deleteBuf();
+}

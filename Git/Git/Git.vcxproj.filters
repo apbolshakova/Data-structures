@@ -21,9 +21,6 @@
     <ClCompile Include="VersionsTree.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Misc.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="OperationList.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -34,6 +31,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GeneralInfo.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Path.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="File.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Text.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

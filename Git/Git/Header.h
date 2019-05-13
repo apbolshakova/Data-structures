@@ -26,23 +26,30 @@ void deleteGeneralInfo();
 /*Main.c*/
 void handleMainCycle(); //запуск основного цикла
 void printMainMenu();
+void cleanup();
 
-/*Misc.c*/
+/*File.c*/
 char* getNameOfVerFile(int version);
 void strcatInt(char fileName[FNAME_LEN], int version);
 bool_t exists(const char *fname);
-void cleanup();
 const char* getFileExt(const char* filename);
 long int getFileSize(FILE *f);
-int getTextLen(); //получить длину текста на текущей итерации
-int getLenDiff(operation_t* operation); //получить изменение длины текста после применения операций из массива operation
-func_res_t print(); //выводит текст на текущей итерации
 
 /*OperationList.c*/
 void deleteOperationList(operation_t** root);
 void pushIntoOpList(operation_t** root, operation_t* operation);
 operation_t* getLastOperation(operation_t** root);
 func_res_t printOperations(FILE* file);
+
+/*Path.c*/
+func_res_t getPath(path_t** path); //получить путь от корня до буфера
+func_res_t pushVerIntoPath(path_t** root, int verNum);
+
+/*Text.c*/
+int getTextLen(); //получить длину текста на текущей итерации
+int getLenDiff(operation_t* operation); //получить изменение длины текста после применения операций из массива operation
+func_res_t print(); //выводит текст на текущей итерации
+func_res_t getCurText(char* text);
 
 /*VersionsTree.c*/
 func_res_t initVerTree();
