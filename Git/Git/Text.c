@@ -51,11 +51,29 @@ func_res_t getCurText(char* text)
 	path_t* pathToBuf = NULL;
 	if (getPath(&pathToBuf) == FAIL)
 	{
-		printf("ERROR: unable to get text as it's look now.\n");
+		printf("ERROR: unable to get path to buffer.\n");
 		return FAIL;
 	}
-	//applyOperationsToText(text); //пройти по пути и собрать операции, применяя их к text TODO
-
+	/*if (applyChanges(text, pathToBuf) == FAIL)
+	{
+		printf("ERROR: unable to apply all operations that were made.\n");
+		return FAIL;
+	}*/
 	//TODO: not forget to clean pathToBuf
 	return SUCCESS;
+}
+
+func_res_t applyChanges(char* text, path_t* el)
+{
+	while (el)
+	{
+		if (applyVerChanges(text, el->ver->operation) == FAIL) return FAIL;
+		el = el->next;
+	}
+	return SUCCESS;
+}
+
+func_res_t applyVerChanges(char* text, operation_t* opList)
+{
+	//TODO
 }

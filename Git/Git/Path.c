@@ -6,7 +6,7 @@ func_res_t getPath(path_t** path)
 
 	if (buf)
 	{
-		if (pushVerIntoPath(path, BUF) == FAIL)
+		if (pushIntoPath(path, buf) == FAIL)
 		{
 			printf("ERROR: unable to get path of buffer's parent.\n");
 			return FAIL;
@@ -15,7 +15,7 @@ func_res_t getPath(path_t** path)
 	}
 	while (ver)
 	{
-		if (pushVerIntoPath(path, ver->verNum) == FAIL)
+		if (pushIntoPath(path, ver) == FAIL)
 		{
 			printf("ERROR: unable to get path of buffer's parent.\n");
 			return FAIL;
@@ -25,7 +25,7 @@ func_res_t getPath(path_t** path)
 	return SUCCESS;
 }
 
-func_res_t pushIntoPath(path_t** root, int verNum)
+func_res_t pushIntoPath(path_t** root, version_t* ver)
 {
 	path_t* newEl = (path_t*)malloc(sizeof(path_t));
 	if (!newEl)
@@ -33,7 +33,7 @@ func_res_t pushIntoPath(path_t** root, int verNum)
 		printf("ERROR: memory allocation error.\n");
 		return FAIL;
 	}
-	newEl->verNum = verNum;
+	newEl->ver = ver;
 	if (!(*root)) newEl->next = NULL;
 	else newEl->next = *root;
 	*root = newEl;
