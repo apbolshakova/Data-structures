@@ -8,7 +8,7 @@ int main(void)
 	char action[ACTION_LEN] = { 0 };
 	char* fname = (char*)calloc(FNAME_LEN, sizeof(char));
 	char temp[TEMP_LEN] = { 0 };
-	int version = 0; //¬ерси€, котора€ станет родител€м следующей. ≈сли version == 0, то корень - верси€, когда никаких изменений нет (нулева€)
+	int version = 0; //¬ерси€, котора€ станет родителем следующей. ≈сли version == 0, то это корень - верси€ с добавлением исходного текста
 	
 	printf("Type \"open <fname> <version>\" to start:\n");
 	scanf("%s %s %s", action, fname, temp);
@@ -74,35 +74,32 @@ func_res_t handleAction(char action[ACTION_LEN])
 	if (!strcmp(action, PRINT) && print() != FAIL) return SUCCESS;
 	if (!strcmp(action, EDIT))
 	{
-
+		//TODO
 	}
-	if (!strcmp(action, ADD))
-	{
-
-	}
+	if (!strcmp(action, ADD) && handleAdd() != FAIL) return SUCCESS;
 	if (!strcmp(action, REMOVE))
 	{
-
+		//TODO
 	}
 	if (!strcmp(action, MERGE))
 	{
-
+		//TODO
 	}
 	if (!strcmp(action, PUSH))
 	{
-
+		//TODO
 	}
 	if (!strcmp(action, PULL))
 	{
-
+		//TODO
 	}
 	if (!strcmp(action, DELETE_VERSION))
 	{
-
+		//TODO
 	}
 	if (!strcmp(action, REBASE))
 	{
-
+		//TODO
 	}
 	if (!strcmp(action, CLOSE)) return SUCCESS;
 	printf("ERROR: Invalid action.\n");

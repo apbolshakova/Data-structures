@@ -16,6 +16,8 @@ void deleteBuf();
 func_res_t createVerFile(); //формирует из буфера новый файл
 
 /*Editing.c*/
+func_res_t handleAdd();
+char* getData();
 func_res_t add(int i, char* data);
 bool_t indexIsCorrect(int i); //проверить индекс на корректность
 
