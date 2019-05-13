@@ -50,9 +50,10 @@ void handleMainCycle()
 
 void printMainMenu()
 {
-	printf("Enter required action:\n");
+	printf("Enter required action:");
 	printf("\nBasic:\n");
 	printf("- print\n");
+	printf("- close\n");
 
 	printf("\nEditing:\n");
 	printf("- edit\n");
@@ -71,38 +72,39 @@ func_res_t handleAction(char action[ACTION_LEN])
 {
 	system("cls");
 	if (!strcmp(action, PRINT) && print() != FAIL) return SUCCESS;
-	if (strcmp(action, EDIT))
+	if (!strcmp(action, EDIT))
 	{
 
 	}
-	if (strcmp(action, ADD))
+	if (!strcmp(action, ADD))
 	{
 
 	}
-	if (strcmp(action, REMOVE))
+	if (!strcmp(action, REMOVE))
 	{
 
 	}
-	if (strcmp(action, MERGE))
+	if (!strcmp(action, MERGE))
 	{
 
 	}
-	if (strcmp(action, PUSH))
+	if (!strcmp(action, PUSH))
 	{
 
 	}
-	if (strcmp(action, PULL))
+	if (!strcmp(action, PULL))
 	{
 
 	}
-	if (strcmp(action, DELETE_VERSION))
+	if (!strcmp(action, DELETE_VERSION))
 	{
 
 	}
-	if (strcmp(action, REBASE))
+	if (!strcmp(action, REBASE))
 	{
 
 	}
+	if (!strcmp(action, CLOSE)) return SUCCESS;
 	printf("ERROR: Invalid action.\n");
 	return FAIL;
 }
