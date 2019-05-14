@@ -1,24 +1,41 @@
 #include "Header.h"
 
-int getTextLen(int* m)
+int getTextLen()
 {
 	int result = 0;
-	int max = result;
 	version_t* ver = generalInfo->root;
 
 	if (buf)
 	{
 		result += getLenDiff(buf->operation);
-		if (result > 0) max += result;
 		ver = buf->parentPtr;
 	}
 	while (ver)
 	{
 		result += getLenDiff(ver->operation); //просуммировать длины операций из этой версии
-		if (result > 0) max += result;
 		ver = ver->parentPtr; //новая текущая версия - родитель текущей
 	}
-	if (m) *m = max;
+	return result;
+}
+
+int getMaxTextLen()
+{
+	int result = 0;
+	int lenDiff = 0;
+	version_t* ver = generalInfo->root;
+
+	if (buf)
+	{
+		lenDiff = getMaxLenDiff(buf->operation);
+		if (lenDiff > 0) result += lenDiff;
+		ver = buf->parentPtr;
+	}
+	while (ver)
+	{
+		lenDiff = getMaxLenDiff(ver->operation);
+		if (lenDiff > 0) result += lenDiff;
+		ver = ver->parentPtr; //новая текущая версия - родитель текущей
+	}
 	return result;
 }
 
@@ -29,7 +46,19 @@ int getLenDiff(operation_t* list)
 	while (op)
 	{
 		if (op->type == '+') result += strlen(op->data);
-		if (op->type == '-') result -= op->endIndex + op->beginIndex - 1;
+		if (op->type == '-') result -= op->endIndex - op->beginIndex;
+		op = op->next;
+	}
+	return result;
+}
+
+int getMaxLenDiff(operation_t* list)
+{
+	int result = 0;
+	operation_t* op = list;
+	while (op)
+	{
+		if (op->type == '+') result += strlen(op->data);
 		op = op->next;
 	}
 	return result;
@@ -37,10 +66,9 @@ int getLenDiff(operation_t* list)
 
 func_res_t print()
 {
-	int max = 0;
-	int textLen = getTextLen(&max);
-	char* text = (char*)calloc(max + 1, sizeof(char));
-	if (getCurText(text, textLen) == FAIL)
+	int stringLen = getMaxTextLen();
+	char* text = (char*)calloc(stringLen + 1, sizeof(char));
+	if (getCurText(text, stringLen) == FAIL)
 	{
 		free(text);
 		printf("ERROR: unable to print text.\n");
@@ -104,7 +132,7 @@ func_res_t addToText(char* text, int textLen, operation_t* opEl)
 		printf("ERROR: invalid operation.\n");
 		return FAIL;
 	}
-	char* temp = (char*)malloc((textLen + 1) * sizeof(char));
+	char* temp = (char*)calloc(textLen + 1, sizeof(char));
 	if (!temp)
 	{
 		printf("ERROR: memory allocation error.\n");
@@ -124,7 +152,7 @@ func_res_t removeFromText(char* text, int textLen, operation_t* opEl) //TODO: пр
 		printf("ERROR: invalid operation.\n");
 		return FAIL;
 	}
-	char* temp = (char*)malloc((textLen) + 1, sizeof(char));
+	char* temp = (char*)calloc(textLen + 1, sizeof(char));
 	if (!temp)
 	{
 		printf("ERROR: memory allocation error.\n");

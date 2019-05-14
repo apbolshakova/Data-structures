@@ -51,7 +51,9 @@ func_res_t pushIntoPath(path_t** root, int verNum);
 
 /*Text.c*/
 int getTextLen(); //получить длину текста на текущей итерации
+int getMaxTextLen(); //получить размер для буфера
 int getLenDiff(operation_t* operation); //получить изменение длины текста после применения операций из массива operation
+int getMaxLenDiff(operation_t* list);
 func_res_t print(); //выводит текст на текущей итерации
 func_res_t getCurText(char* text);
 func_res_t applyChanges(char* text, path_t* el);
