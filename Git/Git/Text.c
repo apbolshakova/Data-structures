@@ -1,20 +1,24 @@
 #include "Header.h"
 
-int getTextLen()
+int getTextLen(int* m)
 {
 	int result = 0;
+	int max = result;
 	version_t* ver = generalInfo->root;
 
 	if (buf)
 	{
 		result += getLenDiff(buf->operation);
+		if (result > 0) max += result;
 		ver = buf->parentPtr;
 	}
 	while (ver)
 	{
 		result += getLenDiff(ver->operation); //просуммировать длины операций из этой версии
+		if (result > 0) max += result;
 		ver = ver->parentPtr; //новая текущая версия - родитель текущей
 	}
+	if (m) *m = max;
 	return result;
 }
 
@@ -33,8 +37,9 @@ int getLenDiff(operation_t* list)
 
 func_res_t print()
 {
-	int textLen = getTextLen(); //also get maximum detected - that would be size of char* size
-	char* text = (char*)calloc(textLen + 1, sizeof(char));
+	int max = 0;
+	int textLen = getTextLen(&max);
+	char* text = (char*)calloc(max + 1, sizeof(char));
 	if (getCurText(text, textLen) == FAIL)
 	{
 		free(text);
@@ -99,7 +104,7 @@ func_res_t addToText(char* text, int textLen, operation_t* opEl)
 		printf("ERROR: invalid operation.\n");
 		return FAIL;
 	}
-	char* temp = (char*)calloc(textLen + 1, sizeof(char));
+	char* temp = (char*)malloc((textLen + 1) * sizeof(char));
 	if (!temp)
 	{
 		printf("ERROR: memory allocation error.\n");
@@ -119,7 +124,7 @@ func_res_t removeFromText(char* text, int textLen, operation_t* opEl) //TODO: пр
 		printf("ERROR: invalid operation.\n");
 		return FAIL;
 	}
-	char* temp = (char*)calloc(textLen + 1, sizeof(char));
+	char* temp = (char*)malloc((textLen) + 1, sizeof(char));
 	if (!temp)
 	{
 		printf("ERROR: memory allocation error.\n");

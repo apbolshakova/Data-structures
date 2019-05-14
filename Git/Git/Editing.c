@@ -109,7 +109,7 @@ func_res_t remove(int i, int j)
 
 bool_t indexIsCorrect(int i)
 {
-	int textLen = getTextLen();
+	int textLen = getTextLen(NULL);
 	if (i > textLen) return FALSE;
 	return TRUE;
 }
