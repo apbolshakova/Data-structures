@@ -39,3 +39,15 @@ func_res_t pushIntoPath(path_t** root, version_t* ver)
 	*root = newEl;
 	return SUCCESS;
 }
+
+void deletePath(path_t** root)
+{
+	path_t* temp = *root;
+	while (*root)
+	{
+		*root = (*root)->next;
+		free(temp);
+		temp = NULL;
+		temp = *root;
+	}
+}

@@ -84,15 +84,17 @@ func_res_t getCurText(char* text, int textLen)
 	path_t* pathToBuf = NULL;
 	if (getPath(&pathToBuf) == FAIL)
 	{
+		deletePath(&pathToBuf);
 		printf("ERROR: unable to get path to buffer.\n");
 		return FAIL;
 	}
 	if (applyChanges(text, textLen, pathToBuf) == FAIL)
 	{
+		deletePath(&pathToBuf);
 		printf("ERROR: unable to apply all operations that were made.\n");
 		return FAIL;
 	}
-	//TODO: not forget to clean pathToBuf
+	deletePath(&pathToBuf);
 	return SUCCESS;
 }
 
