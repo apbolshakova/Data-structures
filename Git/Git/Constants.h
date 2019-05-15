@@ -2,7 +2,7 @@
 
 #define ACTION_LEN 15
 #define FNAME_LEN 300
-#define TEMP_LEN 10
+#define TEMP_LEN 300
 #define VERSION_CHARS_NUM 4
 #define DEC_NUMBER_SYSTEM 10
 #define NOT_DEFINED_PARENT -1
@@ -13,6 +13,7 @@
 #define BUF -1
 #define PROCEED_BTN "ESC"
 #define PROCEED_BTN_CODE 27
+#define ANY -1
 
 #define OPEN           "open" //+
 #define PRINT          "print"

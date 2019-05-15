@@ -17,10 +17,11 @@ func_res_t createVerFile(); //формирует из буфера новый файл
 
 /*Editing.c*/
 func_res_t handleAdd();
-char* getData();
 func_res_t add(int i, char* data);
 func_res_t handleRemoving();
 func_res_t remove(int i, int j);
+func_res_t handleEditing();
+char* getData(int* len);
 bool_t indexIsCorrect(int i); //проверить индекс на корректность
 
 /*GeneralInfo.c*/
@@ -47,7 +48,7 @@ func_res_t printOperations(FILE* file);
 
 /*Path.c*/
 func_res_t getPath(path_t** path); //получить путь от корня до буфера
-func_res_t pushIntoPath(path_t** root, int verNum);
+func_res_t pushIntoPath(path_t** root, version_t* ver);
 
 /*Text.c*/
 int getTextLen(); //получить длину текста на текущей итерации
@@ -55,9 +56,9 @@ int getMaxTextLen(); //получить размер для буфера
 int getLenDiff(operation_t* operation); //получить изменение длины текста после применения операций из массива operation
 int getMaxLenDiff(operation_t* list);
 func_res_t print(); //выводит текст на текущей итерации
-func_res_t getCurText(char* text);
-func_res_t applyChanges(char* text, path_t* el);
-func_res_t applyVerChanges(char* text, operation_t* opList); //пройти по пути и собрать операции, применяя их к text
+func_res_t getCurText(char* text, int textLen); 
+func_res_t applyChanges(char* text, int textLen, path_t* el);
+func_res_t applyVerChanges(char* text, int textLen, operation_t* opEl); //пройти по пути и собрать операции, применяя их к text
 void printText(char* text);
 
 /*VersionsTree.c*/

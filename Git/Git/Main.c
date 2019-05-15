@@ -72,10 +72,7 @@ func_res_t handleAction(char action[ACTION_LEN])
 {
 	system("cls");
 	if (!strcmp(action, PRINT) && print() != FAIL) return SUCCESS;
-	if (!strcmp(action, EDIT))
-	{
-		//TODO
-	}
+	if (!strcmp(action, EDIT) && handleEditing() != FAIL) return SUCCESS;
 	if (!strcmp(action, ADD) && handleAdd() != FAIL) return SUCCESS;
 	if (!strcmp(action, REMOVE) && handleRemoving() != FAIL) return SUCCESS;
 	if (!strcmp(action, MERGE))
