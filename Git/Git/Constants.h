@@ -14,6 +14,8 @@
 #define PROCEED_BTN "ESC"
 #define PROCEED_BTN_CODE 27
 #define ANY -1
+#define CARRIAGE_FEED '\r'
+#define BACKSPACE '\b'
 
 #define OPEN           "open" //+
 #define PRINT          "print"

@@ -7,7 +7,7 @@ func_res_t handleAdd()
 	scanf("%i", &i);
 	if (i < 0) return SUCCESS;
 	printf("Enter text to add and press %s when you are done:\n", PROCEED_BTN);
-	char* data = getData(NULL); //TODO: fix when first char in output is missing after this func
+	char* data = getData(NULL);
 	if (add(i, data) == FAIL)
 	{
 		printf("ERROR: unable to save an add operation.\n");
@@ -141,8 +141,15 @@ char* getData(int* dataLen)
 	while (ch != PROCEED_BTN_CODE && len)
 	{
 		ch = _getch();
-		if (ch == '\r') ch = '\n';
+		if (ch == CARRIAGE_FEED) ch = '\n';
 		printf("%c", ch);
+		if (ch == BACKSPACE)
+		{
+			data[strlen(data) - 1] = '\0';
+			len++;
+			fflush(stdin);
+			continue;
+		}
 		strncat(data, &ch, 1);
 		if (strlen(data) % (TEMP_LEN - 1) == 0)
 			data = (char*)realloc(data, (strlen(data) + TEMP_LEN) * sizeof(char));
@@ -150,6 +157,7 @@ char* getData(int* dataLen)
 	}
 	if (len == ANY) data[strlen(data) - 1] = '\0'; //סעונועü סטלגמכ ESC
 	printf("\n");
+	fflush(stdin);
 	return data;
 }
 
