@@ -19,7 +19,7 @@ int main(void)
 		printf("ERROR: Invalid source file. It must be a .%s file.\n", TEXT_EXT);
 		goto End;
 	}
-	if (strcmp(action, OPEN))
+	if (getID(action) != openID)
 	{
 		printf("ERROR: Invalid operation. File opening required.\n");
 		goto End;
@@ -38,14 +38,16 @@ End:
 void handleMainCycle()
 {
 	char action[ACTION_LEN] = { 0 };
+	int actionID = INVALID_ACTION;
 	do {
 		system("cls");
 		printMainMenu();
 		scanf_s("%s", action, (unsigned)sizeof(action));
-		if (handleAction(action) == FAIL) printf("\nAction wasn't completed.\n");
+		actionID = getID(action);
+		if (handleAction(actionID) == FAIL) printf("\nAction wasn't completed.\n");
 		printf("Press any button to continue.\n");
 		_getch();
-	} while (strcmp(action, CLOSE));
+	} while (actionID != closeID);
 }
 
 void printMainMenu()
@@ -68,31 +70,45 @@ void printMainMenu()
 	printf("- rebase\n\n");
 }
 
-func_res_t handleAction(char action[ACTION_LEN])
+int getID(char action[ACTION_LEN])
+{
+	const char* actions[] =
+	{
+		"open",
+		"close",
+		"print",
+		"edit",
+		"add",
+		"remove",
+		"merge",
+		"push",
+		"pull",
+		"delete_version",
+		"rebase"
+	};
+	for (int i = 0; i < countID; i++)
+	{
+		if (!strcmp(action, actions[i])) return i;
+	}
+	return INVALID_ACTION;
+}
+
+func_res_t handleAction(int ID)
 {
 	system("cls");
-	if (!strcmp(action, PRINT) && print() != FAIL) return SUCCESS;
-	if (!strcmp(action, EDIT) && handleEditing() != FAIL) return SUCCESS;
-	if (!strcmp(action, ADD) && handleAdd() != FAIL) return SUCCESS;
-	if (!strcmp(action, REMOVE) && handleRemoving() != FAIL) return SUCCESS;
-	if (!strcmp(action, MERGE))
+	switch (ID) 
 	{
-		//TODO
+	case printID: return print(); break;
+	case editID: return handleEditing(); break;
+	case addID: return handleAdd(); break;
+	case removeID: return handleRemoving(); break;
+	case mergeID: return SUCCESS; break; //TODO
+	case pushID: return push(); break;
+	case pullID: return SUCCESS; break; //TODO
+	case deleteVerID: return SUCCESS; break; //TODO
+	case rebaseID: return SUCCESS; break; //TODO
+	case closeID: return SUCCESS;
 	}
-	if (!strcmp(action, PUSH) && push() != FAIL) return SUCCESS;
-	if (!strcmp(action, PULL))
-	{
-		//TODO
-	}
-	if (!strcmp(action, DELETE_VERSION))
-	{
-		//TODO
-	}
-	if (!strcmp(action, REBASE))
-	{
-		//TODO
-	}
-	if (!strcmp(action, CLOSE)) return SUCCESS;
 	printf("ERROR: Invalid action.\n");
 	return FAIL;
 }

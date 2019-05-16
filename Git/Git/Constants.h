@@ -10,6 +10,7 @@
 #define ROOT_VER 0
 #define INIT_VERSION -1
 #define INVALID_INDEX -1
+#define INVALID_ACTION -1
 #define BUF -1
 #define PROCEED_BTN "ESC"
 #define PROCEED_BTN_CODE 27
@@ -17,7 +18,7 @@
 #define CARRIAGE_FEED '\r'
 #define BACKSPACE '\b'
 
-#define OPEN           "open" //+
+/*#define OPEN           "open" //+
 #define PRINT          "print"
 #define EDIT           "edit"
 #define ADD            "add" //+
@@ -27,6 +28,6 @@
 #define PULL           "pull"
 #define DELETE_VERSION "delete_version"
 #define REBASE         "rebase"
-#define CLOSE          "close"
+#define CLOSE          "close"*/
 
 #endif

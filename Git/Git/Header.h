@@ -29,9 +29,10 @@ func_res_t initGeneralInfo(char* fname); //парсит главную информацию, дерево, со
 void deleteGeneralInfo();
 
 /*Main.c*/
-const char* getStrsFormat(int* len, int n);
 void handleMainCycle(); //запуск основного цикла
 void printMainMenu();
+int getID(char action[ACTION_LEN]);
+func_res_t handleAction(int ID);
 void cleanup();
 
 /*File.c*/

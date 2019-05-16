@@ -4,6 +4,22 @@
 typedef enum FuncResult_ { FAIL, SUCCESS } func_res_t;
 typedef enum Bool_ { FALSE, TRUE } bool_t;
 
+typedef enum ActionID_
+{
+	openID,
+	closeID,
+	printID,
+	editID,
+	addID,
+	removeID,
+	mergeID,
+	pushID,
+	pullID,
+	deleteVerID,
+	rebaseID,
+	countID
+};
+
 typedef struct Operation_ //операция над текстом
 {
 	char type;
