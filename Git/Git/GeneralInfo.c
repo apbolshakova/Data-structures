@@ -1,6 +1,6 @@
 #include "Header.h"
 
-func_res_t initGeneralInfo(char fname[FNAME_LEN])
+func_res_t initGeneralInfo(char* fname)
 {
 	generalInfo = (general_t*)malloc(sizeof(general_t));
 	if (!generalInfo)
@@ -62,7 +62,7 @@ void deleteGeneralInfo()
 
 func_res_t loadVersion(version_t* verInfo, FILE* verFile) 
 {
-	fscanf(verFile, "%i", &(verInfo->parentVer));
+	fscanf_s(verFile, "%i", &(verInfo->parentVer));
 	verInfo->operation = (operation_t*)malloc(sizeof(operation_t));
 	if (verInfo->operation == NULL) return FAIL;
 	return SUCCESS;

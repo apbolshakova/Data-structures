@@ -4,7 +4,7 @@ func_res_t handleAdd()
 {
 	int i = 0;
 	printf("Enter starting index or any negative number to cancel (no number -> index = 0): ");
-	scanf("%i", &i);
+	scanf_s("%i", &i);
 	if (i < 0) return SUCCESS;
 	printf("Enter text to add and press %s when you are done:\n", PROCEED_BTN);
 	char* data = getData(NULL);
@@ -45,12 +45,12 @@ func_res_t handleRemoving()
 {
 	int i = 0;
 	printf("Enter starting index or any negative number to cancel (no number -> index = 0): ");
-	scanf("%i", &i);
+	scanf_s("%i", &i);
 	if (i < 0) return SUCCESS;
 
 	int j = 0;
 	printf("Enter ending index or any negative number to cancel (no number -> index = 0): ");
-	scanf("%i", &j);
+	scanf_s("%i", &j);
 	if (j < 0) return SUCCESS;
 
 	if (remove(i, j) == FAIL)
@@ -92,12 +92,12 @@ func_res_t handleEditing()
 {
 	int i = 0;
 	printf("Enter starting index or any negative number to cancel (no number -> index = 0): ");
-	scanf("%i", &i);
+	scanf_s("%i", &i);
 	if (i < 0) return SUCCESS;
 
 	int j = 0;
 	printf("Enter ending index or any negative number to cancel (no number -> index = 0): ");
-	scanf("%i", &j);
+	scanf_s("%i", &j);
 	if (j < 0) return SUCCESS;
 
 	int len = j - i;

@@ -6,12 +6,12 @@ version_t* buf = NULL;
 int main(void)
 {
 	char action[ACTION_LEN] = { 0 };
-	char* fname = (char*)calloc(FNAME_LEN, sizeof(char));
+	char fname[FNAME_LEN] = { 0 };
 	char temp[TEMP_LEN] = { 0 };
 	int version = 0; //¬ерси€, котора€ станет родителем следующей. ≈сли version == 0, то это корень - верси€ с добавлением исходного текста
 	
 	printf("Type \"open <fname> <version>\" to start:\n");
-	scanf("%s %s %s", action, fname, temp);
+	scanf_s("%s %s %s", action, (unsigned)sizeof(action), fname, (unsigned)sizeof(fname), temp, (unsigned)sizeof(temp));
 	version = atoi(temp);
 	
 	if (strcmp(getFileExt(fname), TEXT_EXT))
@@ -41,7 +41,7 @@ void handleMainCycle()
 	do {
 		system("cls");
 		printMainMenu();
-		scanf("%s", action);
+		scanf_s("%s", action, (unsigned)sizeof(action));
 		if (handleAction(action) == FAIL) printf("\nAction wasn't completed.\n");
 		printf("Press any button to continue.\n");
 		_getch();

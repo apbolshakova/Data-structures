@@ -25,17 +25,18 @@ char* getData(int* len);
 bool_t indexIsCorrect(int i); //проверить индекс на корректность
 
 /*GeneralInfo.c*/
-func_res_t initGeneralInfo(char fname[FNAME_LEN]); //парсит главную информацию, дерево, создаёт буфер
+func_res_t initGeneralInfo(char* fname); //парсит главную информацию, дерево, создаёт буфер
 void deleteGeneralInfo();
 
 /*Main.c*/
+const char* getStrsFormat(int* len, int n);
 void handleMainCycle(); //запуск основного цикла
 void printMainMenu();
 void cleanup();
 
 /*File.c*/
 char* getNameOfVerFile(int version);
-void strcatInt(char fileName[FNAME_LEN], int version);
+void strcatInt(char* fileName, int version);
 bool_t exists(const char *fname);
 const char* getFileExt(const char* filename);
 long int getFileSize(FILE *f);

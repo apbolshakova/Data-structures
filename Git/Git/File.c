@@ -10,7 +10,7 @@ char* getNameOfVerFile(int version)
 	return fileName;
 }
 
-void strcatInt(char fileName[FNAME_LEN], int version)
+void strcatInt(char* fileName, int version)
 {
 	char digitAsChar = '0';
 	if (!version) strncat(fileName, &digitAsChar, 1);
@@ -33,7 +33,7 @@ bool_t exists(const char *fname)
 	return FALSE;
 }
 
-const char* getFileExt(const char* filename) 
+const char* getFileExt(char* filename) 
 {
 	const char *dot = strrchr(filename, '.');
 	if (!dot || dot == filename) return "";
