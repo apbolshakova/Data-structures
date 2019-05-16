@@ -1,4 +1,4 @@
-#include "Header.h"
+#include "Common.h"
 
 void deleteOperationList(operation_t** root)
 {
@@ -26,7 +26,7 @@ operation_t* getLastOperation(operation_t** root)
 	return result;
 }
 
-func_res_t printOperations(FILE* file)
+status_t printOperations(FILE* file)
 {
 	operation_t* op = buf->operation;
 	while (op)

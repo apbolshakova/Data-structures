@@ -1,6 +1,6 @@
-#include "Header.h"
+#include "Common.h"
 
-func_res_t initVerTree()
+status_t initVerTree()
 {
 	generalInfo->lastCreatedVersion = INIT_VERSION;
 	if (initBuf(ROOT_VER) == FAIL) 	//создать буфер с нулевой версией
@@ -22,7 +22,7 @@ func_res_t initVerTree()
 	return SUCCESS;
 }
 
-func_res_t initTextAsOpearationInRootVer()
+status_t initTextAsOpearationInRootVer()
 {
 	//открыть файл generalInfo->fileName и получить из него текст
 	char* text = NULL;
@@ -39,7 +39,7 @@ func_res_t initTextAsOpearationInRootVer()
 	}
 }
 
-func_res_t getSourceText(char** text)
+status_t getSourceText(char** text)
 {
 	FILE* source = fopen(generalInfo->name, "r");
 	if (!source)
@@ -73,7 +73,7 @@ void deleteVerTree()
 	//TODO
 }
 
-func_res_t buildVerTree() 
+status_t buildVerTree() 
 {
 	char* fileName = getNameOfVerFile(ROOT_VER);
 	if (!exists(fileName))
@@ -111,7 +111,7 @@ version_t* getVerPtr(version_t* p, int verNum)
 	return result;
 }
 
-func_res_t push()
+status_t push()
 {
 	if (buf->parentPtr) //сохранить буфер как ребёнка потенциального родителя
 	{

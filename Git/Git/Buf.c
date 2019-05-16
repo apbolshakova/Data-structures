@@ -1,6 +1,6 @@
-#include "Header.h"
+#include "Common.h"
 
-func_res_t initBuf(int version)
+status_t initBuf(int version)
 {
 	if (buf) buf = NULL;
 	buf = (version_t*)malloc(sizeof(version_t));
@@ -37,7 +37,7 @@ void deleteBuf()
 	}
 }
 
-func_res_t createVerFile()
+status_t createVerFile()
 {
 	const char* fileName = getNameOfVerFile(buf->verNum);
 	FILE* file = fopen(fileName, "w");

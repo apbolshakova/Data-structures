@@ -1,6 +1,6 @@
-#include "Header.h"
+#include "Common.h"
 
-func_res_t handleAdd()
+status_t handleAdd()
 {
 	int i = 0;
 	printf("Enter starting index or any negative number to cancel (no number -> index = 0): ");
@@ -16,7 +16,7 @@ func_res_t handleAdd()
 	return SUCCESS;
 }
 
-func_res_t add(int i, char* data)
+status_t add(int i, char* data)
 {
 	if (!indexIsCorrect(i)) 
 	{
@@ -41,7 +41,7 @@ func_res_t add(int i, char* data)
 	return SUCCESS;
 }
 
-func_res_t handleRemoving()
+status_t handleRemoving()
 {
 	int i = 0;
 	printf("Enter starting index or any negative number to cancel (no number -> index = 0): ");
@@ -61,7 +61,7 @@ func_res_t handleRemoving()
 	return SUCCESS;
 }
 
-func_res_t remove(int i, int j)
+status_t remove(int i, int j)
 {
 	if (j < i || !indexIsCorrect(i) || !indexIsCorrect(j))
 	{
@@ -88,7 +88,7 @@ func_res_t remove(int i, int j)
 	return SUCCESS;
 }
 
-func_res_t handleEditing()
+status_t handleEditing()
 {
 	int i = 0;
 	printf("Enter starting index or any negative number to cancel (no number -> index = 0): ");
@@ -117,7 +117,7 @@ func_res_t handleEditing()
 	return SUCCESS;
 }
 
-func_res_t edit(int i, int j, char* data)
+status_t edit(int i, int j, char* data)
 {
 	if (remove(i, j) == FAIL)
 	{

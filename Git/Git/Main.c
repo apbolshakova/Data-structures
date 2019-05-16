@@ -1,4 +1,4 @@
-#include "Header.h"
+#include "Common.h"
 
 general_t* generalInfo = NULL;
 version_t* buf = NULL;
@@ -93,7 +93,7 @@ int getID(char action[ACTION_LEN])
 	return INVALID_ACTION;
 }
 
-func_res_t handleAction(int ID)
+status_t handleAction(int ID)
 {
 	system("cls");
 	switch (ID) 

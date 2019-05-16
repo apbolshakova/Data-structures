@@ -1,6 +1,6 @@
-#include "Header.h"
+#include "Common.h"
 
-func_res_t initGeneralInfo(char* fname)
+status_t initGeneralInfo(char* fname)
 {
 	generalInfo = (general_t*)malloc(sizeof(general_t));
 	if (!generalInfo)
@@ -48,7 +48,7 @@ void deleteGeneralInfo()
 }
 
 //TODO: maybe delete
-/*func_res_t handleFile(char fname[FNAME_LEN], int version, version_t* verInfo)
+/*status_t handleFile(char fname[FNAME_LEN], int version, version_t* verInfo)
 {
 	char* fileName = (char*)malloc((FNAME_LEN + VERSION_CHARS_NUM) * sizeof(char));
 	strncpy(fileName, fname, strlen(fname));
@@ -60,7 +60,7 @@ void deleteGeneralInfo()
 	return SUCCESS;
 }
 
-func_res_t loadVersion(version_t* verInfo, FILE* verFile) 
+status_t loadVersion(version_t* verInfo, FILE* verFile) 
 {
 	fscanf_s(verFile, "%i", &(verInfo->parentVer));
 	verInfo->operation = (operation_t*)malloc(sizeof(operation_t));

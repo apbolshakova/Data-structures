@@ -1,6 +1,6 @@
-#include "Header.h"
+#include "Common.h"
 
-func_res_t getPath(path_t** path)
+status_t getPath(path_t** path)
 {
 	version_t* ver = generalInfo->root;
 
@@ -25,7 +25,7 @@ func_res_t getPath(path_t** path)
 	return SUCCESS;
 }
 
-func_res_t pushIntoPath(path_t** root, version_t* ver)
+status_t pushIntoPath(path_t** root, version_t* ver)
 {
 	path_t* newEl = (path_t*)malloc(sizeof(path_t));
 	if (!newEl)

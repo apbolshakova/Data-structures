@@ -11,28 +11,28 @@ extern version_t* buf;
 extern version_t* verTree;
 
 /*Buf.c*/
-func_res_t initBuf(int version); //создаЄт буфер с потенциальным родителем version, если буфер был - стираетс€
+status_t initBuf(int version); //создаЄт буфер с потенциальным родителем version, если буфер был - стираетс€
 void deleteBuf();
-func_res_t createVerFile(); //формирует из буфера новый файл
+status_t createVerFile(); //формирует из буфера новый файл
 
 /*Editing.c*/
-func_res_t handleAdd();
-func_res_t add(int i, char* data);
-func_res_t handleRemoving();
-func_res_t remove(int i, int j);
-func_res_t handleEditing();
+status_t handleAdd();
+status_t add(int i, char* data);
+status_t handleRemoving();
+status_t remove(int i, int j);
+status_t handleEditing();
 char* getData(int* len);
 bool_t indexIsCorrect(int i); //проверить индекс на корректность
 
 /*GeneralInfo.c*/
-func_res_t initGeneralInfo(char* fname); //парсит главную информацию, дерево, создаЄт буфер
+status_t initGeneralInfo(char* fname); //парсит главную информацию, дерево, создаЄт буфер
 void deleteGeneralInfo();
 
 /*Main.c*/
 void handleMainCycle(); //запуск основного цикла
 void printMainMenu();
 int getID(char action[ACTION_LEN]);
-func_res_t handleAction(int ID);
+status_t handleAction(int ID);
 void cleanup();
 
 /*File.c*/
@@ -46,28 +46,28 @@ long int getFileSize(FILE *f);
 void deleteOperationList(operation_t** root);
 void pushIntoOpList(operation_t** root, operation_t* operation);
 operation_t* getLastOperation(operation_t** root);
-func_res_t printOperations(FILE* file);
+status_t printOperations(FILE* file);
 
 /*Path.c*/
-func_res_t getPath(path_t** path); //получить путь от корн€ до буфера
-func_res_t pushIntoPath(path_t** root, version_t* ver);
+status_t getPath(path_t** path); //получить путь от корн€ до буфера
+status_t pushIntoPath(path_t** root, version_t* ver);
 
 /*Text.c*/
 int getTextLen(); //получить длину текста на текущей итерации
 int getMaxTextLen(); //получить размер дл€ буфера
 int getLenDiff(operation_t* operation); //получить изменение длины текста после применени€ операций из массива operation
 int getMaxLenDiff(operation_t* list);
-func_res_t print(); //выводит текст на текущей итерации
-func_res_t getCurText(char* text, int textLen); 
-func_res_t applyChanges(char* text, int textLen, path_t* el);
-func_res_t applyVerChanges(char* text, int textLen, operation_t* opEl); //пройти по пути и собрать операции, примен€€ их к text
+status_t print(); //выводит текст на текущей итерации
+status_t getCurText(char* text, int textLen); 
+status_t applyChanges(char* text, int textLen, path_t* el);
+status_t applyVerChanges(char* text, int textLen, operation_t* opEl); //пройти по пути и собрать операции, примен€€ их к text
 void printText(char* text);
 
 /*VersionsTree.c*/
-func_res_t initVerTree();
-func_res_t initTextAsOpearationInRootVer();
-func_res_t getSourceText(char** text);
+status_t initVerTree();
+status_t initTextAsOpearationInRootVer();
+status_t getSourceText(char** text);
 void deleteVerTree();
-func_res_t buildVerTree(); //получить generalInfo->root, lastCreatedVersion
+status_t buildVerTree(); //получить generalInfo->root, lastCreatedVersion
 version_t* getVerPtr(version_t* p, int verNum); //обойти дерево, найти вершину и вернуть либо указатель на неЄ, либо NULL
-func_res_t push();
+status_t push();

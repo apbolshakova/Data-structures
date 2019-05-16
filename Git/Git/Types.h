@@ -1,7 +1,7 @@
 #ifndef TYPES
 #define TYPES
 
-typedef enum FuncResult_ { FAIL, SUCCESS } func_res_t;
+typedef enum FuncResult_ { FAIL, SUCCESS } status_t;
 typedef enum Bool_ { FALSE, TRUE } bool_t;
 
 typedef enum ActionID_

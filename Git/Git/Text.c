@@ -1,4 +1,4 @@
-#include "Header.h"
+#include "Common.h"
 
 int getTextLen()
 {
@@ -64,7 +64,7 @@ int getMaxLenDiff(operation_t* list)
 	return result;
 }
 
-func_res_t print()
+status_t print()
 {
 	int stringLen = getMaxTextLen();
 	char* text = (char*)calloc(stringLen + 1, sizeof(char));
@@ -79,7 +79,7 @@ func_res_t print()
 	return SUCCESS;
 }
 
-func_res_t getCurText(char* text, int textLen)
+status_t getCurText(char* text, int textLen)
 {
 	path_t* pathToBuf = NULL;
 	if (getPath(&pathToBuf) == FAIL)
@@ -98,7 +98,7 @@ func_res_t getCurText(char* text, int textLen)
 	return SUCCESS;
 }
 
-func_res_t applyChanges(char* text, int textLen, path_t* el)
+status_t applyChanges(char* text, int textLen, path_t* el)
 {
 	while (el)
 	{
@@ -108,7 +108,7 @@ func_res_t applyChanges(char* text, int textLen, path_t* el)
 	return SUCCESS;
 }
 
-func_res_t applyVerChanges(char* text, int textLen, operation_t* opEl)
+status_t applyVerChanges(char* text, int textLen, operation_t* opEl)
 {
 	while (opEl)
 	{
@@ -127,7 +127,7 @@ func_res_t applyVerChanges(char* text, int textLen, operation_t* opEl)
 	return SUCCESS;
 }
 
-func_res_t addToText(char* text, int textLen, operation_t* opEl)
+status_t addToText(char* text, int textLen, operation_t* opEl)
 {
 	if (!opEl || opEl->type != '+')
 	{
@@ -147,7 +147,7 @@ func_res_t addToText(char* text, int textLen, operation_t* opEl)
 	return SUCCESS;
 }
 
-func_res_t removeFromText(char* text, int textLen, operation_t* opEl) //TODO: протестировать
+status_t removeFromText(char* text, int textLen, operation_t* opEl) //TODO: протестировать
 {
 	if (!opEl || opEl->type != '-')
 	{
