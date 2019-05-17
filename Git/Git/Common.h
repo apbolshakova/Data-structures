@@ -41,6 +41,7 @@ void strcatInt(char* fileName, int version);
 bool_t exists(const char *fname);
 const char* getFileExt(const char* filename);
 long int getFileSize(FILE *f);
+void getLastCreatedVersion();
 
 /*OperationList.c*/
 void deleteOperationList(operation_t** root);
@@ -67,7 +68,7 @@ void printText(char* text);
 status_t initVerTree();
 status_t initTextAsOpearationInRootVer();
 status_t getSourceText(char** text);
-void deleteVerTree();
+void deleteVerTree(version_t* p);
 status_t buildVerTree(); //получить generalInfo->root, lastCreatedVersion для нового дерева
 status_t loadVerTree(char* fileName); //получить generalInfo->root, lastCreatedVersion
 status_t loadVer(char* fileName, int* parentVer);

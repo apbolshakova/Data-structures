@@ -37,11 +37,9 @@ void deleteGeneralInfo()
 			free(generalInfo->name);
 			generalInfo->name = NULL;
 		}
-		if (generalInfo->root)
-		{
-			deleteVerTree();
-			generalInfo->root = NULL;
-		}
+		deleteVerTree(generalInfo->root);
+		generalInfo->root = NULL;
+
 		free(generalInfo);
 		generalInfo = NULL;
 	}

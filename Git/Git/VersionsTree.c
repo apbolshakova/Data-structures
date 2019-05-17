@@ -68,9 +68,11 @@ status_t getSourceText(char** text)
 	return SUCCESS;
 }
 
-void deleteVerTree()
+void deleteVerTree(version_t* p)
 {
-	//TODO
+	if (!p) return;
+	for (int i = 0; i < p->childNum; i++) deleteVerTree(p->child[i]);
+	free(p);
 }
 
 status_t buildVerTree() 
@@ -120,11 +122,7 @@ status_t loadVerTree(char* fileName)
 		free(fileName);
 		fileName = NULL;
 	}
-	if (getLastCreatedVersion() == FAIL) //TODO
-	{
-		printf("ERROR: unable to get number of last created version.\n");
-		return FAIL;
-	}
+	getLastCreatedVersion(); //TODO
 }
 
 status_t loadVer(char* fileName, int* parentVer)
@@ -138,6 +136,7 @@ status_t loadVer(char* fileName, int* parentVer)
 	//Получить номер версии родителя
 	//Создать экземпляр версии
 	//Вставить версию в качестве корня дерева
+	return SUCCESS;
 }
 
 version_t* getVerPtr(version_t* p, int verNum)

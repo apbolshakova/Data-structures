@@ -48,3 +48,9 @@ long int getFileSize(FILE *f)
 	fseek(f, sav, SEEK_SET);
 	return(fileSize);
 }
+
+void getLastCreatedVersion()
+{
+	//проверить все файлы в директории и вытащить файл с наибольшим номером версии
+	//записать его в generalInfo
+}
