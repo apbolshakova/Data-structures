@@ -81,17 +81,63 @@ status_t buildVerTree()
 		free(fileName);
 		if (initVerTree() == FAIL)
 		{
-			
 			printf("ERROR: Unable to create init version of file.\n");
 			return FAIL;
 		}
 	}
 	else
 	{
+		if (loadVerTree(fileName) == FAIL)
+		{
+			free(fileName);
+			printf("ERROR: Unable to create init version of file.\n");
+			return FAIL;
+		}
 		free(fileName);
 		//TODO: load existing tree
 	}
 	return SUCCESS;
+}
+
+status_t loadVerTree(char* fileName)
+{
+	int parentVer = NOT_DEFINED_PARENT;
+	if (loadVer(fileName, &parentVer) == FAIL) //получить номер версии родителя, создать узел в дереве - родителя текущего корня и сделать его корнем
+	{
+		printf("ERROR: unable to parse data of existing tree.\n");
+		return FAIL;
+	}
+	free(fileName);
+	fileName = NULL;
+	while (parentVer != NOT_DEFINED_PARENT) //пока не был обработан корень
+	{
+		fileName = getNameOfVerFile(parentVer);
+		if (loadVer(fileName, &parentVer) == FAIL)
+		{
+			printf("ERROR: unable to parse data of existing tree.\n");
+			return FAIL;
+		}
+		free(fileName);
+		fileName = NULL;
+	}
+	if (getLastCreatedVersion() == FAIL) //TODO
+	{
+		printf("ERROR: unable to get number of last created version.\n");
+		return FAIL;
+	}
+}
+
+status_t loadVer(char* fileName, int* parentVer)
+{
+	FILE* file = fopen(fileName, "r");
+	if (!file)
+	{
+		printf("ERROR: unable to open file with information.\n");
+		return FAIL;
+	}
+	//Получить номер версии родителя
+	//Создать экземпляр версии
+	//Вставить версию в качестве корня дерева
 }
 
 version_t* getVerPtr(version_t* p, int verNum)

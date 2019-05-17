@@ -68,6 +68,8 @@ status_t initVerTree();
 status_t initTextAsOpearationInRootVer();
 status_t getSourceText(char** text);
 void deleteVerTree();
-status_t buildVerTree(); //получить generalInfo->root, lastCreatedVersion
+status_t buildVerTree(); //получить generalInfo->root, lastCreatedVersion для нового дерева
+status_t loadVerTree(char* fileName); //получить generalInfo->root, lastCreatedVersion
+status_t loadVer(char* fileName, int* parentVer);
 version_t* getVerPtr(version_t* p, int verNum); //обойти дерево, найти вершину и вернуть либо указатель на неё, либо NULL
 status_t push();

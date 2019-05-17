@@ -147,7 +147,7 @@ status_t addToText(char* text, int textLen, operation_t* opEl)
 	return SUCCESS;
 }
 
-status_t removeFromText(char* text, int textLen, operation_t* opEl) //TODO: протестировать
+status_t removeFromText(char* text, int textLen, operation_t* opEl)
 {
 	if (!opEl || opEl->type != '-')
 	{
