@@ -3,6 +3,7 @@
 char* getNameOfVerFile(int version)
 {
 	char* fileName = (char*)calloc(FNAME_LEN, sizeof(char));
+	if (!fileName) return NULL;
 	char* fileExt = getFileExt(generalInfo->name);
 	strncpy(fileName, generalInfo->name,
 		strlen(generalInfo->name) - strlen(fileExt) - 1);
@@ -17,6 +18,7 @@ char* getNameOfVerFile(int version)
 char* getDirName()
 {
 	char* dirName = (char*)calloc(FNAME_LEN, sizeof(char));
+	if (!dirName) return NULL;
 	char* fileExt = getFileExt(generalInfo->name);
 	strncpy(dirName, generalInfo->name,
 		strlen(generalInfo->name) - strlen(fileExt) - 1);

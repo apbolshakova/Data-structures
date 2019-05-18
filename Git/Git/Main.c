@@ -105,7 +105,7 @@ status_t handleAction(int ID)
 	case mergeID: return SUCCESS; break; //TODO
 	case pushID: return push(); break;
 	case pullID: return SUCCESS; break; //TODO
-	case deleteVerID: return SUCCESS; break; //TODO
+	case deleteVerID: return handleVerDeleting(); break;
 	case rebaseID: return SUCCESS; break; //TODO
 	case closeID: return SUCCESS;
 	}

@@ -1,5 +1,4 @@
 #ifndef OPERATION_LEN
-
 #define ACTION_LEN 15
 #define FNAME_LEN 300
 #define TEMP_LEN 300
@@ -21,17 +20,4 @@
 #define BACKSPACE '\b'
 #define NEW_STRING '\n'
 #define FILE_MASK "%s\\%s.*.txt"
-
-/*#define OPEN           "open" //+
-#define PRINT          "print"
-#define EDIT           "edit"
-#define ADD            "add" //+
-#define REMOVE         "remove"
-#define MERGE          "merge"
-#define PUSH           "push" //+
-#define PULL           "pull"
-#define DELETE_VERSION "delete_version"
-#define REBASE         "rebase"
-#define CLOSE          "close"*/
-
 #endif
