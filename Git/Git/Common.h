@@ -23,7 +23,7 @@ status_t add(int i, char* data);
 status_t handleRemoving();
 status_t remove(int i, int j);
 status_t handleEditing();
-char* getData(int* len);
+char* getDataFromInput(int* len);
 bool_t indexIsCorrect(int i); //проверить индекс на корректность
 
 /*GeneralInfo.c*/
@@ -51,6 +51,7 @@ void deleteOperationList(operation_t** root);
 void pushIntoOpList(operation_t** root, operation_t* operation);
 operation_t* getLastOperation(operation_t** root);
 status_t printOperations(FILE* file);
+status_t getOperationList(operation_t** root, FILE* file);
 
 /*Path.c*/
 status_t getPath(path_t** path); //получить путь от корня до буфера

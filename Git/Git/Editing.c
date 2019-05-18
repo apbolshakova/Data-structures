@@ -7,7 +7,7 @@ status_t handleAdd()
 	scanf_s("%i", &i);
 	if (i < 0) return SUCCESS;
 	printf("Enter text to add and press %s when you are done:\n", PROCEED_BTN);
-	char* data = getData(NULL);
+	char* data = getDataFromInput(NULL);
 	if (add(i, data) == FAIL)
 	{
 		printf("ERROR: unable to save an add operation.\n");
@@ -108,7 +108,7 @@ status_t handleEditing()
 	}
 
 	printf("Enter text for replacing or press %s to cancel:\n", PROCEED_BTN);
-	char* data = getData(&len); 
+	char* data = getDataFromInput(&len); 
 	if (edit(i, j, data) == FAIL)
 	{
 		printf("ERROR: unable to save an edit operation.\n");
@@ -132,7 +132,7 @@ status_t edit(int i, int j, char* data)
 	return SUCCESS;
 }
 
-char* getData(int* dataLen)
+char* getDataFromInput(int* dataLen) //TODO: протестировать
 {
 	int len = ANY;
 	if (dataLen) len = *dataLen;
@@ -141,7 +141,6 @@ char* getData(int* dataLen)
 	while (ch != PROCEED_BTN_CODE && len)
 	{
 		ch = _getch();
-		if (ch == CARRIAGE_FEED) ch = '\n';
 		printf("%c", ch);
 		if (ch == BACKSPACE)
 		{
@@ -155,7 +154,7 @@ char* getData(int* dataLen)
 			data = (char*)realloc(data, (strlen(data) + TEMP_LEN) * sizeof(char));
 		if (len != ANY) len--;
 	}
-	if (len == ANY) data[strlen(data) - 1] = '\0'; //стереть символ ESC
+	if (len == ANY) data[strlen(data) - 1] = '\0'; //remove last symbol
 	printf("\n");
 	fflush(stdin);
 	return data;

@@ -38,3 +38,32 @@ status_t printOperations(FILE* file)
 	}
 	return SUCCESS;
 }
+
+status_t getOperationList(operation_t** root, FILE* file)
+{
+	if (!file) return FAIL;
+    char buf[TEMP_LEN] = { 0 };
+	
+	operation_t* op = (operation_t*)malloc(sizeof(operation_t));
+	if (!op)
+	{
+		printf("ERROR: memory allocation error.\n");
+		return FAIL;
+	}
+	*root = op;
+	fscanf_s(file, "%s", buf, TEMP_LEN);
+	if (*buf == '+')
+	{
+		op->type = '+';
+		fscanf_s(file, "%s", buf, TEMP_LEN);
+		op->beginIndex = atoi(buf);
+		op->endIndex = INVALID_INDEX;
+		//op->data = getDataFromFile();
+	}
+	else if (*buf == '-')
+	{
+		op->type == '-';
+	}
+	else deleteOperationList(root);
+	return SUCCESS;
+}

@@ -14,8 +14,8 @@
 #define INVALID_ACTION -1
 #define INVALID_VER -1
 #define BUF -1
-#define PROCEED_BTN "ESC"
-#define PROCEED_BTN_CODE 27
+#define PROCEED_BTN "Enter"
+#define PROCEED_BTN_CODE 13
 #define ANY -1
 #define CARRIAGE_FEED '\r'
 #define BACKSPACE '\b'

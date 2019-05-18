@@ -168,7 +168,7 @@ status_t handleVerFile(char filePath[FNAME_LEN])
 	ver->parentPtr = getVerPtr(generalInfo->root, parentVer);
 	ver->childNum = 0;
 	ver->child = NULL;
-	if (getOperationList(ver->operation, file) == FAIL) //TODO
+	if (getOperationList(&(ver->operation), file) == FAIL)
 	{
 		printf("ERROR: invalid operation in file detected.\n");
 		free(ver);
