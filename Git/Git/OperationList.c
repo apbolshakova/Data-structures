@@ -53,6 +53,7 @@ status_t getOperationList(operation_t** root, FILE* file)
 			printf("ERROR: memory allocation error.\n");
 			return FAIL;
 		}
+		op->next = NULL;
 		if (*buf == '+')
 		{
 			op->type = '+';
@@ -69,7 +70,7 @@ status_t getOperationList(operation_t** root, FILE* file)
 		}
 		else if (*buf == '-')
 		{
-			op->type == '-';
+			op->type = '-';
 			fscanf_s(file, "%i %i", &(op->beginIndex), &(op->endIndex));
 			op->data = NULL;
 		}

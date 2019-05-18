@@ -142,6 +142,11 @@ status_t loadVerTree()
 		}
 	} while (FindNextFile(hFind, &fdFile));
 	FindClose(hFind);
+	if (initBuf(generalInfo->lastCreatedVersion) == FAIL) //очистить и создать новый буфер
+	{
+		printf("ERROR: unable to create new buffer.\n");
+		return FAIL;
+	}
 	return SUCCESS;
 }
 
@@ -175,9 +180,21 @@ status_t handleVerFile(char filePath[FNAME_LEN])
 		free(ver);
 		return FAIL;
 	}
-	//insertIntoTree(ver); //ƒобавить версию в детей переданной аргументом версии
+	insertIntoTree(ver);
 	fclose(file);
 	return SUCCESS;
+}
+
+void insertIntoTree(version_t* ver)
+{
+	if (!(ver->parentPtr)) generalInfo->root = ver;
+	else
+	{
+		(ver->parentPtr->childNum)++;
+		ver->parentPtr->child = (version_t**)realloc(ver->parentPtr->child, ver->parentPtr->childNum * sizeof(version_t*));
+		ver->parentPtr->child[ver->parentPtr->childNum - 1] = ver;
+	}
+	generalInfo->lastCreatedVersion = ver->verNum; //увеличить номер последней сохранЄнной версии
 }
 
 version_t* getVerPtr(version_t* p, int verNum)

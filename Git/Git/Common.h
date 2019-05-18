@@ -77,5 +77,6 @@ void deleteVerTree(version_t* p);
 status_t buildVerTree(int verNum); //получить generalInfo->root, lastCreatedVersion для нового дерева
 status_t loadVerTree(); //получить generalInfo->root, lastCreatedVersion, пройти по всех файлам версий и построить дерево
 status_t handleVerFile(char filePath[FNAME_LEN]);
+void insertIntoTree(version_t* ver); //Add version into tree
 version_t* getVerPtr(version_t* p, int verNum); //обойти дерево, найти вершину и вернуть либо указатель на неё, либо NULL
 status_t push();
