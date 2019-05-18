@@ -44,26 +44,39 @@ status_t getOperationList(operation_t** root, FILE* file)
 	if (!file) return FAIL;
     char buf[TEMP_LEN] = { 0 };
 	
-	operation_t* op = (operation_t*)malloc(sizeof(operation_t));
-	if (!op)
+	operation_t* prev = NULL;
+	while (fscanf_s(file, "%s", buf, TEMP_LEN) != EOF)
 	{
-		printf("ERROR: memory allocation error.\n");
-		return FAIL;
+		operation_t* op = (operation_t*)malloc(sizeof(operation_t));
+		if (!op)
+		{
+			printf("ERROR: memory allocation error.\n");
+			return FAIL;
+		}
+		if (*buf == '+')
+		{
+			op->type = '+';
+			fscanf_s(file, "%s", buf, TEMP_LEN);
+			op->beginIndex = atoi(buf);
+			op->endIndex = INVALID_INDEX;
+			if (getDataFromFile(&(op->data), file) == FAIL)
+			{
+				free(op);
+				deleteOperationList(root);
+				printf("ERROR: unable to load operations.\n");
+				return FAIL;
+			}
+		}
+		else if (*buf == '-')
+		{
+			op->type == '-';
+			fscanf_s(file, "%i %i", &(op->beginIndex), &(op->endIndex));
+			op->data = NULL;
+		}
+		else deleteOperationList(root);
+		if (!prev) *root = op;
+		else prev->next = op;
+		prev = op;
 	}
-	*root = op;
-	fscanf_s(file, "%s", buf, TEMP_LEN);
-	if (*buf == '+')
-	{
-		op->type = '+';
-		fscanf_s(file, "%s", buf, TEMP_LEN);
-		op->beginIndex = atoi(buf);
-		op->endIndex = INVALID_INDEX;
-		op->data = getDataFromFile(file);
-	}
-	else if (*buf == '-')
-	{
-		op->type == '-';
-	}
-	else deleteOperationList(root);
 	return SUCCESS;
 }

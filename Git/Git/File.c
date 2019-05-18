@@ -75,7 +75,25 @@ int getVerNum(char filePath[FNAME_LEN])
 	return atoi(ver);
 }
 
-char* getDataFromFile(FILE* file)
+status_t getDataFromFile(char** storage, FILE* file)
 {
-	//TODO
+	char* data = (char*)calloc(TEMP_LEN, sizeof(char));
+	char ch = '\0';
+	fscanf_s(file, "%c", &ch); //reads space
+	do
+	{
+		fscanf_s(file, "%c", &ch);
+		if (ch == EOF)
+		{
+			free(data);
+			printf("ERROR: unexpected end of file.\n");
+			return FAIL;
+		}
+		strncat(data, &ch, 1);
+		if (strlen(data) % (TEMP_LEN - 1) == 0)
+			data = (char*)realloc(data, (strlen(data) + TEMP_LEN) * sizeof(char));
+	} while (ch != NEW_STRING);
+	data[strlen(data) - 1] = '\0';
+	*storage = data;
+	return SUCCESS;
 }

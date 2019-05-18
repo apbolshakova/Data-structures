@@ -19,6 +19,7 @@
 #define ANY -1
 #define CARRIAGE_FEED '\r'
 #define BACKSPACE '\b'
+#define NEW_STRING '\n'
 #define FILE_MASK "%s\\%s.*.txt"
 
 /*#define OPEN           "open" //+
