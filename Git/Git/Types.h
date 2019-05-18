@@ -32,8 +32,7 @@ typedef struct Operation_ //операция над текстом
 typedef struct Version_ //версия
 {
 	int verNum;
-	//bool_t isDeleted; TODO: maybe delete and add function that returns TRUE_ if ver is deleted
-	struct Version_* parentPtr; //версия удалена, если её родитель NOT_DEFINED_PARENT
+	struct Version_* parentPtr; //TODO: add function that returns TRUE_ if ver is deleted (it's parent == INVALID_PARENT)
 	int childNum;
 	struct Version_** child;
 	operation_t* operation; //линейный список изменений в этой версии

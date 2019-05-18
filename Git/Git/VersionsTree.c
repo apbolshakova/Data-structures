@@ -116,39 +116,66 @@ status_t buildVerTree(int verNum)
 
 status_t loadVerTree()
 {
-	/*int nextVer = NOT_DEFINED_PARENT;
-	if (loadVer(verNum, &parentVer) == FAIL) 
+	WIN32_FIND_DATA fdFile;
+	HANDLE hFind = NULL;
+	char* dirName = getDirName();
+	
+	char filePath[FNAME_LEN] = { 0 };
+	sprintf(filePath, FILE_MASK, dirName, dirName);
+	
+	if ((hFind = FindFirstFile(filePath, &fdFile)) == INVALID_HANDLE_VALUE)
 	{
-		printf("ERROR: unable to load existing tree.\n");
+		printf("ERROR: path not found.\n");
 		return FAIL;
 	}
-	while (parentVer != NOT_DEFINED_PARENT)
+	do
 	{
-		if (loadVer(, &parentVer) == FAIL)
+		if (strcmp(fdFile.cFileName, ".") != 0		//Find first file will always return "."
+			&& strcmp(fdFile.cFileName, "..") != 0) //and ".." as the first two directories.
 		{
-			printf("ERROR: unable to load existing tree.\n");
-			return FAIL;
+			sprintf(filePath, "%s\\%s", dirName, fdFile.cFileName);
+			if (handleVerFile(filePath) == FAIL)
+			{
+				printf("ERROR: unable to load existing tree.\n");
+				return FAIL;
+			}
 		}
-		fileName = NULL;
-	}*/
-	//getLastCreatedVersion(); //TODO
+	} while (FindNextFile(hFind, &fdFile));
+	FindClose(hFind);
 	return SUCCESS;
 }
 
-status_t loadVer(int verNum, int* parentVer)
+status_t handleVerFile(char filePath[FNAME_LEN])
 {
-	char* fileName = getNameOfVerFile(verNum);
-	FILE* file = fopen(fileName, "r");
+	FILE* file = fopen(filePath, "r");
 	if (!file)
 	{
 		printf("ERROR: unable to open file with information.\n");
 		return FAIL;
 	}
-	scanf("%i", parentVer);
-	version_t* newRoot = (version_t*)malloc(sizeof(version_t));
-	//—оздать версию
+	int parentVer = INVALID_PARENT;
+	fscanf(file, "%i", &parentVer);
+	if (parentVer == INVALID_PARENT) return SUCCESS; //version is deleted from tree
 	
-	//¬ставить версию в качестве корн€ дерева
+	version_t* ver = (version_t*)malloc(sizeof(version_t));
+	ver->verNum = getVerNum(filePath);
+	if (ver->verNum == INVALID_VER)
+	{
+		printf("ERROR: invalid file name detected.\n");
+		free(ver);
+		return FAIL;
+	}
+	ver->parentPtr = getVerPtr(generalInfo->root, parentVer);
+	ver->childNum = 0;
+	ver->child = NULL;
+	if (getOperationList(ver->operation, file) == FAIL) //TODO
+	{
+		printf("ERROR: invalid operation in file detected.\n");
+		free(ver);
+		return FAIL;
+	}
+	//insertIntoTree(ver); //ƒобавить версию в детей переданной аргументом версии
+	fclose(file);
 	return SUCCESS;
 }
 

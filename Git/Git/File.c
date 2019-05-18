@@ -62,8 +62,15 @@ long int getFileSize(FILE *f)
 	return(fileSize);
 }
 
-void getLastCreatedVersion()
+int getVerNum(char filePath[FNAME_LEN])
 {
-	//проверить все файлы в директории и вытащить файл с наибольшим номером версии
-	//записать его в generalInfo
+	char* firstDot = strchr(filePath, '.');
+	if (!firstDot) return INVALID_VER;
+	char* secondDot = strchr(firstDot + 1, '.');
+	if (!secondDot) return INVALID_VER;
+	
+	int verLen = secondDot - firstDot;
+	char* ver = (char*)calloc(verLen, sizeof(char));
+	strncpy(ver, firstDot + 1, verLen - 1);
+	return atoi(ver);
 }
