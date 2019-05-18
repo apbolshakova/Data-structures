@@ -44,28 +44,3 @@ void deleteGeneralInfo()
 		generalInfo = NULL;
 	}
 }
-
-//TODO: maybe delete
-/*status_t handleFile(char fname[FNAME_LEN], int version, version_t* verInfo)
-{
-	char* fileName = (char*)malloc((FNAME_LEN + VERSION_CHARS_NUM) * sizeof(char));
-	strncpy(fileName, fname, strlen(fname));
-	fileName[strlen(fname)] = '.';
-	_itoa(version, fileName + strlen(fname) + 1, DEC_NUMBER_SYSTEM);
-	
-	FILE* verFile = fopen(fileName, 'r'); //открыть файл fname.version
-	if (!verFile || loadVersion(verInfo, verFile) == FAIL) return FAIL;
-	return SUCCESS;
-}
-
-status_t loadVersion(version_t* verInfo, FILE* verFile) 
-{
-	fscanf_s(verFile, "%i", &(verInfo->parentVer));
-	verInfo->operation = (operation_t*)malloc(sizeof(operation_t));
-	if (verInfo->operation == NULL) return FAIL;
-	return SUCCESS;
-}
-
-char* getTextInCurVer(version_t* verInfo)
-{
-}*/

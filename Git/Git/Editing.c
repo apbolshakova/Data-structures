@@ -107,7 +107,7 @@ status_t handleEditing()
 		return FAIL;
 	}
 
-	printf("Enter text for replacing or press %s to cancel:\n", PROCEED_BTN);
+	printf("Enter text for replacing or press %s when you are done:\n", PROCEED_BTN);
 	char* data = getDataFromInput(&len); 
 	if (edit(i, j, data) == FAIL)
 	{
@@ -132,7 +132,7 @@ status_t edit(int i, int j, char* data)
 	return SUCCESS;
 }
 
-char* getDataFromInput(int* dataLen) //TODO: протестировать
+char* getDataFromInput(int* dataLen)
 {
 	int len = ANY;
 	if (dataLen) len = *dataLen;
@@ -145,7 +145,7 @@ char* getDataFromInput(int* dataLen) //TODO: протестировать
 		if (ch == BACKSPACE)
 		{
 			data[strlen(data) - 1] = '\0';
-			len++;
+			if (len != ANY) len++;
 			fflush(stdin);
 			continue;
 		}
@@ -154,7 +154,7 @@ char* getDataFromInput(int* dataLen) //TODO: протестировать
 			data = (char*)realloc(data, (strlen(data) + TEMP_LEN) * sizeof(char));
 		if (len != ANY) len--;
 	}
-	if (len == ANY) data[strlen(data) - 1] = '\0'; //remove last symbol
+	if (len == ANY) data[strlen(data) - 1] = '\0';
 	printf("\n");
 	fflush(stdin);
 	return data;

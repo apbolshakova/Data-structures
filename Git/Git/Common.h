@@ -45,6 +45,7 @@ bool_t exists(const char *fname);
 const char* getFileExt(const char* filename);
 long int getFileSize(FILE *f);
 int getVerNum(char filePath[FNAME_LEN]);
+char* getDataFromFile(FILE* file);
 
 /*OperationList.c*/
 void deleteOperationList(operation_t** root);

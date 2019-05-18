@@ -74,3 +74,8 @@ int getVerNum(char filePath[FNAME_LEN])
 	strncpy(ver, firstDot + 1, verLen - 1);
 	return atoi(ver);
 }
+
+char* getDataFromFile(FILE* file)
+{
+	//TODO
+}

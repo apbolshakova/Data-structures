@@ -58,7 +58,7 @@ status_t getOperationList(operation_t** root, FILE* file)
 		fscanf_s(file, "%s", buf, TEMP_LEN);
 		op->beginIndex = atoi(buf);
 		op->endIndex = INVALID_INDEX;
-		//op->data = getDataFromFile();
+		op->data = getDataFromFile(file);
 	}
 	else if (*buf == '-')
 	{
