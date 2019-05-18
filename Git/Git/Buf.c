@@ -12,7 +12,7 @@ status_t initBuf(int version)
 	buf->parentPtr = NULL;
 	if (generalInfo->root) //äåðåâî óæå ñóùåñòâóåò
 	{
-		buf->parentPtr = getVerPtr(generalInfo->root, version); //TODO: ÏÐÎÒÅÑÒÈÐÎÂÀÒÜ
+		buf->parentPtr = getVerPtr(generalInfo->root, version);
 		if (!(buf->parentPtr))
 		{
 			deleteBuf();

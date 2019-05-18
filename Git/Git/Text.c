@@ -115,12 +115,12 @@ status_t applyVerChanges(char* text, int textLen, operation_t* opEl)
 		if ((opEl->type == '+' && addToText(text, textLen, opEl) == FAIL))
 		{
 			printf("ERROR: invalid operation found.\n");
-			return FALSE;
+			return FALSE_;
 		}
 		if (opEl->type == '-' && removeFromText(text, textLen, opEl) == FAIL)
 		{
 			printf("ERROR: invalid operation found.\n");
-			return FALSE;
+			return FALSE_;
 		}
 		opEl = opEl->next;
 	}

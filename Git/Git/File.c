@@ -3,11 +3,24 @@
 char* getNameOfVerFile(int version)
 {
 	char* fileName = (char*)calloc(FNAME_LEN, sizeof(char));
-	strncpy(fileName, generalInfo->name, 
-		strlen(generalInfo->name) - strlen(getFileExt(generalInfo->name)));
+	char* fileExt = getFileExt(generalInfo->name);
+	strncpy(fileName, generalInfo->name,
+		strlen(generalInfo->name) - strlen(fileExt) - 1);
+	strcat(fileName, "\\");
+	strncat(fileName, generalInfo->name, 
+		strlen(generalInfo->name) - strlen(fileExt));
 	strcatInt(fileName, version);
 	strcat(fileName, ".txt");
 	return fileName;
+}
+
+char* getDirName()
+{
+	char* dirName = (char*)calloc(FNAME_LEN, sizeof(char));
+	char* fileExt = getFileExt(generalInfo->name);
+	strncpy(dirName, generalInfo->name,
+		strlen(generalInfo->name) - strlen(fileExt) - 1);
+	return dirName;
 }
 
 void strcatInt(char* fileName, int version)
@@ -28,9 +41,9 @@ bool_t exists(const char *fname)
 	if ((file = fopen(fname, "r")))
 	{
 		fclose(file);
-		return TRUE;
+		return TRUE_;
 	}
-	return FALSE;
+	return FALSE_;
 }
 
 const char* getFileExt(char* filename) 

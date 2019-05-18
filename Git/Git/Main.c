@@ -24,7 +24,7 @@ int main(void)
 		printf("ERROR: Invalid operation. File opening required.\n");
 		goto End;
 	}
-	if (initGeneralInfo(fname) == FAIL)
+	if (initGeneralInfo(fname, version) == FAIL)
 	{
 		printf("ERROR: unable to get general info about tree of versions.\n");
 		goto End;

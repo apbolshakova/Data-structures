@@ -1,6 +1,6 @@
 #include "Common.h"
 
-status_t initGeneralInfo(char* fname)
+status_t initGeneralInfo(char* fname, int verNum)
 {
 	generalInfo = (general_t*)malloc(sizeof(general_t));
 	if (!generalInfo)
@@ -20,7 +20,7 @@ status_t initGeneralInfo(char* fname)
 	generalInfo->name[nameLen] = '\0';
 	generalInfo->root = NULL;
 
-	if (buildVerTree() == FAIL)
+	if (buildVerTree(verNum) == FAIL)
 	{
 		printf("ERROR: unable to correctly build tree of versions.\n");
 		return FAIL;

@@ -2,7 +2,7 @@
 #define TYPES
 
 typedef enum FuncResult_ { FAIL, SUCCESS } status_t;
-typedef enum Bool_ { FALSE, TRUE } bool_t;
+typedef enum Bool_ { FALSE_, TRUE_ } bool_t;
 
 typedef enum ActionID_
 {
@@ -32,7 +32,7 @@ typedef struct Operation_ //операция над текстом
 typedef struct Version_ //версия
 {
 	int verNum;
-	//bool_t isDeleted; TODO: maybe delete and add function that returns TRUE if ver is deleted
+	//bool_t isDeleted; TODO: maybe delete and add function that returns TRUE_ if ver is deleted
 	struct Version_* parentPtr; //версия удалена, если её родитель NOT_DEFINED_PARENT
 	int childNum;
 	struct Version_** child;

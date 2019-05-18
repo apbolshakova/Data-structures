@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <Windows.h>
+#include <fileapi.h>
 
 #include "Constants.h"
 #include "Types.h"
@@ -25,7 +27,7 @@ char* getData(int* len);
 bool_t indexIsCorrect(int i); //проверить индекс на корректность
 
 /*GeneralInfo.c*/
-status_t initGeneralInfo(char* fname); //парсит главную информацию, дерево, создаёт буфер
+status_t initGeneralInfo(char* fname, int verNum); //парсит главную информацию, дерево, создаёт буфер
 void deleteGeneralInfo();
 
 /*Main.c*/
@@ -37,6 +39,7 @@ void cleanup();
 
 /*File.c*/
 char* getNameOfVerFile(int version);
+char* getDirName();
 void strcatInt(char* fileName, int version);
 bool_t exists(const char *fname);
 const char* getFileExt(const char* filename);
@@ -69,8 +72,8 @@ status_t initVerTree();
 status_t initTextAsOpearationInRootVer();
 status_t getSourceText(char** text);
 void deleteVerTree(version_t* p);
-status_t buildVerTree(); //получить generalInfo->root, lastCreatedVersion для нового дерева
-status_t loadVerTree(char* fileName); //получить generalInfo->root, lastCreatedVersion
+status_t buildVerTree(int verNum); //получить generalInfo->root, lastCreatedVersion для нового дерева
+status_t loadVerTree(); //получить generalInfo->root, lastCreatedVersion
 status_t loadVer(char* fileName, int* parentVer);
 version_t* getVerPtr(version_t* p, int verNum); //обойти дерево, найти вершину и вернуть либо указатель на неё, либо NULL
 status_t push();

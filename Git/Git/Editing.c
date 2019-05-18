@@ -164,6 +164,6 @@ char* getData(int* dataLen)
 bool_t indexIsCorrect(int i)
 {
 	int textLen = getTextLen();
-	if (i > textLen) return FALSE;
-	return TRUE;
+	if (i > textLen) return FALSE_;
+	return TRUE_;
 }
