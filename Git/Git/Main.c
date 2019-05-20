@@ -62,13 +62,13 @@ void printMainMenu()
 	printf("- edit\n");
 	printf("- add\n");
 	printf("- remove\n");
-	printf("- merge\n");
+	//printf("- merge\n");
 
 	printf("\nVersions handling:\n");
 	printf("- push\n");
 	printf("- pull\n");
-	printf("- delete_version\n");
-	printf("- rebase\n\n");
+	//printf("- delete_version\n");
+	//printf("- rebase\n\n");
 }
 
 int getID(char action[ACTION_LEN])
