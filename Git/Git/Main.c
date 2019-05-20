@@ -42,6 +42,7 @@ void handleMainCycle()
 	do {
 		system("cls");
 		printMainMenu();
+		fflush(stdin);
 		scanf_s("%s", action, (unsigned)sizeof(action));
 		actionID = getID(action);
 		if (handleAction(actionID) == FAIL) printf("\nAction wasn't completed.\n");
@@ -104,7 +105,7 @@ status_t handleAction(int ID)
 	case removeID: return handleRemoving(); break;
 	case mergeID: return SUCCESS; break; //TODO
 	case pushID: return push(); break;
-	case pullID: return SUCCESS; break; //TODO
+	case pullID: return pull(); break; //TODO
 	case deleteVerID: return handleVerDeleting(); break;
 	case rebaseID: return SUCCESS; break; //TODO
 	case closeID: return SUCCESS;

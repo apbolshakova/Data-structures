@@ -4,6 +4,7 @@ status_t handleAdd()
 {
 	int i = 0;
 	printf("Enter starting index or any negative number to cancel (no number -> index = 0): ");
+	fflush(stdin);
 	scanf_s("%i", &i);
 	if (i < 0) return SUCCESS;
 	printf("Enter text to add and press %s when you are done:\n", PROCEED_BTN);
@@ -43,6 +44,7 @@ status_t add(int i, char* data)
 
 status_t handleRemoving()
 {
+	fflush(stdin);
 	int i = 0;
 	printf("Enter starting index or any negative number to cancel (no number -> index = 0): ");
 	scanf_s("%i", &i);
@@ -90,6 +92,7 @@ status_t remove(int i, int j)
 
 status_t handleEditing()
 {
+	fflush(stdin);
 	int i = 0;
 	printf("Enter starting index or any negative number to cancel (no number -> index = 0): ");
 	scanf_s("%i", &i);

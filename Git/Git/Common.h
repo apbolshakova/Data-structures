@@ -80,3 +80,6 @@ status_t handleVerFile(char filePath[FNAME_LEN]);
 void insertIntoTree(version_t* ver); //Add version into tree
 version_t* getVerPtr(version_t* p, int verNum); //обойти дерево, найти вершину и вернуть либо указатель на неё, либо NULL
 status_t push();
+status_t handleVerDeleting();
+status_t deleteVer(version_t* verToDelete);
+status_t copyVerChildren(version_t* prevParent); //copy version's children to it's parent with version's operations saving

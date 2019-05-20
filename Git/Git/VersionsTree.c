@@ -199,16 +199,16 @@ void insertIntoTree(version_t* ver)
 
 version_t* getVerPtr(version_t* p, int verNum)
 {
-	if (!p) return NULL;
+	version_t* result = NULL;
+	if (!p) return result;
 
-	version_t* result = p;
-	if (result->verNum == verNum) return p;
+	if (p->verNum == verNum) return p;
 	else
 	{
 		for (int i = 0; i < p->childNum; i++)
 		{
 			result = getVerPtr(p->child[i], verNum);
-			if (result == verNum) break;
+			if (result && result->verNum == verNum) break;
 		}
 	}
 	return result;
@@ -236,10 +236,30 @@ status_t push()
 	return SUCCESS;
 }
 
+status_t pull()
+{
+	int i = 0;
+	printf("Enter version number or any negative number to cancel (no number -> index = 0): ");
+	fflush(stdin);
+	scanf_s("%i", &i);
+	if (i < 0) return SUCCESS;
+	if (!getVerPtr(generalInfo->root, i))
+	{
+		printf("ERROR: attempt to pull not existing version.\n");
+	}
+	if (initBuf(i) == FAIL)
+	{
+		printf("ERROR: unable to initialize new buffer.\n");
+		return FAIL;
+	}
+	return SUCCESS;
+}
+
 status_t handleVerDeleting()
 {
 	int i = 0;
 	printf("Enter version number or any negative number to cancel (no number -> index = 0): ");
+	fflush(stdin);
 	scanf_s("%i", &i);
 	if (i < 0) return SUCCESS;
 	version_t* ver = getVerPtr(generalInfo->root, i);
@@ -248,28 +268,51 @@ status_t handleVerDeleting()
 		printf("ERROR: attempt to delete version that dooesn't exist.\n");
 		return FAIL;
 	}
-	if (deleteVer(ver) == FAIL)
+	/*if (deleteVer(ver) == FAIL)
 	{
 		printf("ERROR: unable to delete version.\n");
 		return FAIL;
-	}
+	}*/
 	return SUCCESS;
 }
 
 status_t deleteVer(version_t* verToDelete)
 {
+	operation_t* opListRoot = NULL; //новый список операций
+	/*if (copyOpList(opListRoot, verToDelete->operation) == FAIL)
+	{
+		printf("ERROR: unable to copy version's operation list.\n");
+		return FAIL;
+	}
 	if (copyVerChildren(verToDelete) == FAIL) //перекинуть детей версии на её родителя (создать детей родителя verToDelete, операции которых - сумма операций из verToDelete и их собственные)
 	{
 		printf("ERROR: unable to attach version's children to it's parent.\n");
 		return FAIL;
 	}
-	if (buf->parentPtr == verToDelete && copyChild(/*TODO*/) == FAIL) //если буфер - сын удаляемой версии, то его тоже перекинуть на родителя verToDelete
+	if (buf->parentPtr == verToDelete && copyChild() == FAIL) //если буфер - сын удаляемой версии, то его тоже перекинуть на родителя verToDelete
 	{
 		printf("ERROR: unable to attach buffer to new parent");
 		return FAIL;
-	}
+	}*/
 	char* fileName = getNameOfVerFile(verToDelete->verNum);
 	if (!fileName || !DeleteFile(fileName)) printf("WARNNING: version file wasn't deleted.\n");
 	if (fileName) free(fileName);
+	//освободить память verToDelete, но не трогать детей и операции
 	return SUCCESS;
+}
+
+status_t copyVerChildren(version_t* prevParent)
+{
+	if (!(prevParent->parentPtr)) //handle if it's root
+	{
+		//Выбрать новый корень
+		//Прикрепить к нему остальных детей
+	}
+	else
+	{
+		for (int i = 0; i < prevParent->childNum; i++)
+		{
+			//copy one child
+		}
+	}
 }
