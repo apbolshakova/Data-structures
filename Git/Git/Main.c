@@ -17,16 +17,19 @@ int main(void)
 	if (strcmp(getFileExt(fname), TEXT_EXT))
 	{
 		printf("ERROR: Invalid source file. It must be a .%s file.\n", TEXT_EXT);
+		_getch();
 		goto End;
 	}
 	if (getID(action) != openID)
 	{
 		printf("ERROR: Invalid operation. File opening required.\n");
+		_getch();
 		goto End;
 	}
 	if (initGeneralInfo(fname, version) == FAIL)
 	{
 		printf("ERROR: unable to get general info about tree of versions.\n");
+		_getch();
 		goto End;
 	}
 	handleMainCycle();
@@ -105,7 +108,7 @@ status_t handleAction(int ID)
 	case removeID: return handleRemoving(); break;
 	case mergeID: return SUCCESS; break; //TODO
 	case pushID: return push(); break;
-	case pullID: return pull(); break; //TODO
+	case pullID: return pull(); break;
 	case deleteVerID: return handleVerDeleting(); break;
 	case rebaseID: return SUCCESS; break; //TODO
 	case closeID: return SUCCESS;

@@ -81,3 +81,8 @@ status_t getOperationList(operation_t** root, FILE* file)
 	}
 	return SUCCESS;
 }
+
+status_t copyOpList(operation_t* opListRoot, operation_t* sourceOpList)
+{
+
+}

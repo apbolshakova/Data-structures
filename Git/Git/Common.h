@@ -53,6 +53,7 @@ void pushIntoOpList(operation_t** root, operation_t* operation);
 operation_t* getLastOperation(operation_t** root);
 status_t printOperations(FILE* file);
 status_t getOperationList(operation_t** root, FILE* file);
+status_t copyOpList(operation_t* opListRoot, operation_t* sourceOpList); //TODO
 
 /*Path.c*/
 status_t getPath(path_t** path); //получить путь от корня до буфера
@@ -77,9 +78,11 @@ void deleteVerTree(version_t* p);
 status_t buildVerTree(int verNum); //получить generalInfo->root, lastCreatedVersion для нового дерева
 status_t loadVerTree(); //получить generalInfo->root, lastCreatedVersion, пройти по всех файлам версий и построить дерево
 status_t handleVerFile(char filePath[FNAME_LEN]);
-void insertIntoTree(version_t* ver); //Add version into tree
+status_t insertIntoTree(version_t* ver); //Add version into tree
 version_t* getVerPtr(version_t* p, int verNum); //обойти дерево, найти вершину и вернуть либо указатель на неё, либо NULL
 status_t push();
 status_t handleVerDeleting();
 status_t deleteVer(version_t* verToDelete);
-status_t copyVerChildren(version_t* prevParent); //copy version's children to it's parent with version's operations saving
+status_t copyVerChildren(version_t* prevParent); //copy version's children to it's parent with version's operations saving TODO
+status_t addChild(version_t* newChild, version_t* parent);
+void cleanupVersion(version_t* ver); //TODO

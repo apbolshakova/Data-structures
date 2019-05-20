@@ -180,21 +180,25 @@ status_t handleVerFile(char filePath[FNAME_LEN])
 		free(ver);
 		return FAIL;
 	}
-	insertIntoTree(ver);
+	if (insertIntoTree(ver) == FAIL)
+	{
+		printf("ERROR: unable to insert version into version tree.\n");
+		return FAIL;
+	}
 	fclose(file);
 	return SUCCESS;
 }
 
-void insertIntoTree(version_t* ver)
+status_t insertIntoTree(version_t* ver)
 {
 	if (!(ver->parentPtr)) generalInfo->root = ver;
-	else
+	else if (addChild(ver, ver->parentPtr) == FAIL)
 	{
-		(ver->parentPtr->childNum)++;
-		ver->parentPtr->child = (version_t**)realloc(ver->parentPtr->child, ver->parentPtr->childNum * sizeof(version_t*));
-		ver->parentPtr->child[ver->parentPtr->childNum - 1] = ver;
+		printf("ERROR: unable to add child to version.\n");
+		return FAIL;
 	}
 	generalInfo->lastCreatedVersion = ver->verNum; //увеличить номер последней сохранённой версии
+	return SUCCESS;
 }
 
 version_t* getVerPtr(version_t* p, int verNum)
@@ -216,11 +220,10 @@ version_t* getVerPtr(version_t* p, int verNum)
 
 status_t push()
 {
-	if (buf->parentPtr) //сохранить буфер как ребёнка потенциального родителя
+	if (buf->parentPtr && addChild(buf, buf->parentPtr) == FAIL) //сохранить буфер как ребёнка потенциального родителя
 	{
-		(buf->parentPtr->childNum)++;
-		buf->parentPtr->child = (version_t**)realloc(buf->parentPtr->child, buf->parentPtr->childNum * sizeof(version_t*));
-		buf->parentPtr->child[buf->parentPtr->childNum - 1] = buf; 
+		printf("ERROR: unable to add buffer to version as it's child.\n");
+		return FAIL;
 	}
 	generalInfo->lastCreatedVersion = buf->verNum; //увеличить номер последней сохранённой версии
 	if (createVerFile() == FAIL)
@@ -268,18 +271,18 @@ status_t handleVerDeleting()
 		printf("ERROR: attempt to delete version that dooesn't exist.\n");
 		return FAIL;
 	}
-	/*if (deleteVer(ver) == FAIL)
+	if (deleteVer(ver) == FAIL)
 	{
 		printf("ERROR: unable to delete version.\n");
 		return FAIL;
-	}*/
+	}
 	return SUCCESS;
 }
 
 status_t deleteVer(version_t* verToDelete)
 {
 	operation_t* opListRoot = NULL; //новый список операций
-	/*if (copyOpList(opListRoot, verToDelete->operation) == FAIL)
+	if (copyOpList(opListRoot, verToDelete->operation) == FAIL)
 	{
 		printf("ERROR: unable to copy version's operation list.\n");
 		return FAIL;
@@ -289,15 +292,15 @@ status_t deleteVer(version_t* verToDelete)
 		printf("ERROR: unable to attach version's children to it's parent.\n");
 		return FAIL;
 	}
-	if (buf->parentPtr == verToDelete && copyChild() == FAIL) //если буфер - сын удаляемой версии, то его тоже перекинуть на родителя verToDelete
+	if (buf->parentPtr == verToDelete && addChild(buf, verToDelete->parentPtr) == FAIL) //если буфер - сын удаляемой версии, то его тоже перекинуть на родителя verToDelete
 	{
 		printf("ERROR: unable to attach buffer to new parent");
 		return FAIL;
-	}*/
+	}
 	char* fileName = getNameOfVerFile(verToDelete->verNum);
 	if (!fileName || !DeleteFile(fileName)) printf("WARNNING: version file wasn't deleted.\n");
 	if (fileName) free(fileName);
-	//освободить память verToDelete, но не трогать детей и операции
+	cleanupVersion(verToDelete); //освободить память verToDelete, но не трогать детей и операции
 	return SUCCESS;
 }
 
@@ -315,4 +318,32 @@ status_t copyVerChildren(version_t* prevParent)
 			//copy one child
 		}
 	}
+}
+
+status_t addChild(version_t* newChild, version_t* parent)
+{
+	if (!newChild)
+	{
+		printf("ERROR: attempt to add NULL pointer as child.\n");
+		return FAIL;
+	}
+	if (!parent)
+	{
+		printf("ERROR: attempt to add child for NULL pointer.\n");
+		return FAIL;
+	}
+    (parent->childNum)++;
+	parent->child = (version_t**)realloc(parent->child, parent->childNum * sizeof(version_t*));
+	if (!parent->child)
+	{
+		printf("ERROR: memory allocation problem.\n");
+		return FAIL;
+	}
+	parent->child[parent->childNum - 1] = newChild;
+	return SUCCESS;
+}
+
+void cleanupVersion(version_t* ver)
+{
+	//TODO
 }
