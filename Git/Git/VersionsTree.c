@@ -281,18 +281,12 @@ status_t handleVerDeleting()
 
 status_t deleteVer(version_t* verToDelete)
 {
-	operation_t* opListRoot = NULL; //новый список операций
-	if (copyOpList(opListRoot, verToDelete->operation) == FAIL)
-	{
-		printf("ERROR: unable to copy version's operation list.\n");
-		return FAIL;
-	}
-	if (copyVerChildren(verToDelete) == FAIL) //перекинуть детей версии на её родителя (создать детей родителя verToDelete, операции которых - сумма операций из verToDelete и их собственные)
+	if (copyVerChildren(verToDelete) == FAIL)
 	{
 		printf("ERROR: unable to attach version's children to it's parent.\n");
 		return FAIL;
 	}
-	if (buf->parentPtr == verToDelete && addChild(buf, verToDelete->parentPtr) == FAIL) //если буфер - сын удаляемой версии, то его тоже перекинуть на родителя verToDelete
+	if (buf->parentPtr == verToDelete && relocateChild(verToDelete, BUF) == FAIL) //если буфер - сын удаляемой версии, то его тоже перекинуть на родителя verToDelete
 	{
 		printf("ERROR: unable to attach buffer to new parent");
 		return FAIL;
@@ -300,7 +294,8 @@ status_t deleteVer(version_t* verToDelete)
 	char* fileName = getNameOfVerFile(verToDelete->verNum);
 	if (!fileName || !DeleteFile(fileName)) printf("WARNNING: version file wasn't deleted.\n");
 	if (fileName) free(fileName);
-	cleanupVersion(verToDelete); //освободить память verToDelete, но не трогать детей и операции
+	cleanupVersion(verToDelete); //освободить память verToDelete, но не трогать детей и 
+	//rewrite files which involved
 	return SUCCESS;
 }
 
@@ -308,16 +303,61 @@ status_t copyVerChildren(version_t* prevParent)
 {
 	if (!(prevParent->parentPtr)) //handle if it's root
 	{
-		//Выбрать новый корень
-		//Прикрепить к нему остальных детей
+		generalInfo->root = prevParent->child[0];
+		for (int i = 1; i < prevParent->childNum; i++)
+		{
+			//формируемый список операций - отмена всех операций нулевого ребёнка + операции ребёнка, присвоить созданный список как список операций ребёнка, addChild
+		}
 	}
 	else
 	{
 		for (int i = 0; i < prevParent->childNum; i++)
 		{
-			//copy one child
+			if (relocateChild(prevParent, i) == FAIL) return FAIL;
 		}
 	}
+	return SUCCESS;
+}
+
+status_t relocateChild(version_t* prevParent, int i)
+{
+	operation_t* opListRoot = NULL; //новый список операций
+	if (appendOpList(&opListRoot, prevParent->operation) == FAIL)
+	{
+		printf("ERROR: unable to copy version's operation list.\n");
+		return FAIL;
+	}
+	if (i != BUF)
+	{
+		if (appendOpList(&opListRoot, prevParent->child[i]->operation) == FAIL)
+		{
+			printf("ERROR: unable to copy version's operation list.\n");
+			return FAIL;
+		}
+		deleteOperationList(&(prevParent->child[i]->operation));
+		prevParent->child[i]->operation = opListRoot;
+		if (addChild(prevParent->child[i], prevParent->parentPtr) == FAIL)
+		{
+			printf("ERROR: unable to add child to version.\n");
+			return FAIL;
+		}
+	}
+	else
+	{
+		if (appendOpList(&opListRoot, buf->operation) == FAIL)
+		{
+			printf("ERROR: unable to copy version's operation list.\n");
+			return FAIL;
+		}
+		deleteOperationList(&(buf->operation));
+		buf->operation = opListRoot;
+		if (addChild(buf, prevParent->parentPtr) == FAIL)
+		{
+			printf("ERROR: unable to add child to version.\n");
+			return FAIL;
+		}
+	}
+	return SUCCESS;
 }
 
 status_t addChild(version_t* newChild, version_t* parent)
@@ -345,5 +385,7 @@ status_t addChild(version_t* newChild, version_t* parent)
 
 void cleanupVersion(version_t* ver)
 {
-	//TODO
+	if (!ver) return;
+	deleteOperationList(&(ver->operation));
+	free(ver);
 }

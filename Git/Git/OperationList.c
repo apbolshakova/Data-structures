@@ -82,7 +82,26 @@ status_t getOperationList(operation_t** root, FILE* file)
 	return SUCCESS;
 }
 
-status_t copyOpList(operation_t* opListRoot, operation_t* sourceOpList)
+status_t appendOpList(operation_t** opListRoot, operation_t* appendOpList)
 {
-
+	if (!appendOpList) return SUCCESS;
+	operation_t* opEl = getLastOperation(opListRoot);
+	while (appendOpList)
+	{
+		operation_t* nextOpEl = (operation_t*)malloc(sizeof(operation_t));
+		if (!nextOpEl)
+		{
+			printf("ERROR: memory allocation problem.\n");
+			return FAIL;
+		}
+		memcpy(nextOpEl, appendOpList, sizeof(operation_t));
+		if (!opEl) *opListRoot = nextOpEl;
+		else
+		{
+			opEl->next = nextOpEl;
+			opEl = opEl->next;
+		}
+		appendOpList = appendOpList->next;
+	}
+	return SUCCESS;
 }

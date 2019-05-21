@@ -70,7 +70,7 @@ void printMainMenu()
 	printf("\nVersions handling:\n");
 	printf("- push\n");
 	printf("- pull\n");
-	//printf("- delete_version\n");
+	printf("- delete_version\n");
 	//printf("- rebase\n\n");
 }
 
