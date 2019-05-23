@@ -281,6 +281,11 @@ status_t handleVerDeleting()
 
 status_t deleteVer(version_t* verToDelete)
 {
+	if (deleteFromChildren(verToDelete) == FAIL) //TODO
+	{
+		printf("ERROR: unable to delete version from it's parent children.\n");
+		return FAIL;
+	}
 	if (copyVerChildren(verToDelete) == FAIL)
 	{
 		printf("ERROR: unable to attach version's children to it's parent.\n");
@@ -294,9 +299,41 @@ status_t deleteVer(version_t* verToDelete)
 	char* fileName = getNameOfVerFile(verToDelete->verNum);
 	if (!fileName || !DeleteFile(fileName)) printf("WARNNING: version file wasn't deleted.\n");
 	if (fileName) free(fileName);
-	cleanupVersion(verToDelete); //освободить память verToDelete, но не трогать детей и 
 	//rewrite files which involved
+	cleanupVersion(&verToDelete);
 	return SUCCESS;
+}
+
+status_t deleteFromChildren(version_t* verToDelete)
+{
+	if (!(verToDelete) || !(verToDelete->parentPtr)) return SUCCESS;
+	int verPos = INVALID_INDEX;
+	for (int i = 0; i < verToDelete->parentPtr->childNum; i++)
+	{
+		if (verToDelete->parentPtr->child[i] == verToDelete)
+		{
+			verPos = i;
+			break;
+		}
+	}
+	if (verPos == INVALID_INDEX)
+	{
+		printf("ERROR: version is not attacted to it's parent as child");
+		return FAIL;
+	}
+	verToDelete->parentPtr->child[verPos] = NULL;
+	moveBackChildren(verToDelete->parentPtr, verPos);
+	return SUCCESS;
+}
+
+void moveBackChildren(version_t* parentPtr, int verPos) //TODO test
+{
+	for (int i = verPos + 1; i < parentPtr->childNum; i++)
+	{
+		parentPtr->child[i - 1] = parentPtr->child[i];
+		parentPtr->child[i] = NULL;
+	}
+	if (parentPtr->childNum >= 1) parentPtr->childNum--;
 }
 
 status_t copyVerChildren(version_t* prevParent)
@@ -344,18 +381,8 @@ status_t relocateChild(version_t* prevParent, int i)
 	}
 	else
 	{
-		if (appendOpList(&opListRoot, buf->operation) == FAIL)
-		{
-			printf("ERROR: unable to copy version's operation list.\n");
-			return FAIL;
-		}
 		deleteOperationList(&(buf->operation));
-		buf->operation = opListRoot;
-		if (addChild(buf, prevParent->parentPtr) == FAIL)
-		{
-			printf("ERROR: unable to add child to version.\n");
-			return FAIL;
-		}
+		buf->parentPtr = prevParent->parentPtr;
 	}
 	return SUCCESS;
 }
@@ -380,12 +407,14 @@ status_t addChild(version_t* newChild, version_t* parent)
 		return FAIL;
 	}
 	parent->child[parent->childNum - 1] = newChild;
+	newChild->parentPtr = parent;
 	return SUCCESS;
 }
 
-void cleanupVersion(version_t* ver)
+void cleanupVersion(version_t** ver)
 {
 	if (!ver) return;
-	deleteOperationList(&(ver->operation));
-	free(ver);
+	deleteOperationList(&((*ver)->operation));
+	free(*ver);
+	*ver = NULL;
 }

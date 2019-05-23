@@ -83,7 +83,8 @@ version_t* getVerPtr(version_t* p, int verNum); //обойти дерево, найти вершину и
 status_t push();
 status_t handleVerDeleting();
 status_t deleteVer(version_t* verToDelete);
+void moveBackChildren(version_t* parentPtr, int verPos); //сдвинуть детей родителя по индексам verPos + 1..childrenNum - 1 на один назад
 status_t copyVerChildren(version_t* prevParent); //copy version's children to it's parent with version's operations saving TODO
 status_t relocateChild(version_t* prevParent, int i);
 status_t addChild(version_t* newChild, version_t* parent); //add version to child array without any editing
-void cleanupVersion(version_t* ver);
+void cleanupVersion(version_t** ver);
