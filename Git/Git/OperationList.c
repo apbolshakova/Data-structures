@@ -26,9 +26,10 @@ operation_t* getLastOperation(operation_t** root)
 	return result;
 }
 
-status_t printOperations(FILE* file)
+status_t printOperations(FILE* file, operation_t* opListFromVer)
 {
-	operation_t* op = buf->operation;
+	operation_t* op = opListFromVer;
+	if (!opListFromVer) op = buf->operation;
 	while (op)
 	{
 		if (op->type == '+') fprintf(file, "+ %i %s\n", op->beginIndex, op->data);

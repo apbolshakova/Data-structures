@@ -49,8 +49,32 @@ status_t createVerFile()
 	}
 	if (buf->parentPtr) fprintf(file, "%i\n", buf->parentPtr->verNum);
 	else fprintf(file, "-1\n");
-	if (printOperations(file) == FAIL)
+	if (printOperations(file, NULL) == FAIL)
 	{
+		fclose(file);
+		printf("ERROR: operations data is corrupted.\n");
+		return FAIL;
+	};
+	fclose(file);
+	return SUCCESS;
+}
+
+status_t rewriteVerFile(version_t* ver)
+{
+	if (!ver) return SUCCESS;
+	const char* fileName = getNameOfVerFile(ver->verNum);
+	FILE* file = fopen(fileName, "w");
+	free(fileName);
+	if (!file)
+	{
+		printf("ERROR: unable to open version file.\n");
+		return FAIL;
+	}
+	if (ver->parentPtr) fprintf(file, "%i\n", ver->parentPtr->verNum);
+	else fprintf(file, "-1\n");
+	if (printOperations(file, ver->operation) == FAIL)
+	{
+		fclose(file);
 		printf("ERROR: operations data is corrupted.\n");
 		return FAIL;
 	};

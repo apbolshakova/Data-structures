@@ -299,7 +299,6 @@ status_t deleteVer(version_t* verToDelete)
 	char* fileName = getNameOfVerFile(verToDelete->verNum);
 	if (!fileName || !DeleteFile(fileName)) printf("WARNNING: version file wasn't deleted.\n");
 	if (fileName) free(fileName);
-	//rewrite files which involved
 	cleanupVersion(&verToDelete);
 	return SUCCESS;
 }
@@ -376,6 +375,11 @@ status_t relocateChild(version_t* prevParent, int i)
 		if (addChild(prevParent->child[i], prevParent->parentPtr) == FAIL)
 		{
 			printf("ERROR: unable to add child to version.\n");
+			return FAIL;
+		}
+		if (rewriteVerFile(prevParent->child[i]) == FAIL)
+		{
+			printf("ERROR: unable to rewrite child's file.\n");
 			return FAIL;
 		}
 	}

@@ -16,6 +16,7 @@ extern version_t* verTree;
 status_t initBuf(int version); //создаёт буфер с потенциальным родителем version, если буфер был - стирается
 void deleteBuf();
 status_t createVerFile(); //формирует из буфера новый файл
+status_t rewriteVerFile(version_t* ver); //пересохраняет файл версии
 
 /*Editing.c*/
 status_t handleAdd();
@@ -51,10 +52,9 @@ status_t getDataFromFile(char** storage, FILE* file);
 void deleteOperationList(operation_t** root);
 void pushIntoOpList(operation_t** root, operation_t* operation);
 operation_t* getLastOperation(operation_t** root);
-status_t printOperations(FILE* file);
+status_t printOperations(FILE* file, operation_t* opListFromVer);
 status_t getOperationList(operation_t** root, FILE* file);
 status_t appendOpList(operation_t** opListRoot, operation_t* appendOpList);
-status_t getConcatenatedOpList();
 /*Path.c*/
 status_t getPath(path_t** path); //получить путь от корня до буфера
 status_t pushIntoPath(path_t** root, version_t* ver);
