@@ -96,7 +96,11 @@ status_t appendOpList(operation_t** opListRoot, operation_t* appendOpList)
 			return FAIL;
 		}
 		memcpy(nextOpEl, appendOpList, sizeof(operation_t));
-		if (!opEl) *opListRoot = nextOpEl;
+		if (!opEl)
+		{
+			*opListRoot = nextOpEl;
+			opEl = *opListRoot;
+		}
 		else
 		{
 			opEl->next = nextOpEl;
