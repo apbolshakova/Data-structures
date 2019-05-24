@@ -57,7 +57,7 @@ status_t getOperationList(operation_t** root, FILE* file);
 status_t appendOpList(operation_t** opListRoot, operation_t* appendOpList);
 /*Path.c*/
 status_t getPath(path_t** path); //получить путь от корня до буфера
-status_t pushIntoPath(path_t** root, version_t* ver);
+status_t shiftIntoPath(path_t** root, version_t* ver);
 
 /*Text.c*/
 int getTextLen(); //получить длину текста на текущей итерации

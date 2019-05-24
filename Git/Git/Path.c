@@ -6,7 +6,7 @@ status_t getPath(path_t** path)
 
 	if (buf)
 	{
-		if (pushIntoPath(path, buf) == FAIL)
+		if (shiftIntoPath(path, buf) == FAIL)
 		{
 			printf("ERROR: unable to get path of buffer's parent.\n");
 			return FAIL;
@@ -15,7 +15,7 @@ status_t getPath(path_t** path)
 	}
 	while (ver)
 	{
-		if (pushIntoPath(path, ver) == FAIL)
+		if (shiftIntoPath(path, ver) == FAIL)
 		{
 			printf("ERROR: unable to get path of buffer's parent.\n");
 			return FAIL;
@@ -25,7 +25,7 @@ status_t getPath(path_t** path)
 	return SUCCESS;
 }
 
-status_t pushIntoPath(path_t** root, version_t* ver)
+status_t shiftIntoPath(path_t** root, version_t* ver)
 {
 	path_t* newEl = (path_t*)malloc(sizeof(path_t));
 	if (!newEl)

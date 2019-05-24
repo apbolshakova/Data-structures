@@ -342,7 +342,7 @@ status_t copyVerChildren(version_t* prevParent)
 		generalInfo->root = prevParent->child[0];
 		for (int i = 1; i < prevParent->childNum; i++)
 		{
-			//формируемый список операций - отмена всех операций нулевого ребёнка + операции ребёнка, присвоить созданный список как список операций ребёнка, addChild
+			//формируемый список операций - отмена всех операций нулевого ребёнка + операции ребёнка, присвоить созданный список как список операций ребёнка, addChild TODO
 		}
 	}
 	else
@@ -421,4 +421,48 @@ void cleanupVersion(version_t** ver)
 	deleteOperationList(&((*ver)->operation));
 	free(*ver);
 	*ver = NULL;
+}
+
+status_t handleRebasing()
+{
+	int i = 0;
+	printf("Enter version number or any negative number to cancel (no number -> index = 0): ");
+	fflush(stdin);
+	scanf_s("%i", &i);
+	if (i < 0) return SUCCESS;
+	if (rebase(i) == FAIL)
+	{
+		printf("ERROR: unable to delete version.\n");
+		return FAIL;
+	}
+}
+
+status_t rebase(int verNum)
+{
+	version_t* newRoot = getVerPtr(generalInfo->root, verNum); //получить newRoot и lastEl - getVerPtr(verNum)
+	if (!newRoot)
+	{
+		printf("ERROR: invalid version number for rebasing.\n");
+		return FAIL;
+	}
+	version_t* lastEl = newRoot; //конец пути, по которому можно дойти от корня до элемента (newRoot поднимаетмя по этому пути)
+	//заменить операции из newRoot на единственную - add текст в виде из данной версии
+	while (newRoot->parentPtr != NULL)
+	{
+		if (addChild(newRoot->parentPtr, lastEl) == FAIL) //добавить newRoot->parent в детей lastEl
+		{
+			printf("ERROR: unable to switch places of ")
+		}
+		//lastEl = этот новый ребёнок
+		//убрать lastEl из детей newRoot->parent->parent (если lastEl - корень, то игнор)
+		//добавить newRoot в детей newRoot->parent->parent (если lastEl - корень, то игнор)
+		//newRoot->parent = newRoot->parent->parent (если lastEl - корень, то newRoot->parent = NULL)
+		if (reverseOpList(lastEl) == FAIL) //Реверс операций lastEl
+		{
+			printf("ERROR: unable to reverse operations.\n");
+			return FAIL;
+		}
+		//обновить файл версии lastEl
+	}
+
 }

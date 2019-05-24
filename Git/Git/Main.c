@@ -110,7 +110,7 @@ status_t handleAction(int ID)
 	case pushID: return push(); break;
 	case pullID: return pull(); break;
 	case deleteVerID: return handleVerDeleting(); break;
-	case rebaseID: return SUCCESS; break; //TODO
+	case rebaseID: return handleRebasing(); break;
 	case closeID: return SUCCESS;
 	}
 	printf("ERROR: Invalid action.\n");
