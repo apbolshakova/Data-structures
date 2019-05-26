@@ -18,17 +18,19 @@ int getTextLen()
 	return result;
 }
 
-int getMaxTextLen()
+int getMaxTextLen(version_t* ver)
 {
 	int result = 0;
 	int lenDiff = 0;
-	version_t* ver = generalInfo->root;
-
-	if (buf)
+	if (!ver)
 	{
-		lenDiff = getMaxLenDiff(buf->operation);
-		if (lenDiff > 0) result += lenDiff;
-		ver = buf->parentPtr;
+		ver = generalInfo->root;
+		if (buf)
+		{
+			lenDiff = getMaxLenDiff(buf->operation);
+			if (lenDiff > 0) result += lenDiff;
+			ver = buf->parentPtr;
+		}
 	}
 	while (ver)
 	{
@@ -66,7 +68,7 @@ int getMaxLenDiff(operation_t* list)
 
 status_t print()
 {
-	int stringLen = getMaxTextLen();
+	int stringLen = getMaxTextLen(NULL);
 	char* text = (char*)calloc(stringLen + 1, sizeof(char));
 	if (getCurText(text, stringLen) == FAIL)
 	{

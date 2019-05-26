@@ -439,24 +439,33 @@ status_t handleRebasing()
 
 status_t rebase(int verNum)
 {
-	version_t* newRoot = getVerPtr(generalInfo->root, verNum); //получить newRoot и lastEl - getVerPtr(verNum)
+	version_t* newRoot = getVerPtr(generalInfo->root, verNum); //получить newRoot и lastEl
 	if (!newRoot)
 	{
 		printf("ERROR: invalid version number for rebasing.\n");
 		return FAIL;
 	}
-	version_t* lastEl = newRoot; //конец пути, по которому можно дойти от корня до элемента (newRoot поднимаетмя по этому пути)
-	//заменить операции из newRoot на единственную - add текст в виде из данной версии
+	version_t* lastEl = newRoot; //конец пути, по которому можно дойти от корня до элемента (newRoot поднимаетcя по этому пути)
+	if (mergeOperaions(lastEl) == FALSE)//заменить операции из newRoot на единственную - add текст в виде из данной версии
+	{
+		printf("ERROR: unable to merge operations for new root into one add operation.\n");
+		return FAIL;
+	}
 	while (newRoot->parentPtr != NULL)
 	{
 		if (addChild(newRoot->parentPtr, lastEl) == FAIL) //добавить newRoot->parent в детей lastEl
 		{
-			printf("ERROR: unable to switch places of ")
+			printf("ERROR: unable to switch versions positions in tree.\n");
+			return FAIL;
 		}
-		//lastEl = этот новый ребёнок
-		//убрать lastEl из детей newRoot->parent->parent (если lastEl - корень, то игнор)
-		//добавить newRoot в детей newRoot->parent->parent (если lastEl - корень, то игнор)
-		//newRoot->parent = newRoot->parent->parent (если lastEl - корень, то newRoot->parent = NULL)
+		lastEl = newRoot->parentPtr; //lastEl = этот новый ребёнок
+		if (lastEl->parentPtr == NULL) newRoot->parentPtr = NULL; //newRoot встал на позицию корня
+		else
+		{
+			int i = INVALID_INDEX; //убрать lastEl из детей newRoot->parent->parent (если lastEl - корень, то игнор)
+								   //добавить newRoot в детей newRoot->parent->parent (если lastEl - корень, то игнор)
+			newRoot->parentPtr = newRoot->parentPtr->parentPtr;
+		}
 		if (reverseOpList(lastEl) == FAIL) //Реверс операций lastEl
 		{
 			printf("ERROR: unable to reverse operations.\n");
@@ -464,5 +473,17 @@ status_t rebase(int verNum)
 		}
 		//обновить файл версии lastEl
 	}
+	return SUCCESS;
+}
 
+status_t mergeOperaions(version_t* ver)
+{
+	int stringLen = getMaxTextLen(ver);
+	char* text = (char*)calloc(stringLen + 1, sizeof(char));
+	if (getCurText(text, stringLen) == FAIL)
+	{
+		free(text);
+		printf("ERROR: unable to print text.\n");
+		return FAIL;
+	}
 }

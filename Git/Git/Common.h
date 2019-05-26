@@ -61,7 +61,7 @@ status_t shiftIntoPath(path_t** root, version_t* ver);
 
 /*Text.c*/
 int getTextLen(); //получить длину текста на текущей итерации
-int getMaxTextLen(); //получить размер для буфера
+int getMaxTextLen(version_t* ver); //получить размер для буфера
 int getLenDiff(operation_t* operation); //получить изменение длины текста после применения операций из массива operation
 int getMaxLenDiff(operation_t* list);
 status_t print(); //выводит текст на текущей итерации
@@ -88,3 +88,5 @@ status_t copyVerChildren(version_t* prevParent); //copy version's children to it
 status_t relocateChild(version_t* prevParent, int i);
 status_t addChild(version_t* newChild, version_t* parent); //add version to child array without any editing
 void cleanupVersion(version_t** ver);
+status_t handleRebasing();
+status_t rebase(int verNum);
