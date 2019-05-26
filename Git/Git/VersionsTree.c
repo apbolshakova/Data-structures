@@ -407,16 +407,7 @@ status_t relocateChild(version_t* prevParent, int i)
 
 status_t addChild(version_t* newChild, version_t* parent)
 {
-	if (!newChild)
-	{
-		printf("ERROR: attempt to add NULL pointer as child.\n");
-		return FAIL;
-	}
-	if (!parent)
-	{
-		printf("ERROR: attempt to add child for NULL pointer.\n");
-		return FAIL;
-	}
+	if (!newChild || !parent) return SUCCESS;
     (parent->childNum)++;
 	parent->child = (version_t**)realloc(parent->child, parent->childNum * sizeof(version_t*));
 	if (!parent->child)
@@ -467,7 +458,33 @@ status_t rebase(int verNum)
 	}
 	while (newRoot->parentPtr != NULL)
 	{
-		version_t* oldParent = lastEl->parentPtr;
+		version_t* par = newRoot->parentPtr;
+		version_t* parOfPar = NULL;
+		if (par->parentPtr) parOfPar = par->parentPtr;
+
+		if (deleteFromChildren(par, parOfPar) == FAIL) 
+		{
+			printf("ERROR: unable to move version down.\n");
+			return FAIL;
+		}
+		if (deleteFromChildren(newRoot, par) == FAIL)
+		{
+			printf("ERROR: unable to move version down.\n");
+			return FAIL;
+		}
+		if (!parOfPar) newRoot->parentPtr = NULL;
+		else if (addChild(newRoot, parOfPar) == FAIL)
+		{
+			printf("ERROR: unable to switch versions positions in tree.\n");
+			return FAIL;
+		}
+		if (addChild(par, lastEl) == FAIL)
+		{
+			printf("ERROR: unable to switch versions positions in tree.\n");
+			return FAIL;
+		}
+		lastEl = par;
+		/*version_t* oldParent = lastEl->parentPtr;
 		if (addChild(newRoot->parentPtr, lastEl) == FAIL) //добавить newRoot->parent в детей lastEl
 		{
 			printf("ERROR: unable to switch versions positions in tree.\n");
@@ -488,7 +505,7 @@ status_t rebase(int verNum)
 				return FAIL;
 			}
 			newRoot->parentPtr = newRoot->parentPtr->parentPtr;
-		}
+		}*/
 		if (reverseOpList(lastEl) == FAIL) //Реверс операций lastEl
 		{
 			printf("ERROR: unable to reverse operations.\n");
@@ -497,6 +514,7 @@ status_t rebase(int verNum)
 		//обновить файл версии lastEl
 	}
 	//обновить файл версии newRoot
+	generalInfo->root = newRoot;
 	return SUCCESS;
 }
 
