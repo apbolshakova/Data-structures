@@ -70,7 +70,7 @@ status_t print()
 {
 	int stringLen = getMaxTextLen(NULL);
 	char* text = (char*)calloc(stringLen + 1, sizeof(char));
-	if (getCurText(text, stringLen, NULL) == FAIL)
+	if (getCurText(text, stringLen, NULL, NULL) == FAIL)
 	{
 		free(text);
 		printf("ERROR: unable to print text.\n");
@@ -81,7 +81,7 @@ status_t print()
 	return SUCCESS;
 }
 
-status_t getCurText(char* text, int textLen, version_t* ver)
+status_t getCurText(char* text, int textLen, version_t* ver, operation_t* applyChangesUpTo)
 {
 	path_t* pathToVer = NULL; //if ver == NULL then it's the path to buffer
 	if (getPath(&pathToVer, ver) == FAIL)
@@ -90,7 +90,7 @@ status_t getCurText(char* text, int textLen, version_t* ver)
 		printf("ERROR: unable to get path to buffer.\n");
 		return FAIL;
 	}
-	if (applyChanges(text, textLen, pathToVer) == FAIL)
+	if (applyChanges(text, textLen, pathToVer, applyChangesUpTo) == FAIL)
 	{
 		deletePath(&pathToVer);
 		printf("ERROR: unable to apply all operations that were made.\n");
@@ -100,10 +100,11 @@ status_t getCurText(char* text, int textLen, version_t* ver)
 	return SUCCESS;
 }
 
-status_t applyChanges(char* text, int textLen, path_t* el)
+status_t applyChanges(char* text, int textLen, path_t* el, operation_t* applyChangesUpTo)
 {
 	while (el)
 	{
+		if (el == applyChangesUpTo) break;
 		if (applyVerChanges(text, textLen, el->ver->operation) == FAIL) return FAIL;
 		el = el->next;
 	}

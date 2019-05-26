@@ -19,6 +19,14 @@ void pushIntoOpList(operation_t** root, operation_t* operation)
 	else last->next = operation;
 }
 
+void shiftIntoOpList(operation_t** root, operation_t* operation)
+{
+	if (!(*root)) operation->next = NULL;
+	else operation->next = *root;
+	*root = operation;
+	return SUCCESS;
+}
+
 operation_t* getLastOperation(operation_t** root)
 {
 	operation_t* result = *root;
@@ -108,5 +116,58 @@ status_t appendOpList(operation_t** opListRoot, operation_t* appendOpList)
 		}
 		appendOpList = appendOpList->next;
 	}
+	return SUCCESS;
+}
+
+status_t reverseOpList(version_t* ver)
+{
+	operation_t* reversedListRoot = NULL;
+	operation_t* op = ver->operation;
+	while (op)
+	{
+		operation_t* reversedOp = NULL;
+		if (getReversedOperation(&reversedOp, op, ver) == FAIL)
+		{
+			printf("ERROR: unable to reverse operation.\n");
+			deleteOperationList(&reversedListRoot);
+		}
+		shiftIntoOpList(&reversedListRoot, reversedOp);
+		op = op->next;
+	}
+	deleteOperationList(&(ver->operation));
+	ver->operation = reversedListRoot;
+	return SUCCESS;
+}
+
+status_t getReversedOperation(operation_t** result, operation_t* src, version_t* ver)
+{
+	operation_t* reversed = (operation_t*)malloc(sizeof(operation_t));
+	if (!reversed)
+	{
+		printf("ERROR: memory allocation problem.\n");
+		return FAIL;
+	}
+	if (src->type == '+')
+	{
+		reversed->type = '-';
+		reversed->beginIndex = src->beginIndex;
+		reversed->endIndex = src->beginIndex + strlen(src->data); //TODO test
+		reversed->data = NULL;
+	}
+	else if (src->type == '-')
+	{
+		reversed->type == '+';
+		reversed->beginIndex = src->beginIndex;
+		reversed->endIndex = INVALID_INDEX;
+		int stringLen = getMaxTextLen(ver);
+		reversed->data = (char*)calloc(stringLen + 1, sizeof(char));
+		if (getCurText(reversed->data, stringLen, ver, src) == FAIL)
+		{
+			free(reversed->data);
+			return FAIL;
+		}
+	}
+	reversed->next = NULL;
+	*result = reversed;
 	return SUCCESS;
 }

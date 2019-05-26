@@ -71,7 +71,7 @@ void printMainMenu()
 	printf("- push\n");
 	printf("- pull\n");
 	printf("- delete_version\n");
-	//printf("- rebase\n\n");
+	printf("- rebase\n\n");
 }
 
 int getID(char action[ACTION_LEN])

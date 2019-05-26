@@ -51,10 +51,13 @@ status_t getDataFromFile(char** storage, FILE* file);
 /*OperationList.c*/
 void deleteOperationList(operation_t** root);
 void pushIntoOpList(operation_t** root, operation_t* operation);
+void shiftIntoOpList(operation_t** root, operation_t* operation);
 operation_t* getLastOperation(operation_t** root);
 status_t printOperations(FILE* file, operation_t* opListFromVer);
 status_t getOperationList(operation_t** root, FILE* file);
 status_t appendOpList(operation_t** opListRoot, operation_t* appendOpList);
+status_t reverseOpList(version_t* ver);
+status_t getReversedOperation(operation_t** result, operation_t* src, version_t* ver);
 
 /*Path.c*/
 status_t getPath(path_t** path, version_t* ver); //получить путь от корня до буфера
@@ -66,8 +69,8 @@ int getMaxTextLen(version_t* ver); //получить размер для буфера
 int getLenDiff(operation_t* operation); //получить изменение длины текста после применения операций из массива operation
 int getMaxLenDiff(operation_t* list);
 status_t print(); //выводит текст на текущей итерации
-status_t getCurText(char* text, int textLen, version_t* ver);
-status_t applyChanges(char* text, int textLen, path_t* el);
+status_t getCurText(char* text, int textLen, version_t* ver, operation_t* applyChangesUpTo);
+status_t applyChanges(char* text, int textLen, path_t* el, operation_t* applyChangesUpTo);
 status_t applyVerChanges(char* text, int textLen, operation_t* opEl); //пройти по пути и собрать операции, применяя их к text
 void printText(char* text);
 
@@ -84,6 +87,7 @@ version_t* getVerPtr(version_t* p, int verNum); //обойти дерево, найти вершину и
 status_t push();
 status_t handleVerDeleting();
 status_t deleteVer(version_t* verToDelete);
+status_t deleteFromChildren(version_t* verToDelete, version_t* parent);
 void moveBackChildren(version_t* parentPtr, int verPos); //сдвинуть детей родителя по индексам verPos + 1..childrenNum - 1 на один назад
 status_t copyVerChildren(version_t* prevParent); //copy version's children to it's parent with version's operations saving TODO
 status_t relocateChild(version_t* prevParent, int i);

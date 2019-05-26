@@ -281,7 +281,7 @@ status_t handleVerDeleting()
 
 status_t deleteVer(version_t* verToDelete)
 {
-	if (deleteFromChildren(verToDelete) == FAIL) //TODO
+	if (deleteFromChildren(verToDelete, NULL) == FAIL) //TODO
 	{
 		printf("ERROR: unable to delete version from it's parent children.\n");
 		return FAIL;
@@ -303,16 +303,30 @@ status_t deleteVer(version_t* verToDelete)
 	return SUCCESS;
 }
 
-status_t deleteFromChildren(version_t* verToDelete)
+status_t deleteFromChildren(version_t* verToDelete, version_t* parent)
 {
 	if (!(verToDelete) || !(verToDelete->parentPtr)) return SUCCESS;
 	int verPos = INVALID_INDEX;
-	for (int i = 0; i < verToDelete->parentPtr->childNum; i++)
+	if (!parent)
 	{
-		if (verToDelete->parentPtr->child[i] == verToDelete)
+		for (int i = 0; i < verToDelete->parentPtr->childNum; i++)
 		{
-			verPos = i;
-			break;
+			if (verToDelete->parentPtr->child[i] == verToDelete)
+			{
+				verPos = i;
+				break;
+			}
+		}
+	}
+	else
+	{
+		for (int i = 0; i < parent->childNum; i++)
+		{
+			if (parent->child[i] == verToDelete)
+			{
+				verPos = i;
+				break;
+			}
 		}
 	}
 	if (verPos == INVALID_INDEX)
@@ -453,25 +467,33 @@ status_t rebase(int verNum)
 	}
 	while (newRoot->parentPtr != NULL)
 	{
+		version_t* oldParent = lastEl->parentPtr;
 		if (addChild(newRoot->parentPtr, lastEl) == FAIL) //добавить newRoot->parent в детей lastEl
 		{
 			printf("ERROR: unable to switch versions positions in tree.\n");
 			return FAIL;
 		}
 		lastEl = newRoot->parentPtr; //lastEl = этот новый ребёнок
-		if (lastEl->parentPtr == NULL) newRoot->parentPtr = NULL; //newRoot встал на позицию корня
+		if (oldParent == NULL) newRoot->parentPtr = NULL; //newRoot встал на позицию корня
 		else
 		{
-			int i = INVALID_INDEX; 
-			//убрать lastEl из детей newRoot->parent->parent (если lastEl - корень, то игнор)
-			//добавить newRoot в детей newRoot->parent->parent (если lastEl - корень, то игнор)
+			if (deleteFromChildren(lastEl, oldParent) == FAIL) //убрать lastEl из детей newRoot->parent->parent (если lastEl - корень, то игнор)
+			{
+				printf("ERROR: unable to move version down.\n");
+				return FAIL;
+			}
+			if (addChild(newRoot, oldParent) == FAIL) //добавить newRoot в детей newRoot->parent->parent (если lastEl - корень, то игнор) TODO test
+			{
+				printf("ERROR: unable to switch versions positions in tree.\n");
+				return FAIL;
+			}
 			newRoot->parentPtr = newRoot->parentPtr->parentPtr;
 		}
-		/*if (reverseOpList(lastEl) == FAIL) //Реверс операций lastEl
+		if (reverseOpList(lastEl) == FAIL) //Реверс операций lastEl
 		{
 			printf("ERROR: unable to reverse operations.\n");
 			return FAIL;
-		}*/
+		}
 		//обновить файл версии lastEl
 	}
 	//обновить файл версии newRoot
@@ -482,7 +504,7 @@ status_t mergeOperaions(version_t* ver)
 {
 	int stringLen = getMaxTextLen(ver);
 	char* text = (char*)calloc(stringLen + 1, sizeof(char));
-	if (getCurText(text, stringLen, ver) == FAIL)
+	if (getCurText(text, stringLen, ver, NULL) == FAIL)
 	{
 		free(text);
 		return FAIL;
