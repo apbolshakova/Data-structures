@@ -70,7 +70,7 @@ status_t print()
 {
 	int stringLen = getMaxTextLen(NULL);
 	char* text = (char*)calloc(stringLen + 1, sizeof(char));
-	if (getCurText(text, stringLen) == FAIL)
+	if (getCurText(text, stringLen, NULL) == FAIL)
 	{
 		free(text);
 		printf("ERROR: unable to print text.\n");
@@ -81,22 +81,22 @@ status_t print()
 	return SUCCESS;
 }
 
-status_t getCurText(char* text, int textLen)
+status_t getCurText(char* text, int textLen, version_t* ver)
 {
-	path_t* pathToBuf = NULL;
-	if (getPath(&pathToBuf) == FAIL)
+	path_t* pathToVer = NULL; //if ver == NULL then it's the path to buffer
+	if (getPath(&pathToVer, ver) == FAIL)
 	{
-		deletePath(&pathToBuf);
+		deletePath(&pathToVer);
 		printf("ERROR: unable to get path to buffer.\n");
 		return FAIL;
 	}
-	if (applyChanges(text, textLen, pathToBuf) == FAIL)
+	if (applyChanges(text, textLen, pathToVer) == FAIL)
 	{
-		deletePath(&pathToBuf);
+		deletePath(&pathToVer);
 		printf("ERROR: unable to apply all operations that were made.\n");
 		return FAIL;
 	}
-	deletePath(&pathToBuf);
+	deletePath(&pathToVer);
 	return SUCCESS;
 }
 

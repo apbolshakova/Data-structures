@@ -9,7 +9,7 @@ status_t handleAdd()
 	if (i < 0) return SUCCESS;
 	printf("Enter text to add and press %s when you are done:\n", PROCEED_BTN);
 	char* data = getDataFromInput(NULL);
-	if (add(i, data) == FAIL)
+	if (add(i, data, NULL) == FAIL)
 	{
 		printf("ERROR: unable to save an add operation.\n");
 		return FAIL;
@@ -17,7 +17,7 @@ status_t handleAdd()
 	return SUCCESS;
 }
 
-status_t add(int i, char* data)
+status_t add(int i, char* data, version_t* ver)
 {
 	if (!indexIsCorrect(i)) 
 	{
@@ -38,7 +38,8 @@ status_t add(int i, char* data)
 	opBuf->next = NULL;
 
 	//добавить операцию в линейный список буфера
-	pushIntoOpList(&(buf->operation), opBuf);
+	if (!ver) pushIntoOpList(&(buf->operation), opBuf);
+	else pushIntoOpList(&(ver->operation), opBuf);
 	return SUCCESS;
 }
 
@@ -127,7 +128,7 @@ status_t edit(int i, int j, char* data)
 		printf("ERROR: unable to save a removing operation.\n");
 		return FAIL;
 	}
-	if (add(i, data) == FAIL)
+	if (add(i, data, NULL) == FAIL)
 	{
 		printf("ERROR: unable to save an add operation.\n");
 		return FAIL;

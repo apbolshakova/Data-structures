@@ -20,7 +20,7 @@ status_t rewriteVerFile(version_t* ver); //пересохраняет файл версии
 
 /*Editing.c*/
 status_t handleAdd();
-status_t add(int i, char* data);
+status_t add(int i, char* data, version_t* ver);
 status_t handleRemoving();
 status_t remove(int i, int j);
 status_t handleEditing();
@@ -55,8 +55,9 @@ operation_t* getLastOperation(operation_t** root);
 status_t printOperations(FILE* file, operation_t* opListFromVer);
 status_t getOperationList(operation_t** root, FILE* file);
 status_t appendOpList(operation_t** opListRoot, operation_t* appendOpList);
+
 /*Path.c*/
-status_t getPath(path_t** path); //получить путь от корня до буфера
+status_t getPath(path_t** path, version_t* ver); //получить путь от корня до буфера
 status_t shiftIntoPath(path_t** root, version_t* ver);
 
 /*Text.c*/
@@ -65,7 +66,7 @@ int getMaxTextLen(version_t* ver); //получить размер для буфера
 int getLenDiff(operation_t* operation); //получить изменение длины текста после применения операций из массива operation
 int getMaxLenDiff(operation_t* list);
 status_t print(); //выводит текст на текущей итерации
-status_t getCurText(char* text, int textLen); 
+status_t getCurText(char* text, int textLen, version_t* ver);
 status_t applyChanges(char* text, int textLen, path_t* el);
 status_t applyVerChanges(char* text, int textLen, operation_t* opEl); //пройти по пути и собрать операции, применяя их к text
 void printText(char* text);

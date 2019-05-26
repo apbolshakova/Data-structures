@@ -38,7 +38,7 @@ status_t initTextAsOpearationInRootVer()
 		return FAIL;
 	}
 	//положить в операции буфера команду add текста из файла
-	if (add(0, text) == FAIL)
+	if (add(0, text, NULL) == FAIL)
 	{
 		printf("ERROR: Unable to create an operation entry.\n");
 		return FAIL;
@@ -462,17 +462,19 @@ status_t rebase(int verNum)
 		if (lastEl->parentPtr == NULL) newRoot->parentPtr = NULL; //newRoot встал на позицию корня
 		else
 		{
-			int i = INVALID_INDEX; //убрать lastEl из детей newRoot->parent->parent (если lastEl - корень, то игнор)
-								   //добавить newRoot в детей newRoot->parent->parent (если lastEl - корень, то игнор)
+			int i = INVALID_INDEX; 
+			//убрать lastEl из детей newRoot->parent->parent (если lastEl - корень, то игнор)
+			//добавить newRoot в детей newRoot->parent->parent (если lastEl - корень, то игнор)
 			newRoot->parentPtr = newRoot->parentPtr->parentPtr;
 		}
-		if (reverseOpList(lastEl) == FAIL) //Реверс операций lastEl
+		/*if (reverseOpList(lastEl) == FAIL) //Реверс операций lastEl
 		{
 			printf("ERROR: unable to reverse operations.\n");
 			return FAIL;
-		}
+		}*/
 		//обновить файл версии lastEl
 	}
+	//обновить файл версии newRoot
 	return SUCCESS;
 }
 
@@ -480,10 +482,16 @@ status_t mergeOperaions(version_t* ver)
 {
 	int stringLen = getMaxTextLen(ver);
 	char* text = (char*)calloc(stringLen + 1, sizeof(char));
-	if (getCurText(text, stringLen) == FAIL)
+	if (getCurText(text, stringLen, ver) == FAIL)
 	{
 		free(text);
-		printf("ERROR: unable to print text.\n");
 		return FAIL;
 	}
+	deleteOperationList(&(ver->operation));
+	if (add(0, text, ver) == FAIL)
+	{
+		free(text);
+		return FAIL;
+	}
+	return SUCCESS;
 }

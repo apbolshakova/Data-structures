@@ -1,17 +1,19 @@
 #include "Common.h"
 
-status_t getPath(path_t** path)
+status_t getPath(path_t** path, version_t* ver)
 {
-	version_t* ver = generalInfo->root;
-
-	if (buf)
+	if (!ver)
 	{
-		if (shiftIntoPath(path, buf) == FAIL)
+		ver = generalInfo->root;
+		if (buf)
 		{
-			printf("ERROR: unable to get path of buffer's parent.\n");
-			return FAIL;
+			if (shiftIntoPath(path, buf) == FAIL)
+			{
+				printf("ERROR: unable to get path of buffer's parent.\n");
+				return FAIL;
+			}
+			ver = buf->parentPtr;
 		}
-		ver = buf->parentPtr;
 	}
 	while (ver)
 	{
