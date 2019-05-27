@@ -41,7 +41,7 @@ status_t printOperations(FILE* file, operation_t* opListFromVer)
 	while (op)
 	{
 		if (op->type == '+') fprintf(file, "+ %i %s\n", op->beginIndex, op->data);
-		else if (op->type == '-') fprintf(file, "- %i %i\n", op->beginIndex, op->endIndex);
+		else if (op->type == '-') fprintf(file, "- %i %i %s\n", op->beginIndex, op->endIndex, op->data);
 		else return FAIL;
 		op = op->next;
 	}
@@ -80,8 +80,9 @@ status_t getOperationList(operation_t** root, FILE* file)
 		else if (*buf == '-')
 		{
 			op->type = '-';
-			fscanf_s(file, "%i %i", &(op->beginIndex), &(op->endIndex));
-			op->data = NULL;
+			fscanf(file, "%i %i ", &(op->beginIndex), &(op->endIndex));
+			op->data = (char*)calloc(op->endIndex - op->beginIndex + 1, sizeof(char));
+			fscanf(file, "%s", op->data);
 		}
 		else deleteOperationList(root);
 		if (!prev) *root = op;
@@ -119,6 +120,36 @@ status_t appendOpList(operation_t** opListRoot, operation_t* appendOpList)
 	return SUCCESS;
 }
 
+status_t reverseVerOperations(version_t* newRoot)
+{
+	version_t* el = newRoot;
+	int stringLen = getMaxTextLen(newRoot);
+	char* text = (char*)calloc(stringLen + 1, sizeof(char));
+	if (getCurText(text, stringLen, newRoot, NULL) == FAIL)
+	{
+		free(text);
+		return FAIL;
+	}
+	deleteOperationList(&(newRoot->operation));
+	if (add(0, text, newRoot) == FAIL)
+	{
+		free(text);
+		return FAIL;
+	}
+
+	el = newRoot->parentPtr;
+	while (el)
+	{
+		if (reverseOpList(el) == FAIL) //Реверс операций lastEl
+		{
+			printf("ERROR: unable to reverse operations.\n");
+			return FAIL;
+		}
+		el = el->parentPtr;
+	}
+	return SUCCESS;
+}
+
 status_t reverseOpList(version_t* ver)
 {
 	operation_t* reversedListRoot = NULL;
@@ -151,22 +182,16 @@ status_t getReversedOperation(operation_t** result, operation_t* src, version_t*
 	{
 		reversed->type = '-';
 		reversed->beginIndex = src->beginIndex;
-		reversed->endIndex = src->beginIndex + strlen(src->data); //TODO test
-		reversed->data = NULL;
+		reversed->endIndex = src->beginIndex + strlen(src->data);
 	}
 	else if (src->type == '-')
 	{
-		reversed->type == '+';
+		reversed->type = '+';
 		reversed->beginIndex = src->beginIndex;
 		reversed->endIndex = INVALID_INDEX;
-		int stringLen = getMaxTextLen(ver);
-		reversed->data = (char*)calloc(stringLen + 1, sizeof(char));
-		if (getCurText(reversed->data, stringLen, ver, src) == FAIL)
-		{
-			free(reversed->data);
-			return FAIL;
-		}
 	}
+	reversed->data = (char*)calloc(strlen(src->data) + 1, sizeof(char));
+	strcpy(reversed->data, src->data);
 	reversed->next = NULL;
 	*result = reversed;
 	return SUCCESS;

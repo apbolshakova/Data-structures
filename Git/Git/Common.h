@@ -56,6 +56,7 @@ operation_t* getLastOperation(operation_t** root);
 status_t printOperations(FILE* file, operation_t* opListFromVer);
 status_t getOperationList(operation_t** root, FILE* file);
 status_t appendOpList(operation_t** opListRoot, operation_t* appendOpList);
+status_t reverseVerOperations(version_t* newRoot);
 status_t reverseOpList(version_t* ver);
 status_t getReversedOperation(operation_t** result, operation_t* src, version_t* ver);
 
@@ -95,3 +96,4 @@ status_t addChild(version_t* newChild, version_t* parent); //add version to chil
 void cleanupVersion(version_t** ver);
 status_t handleRebasing();
 status_t rebase(int verNum);
+status_t handleMerging();

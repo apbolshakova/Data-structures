@@ -442,7 +442,7 @@ status_t handleRebasing()
 	}
 }
 
-status_t rebase(int verNum)
+status_t rebase(int verNum) //TODO сначала реверснуть операции, а потом поменять связи
 {
 	version_t* newRoot = getVerPtr(generalInfo->root, verNum); //получить newRoot и lastEl
 	if (!newRoot)
@@ -450,18 +450,17 @@ status_t rebase(int verNum)
 		printf("ERROR: invalid version number for rebasing.\n");
 		return FAIL;
 	}
-	version_t* lastEl = newRoot; //конец пути, по которому можно дойти от корня до элемента (newRoot поднимаетcя по этому пути)
-	if (mergeOperaions(lastEl) == FALSE)//заменить операции из newRoot на единственную - add текст в виде из данной версии
+	if (reverseVerOperations(newRoot) == FAIL)
 	{
-		printf("ERROR: unable to merge operations for new root into one add operation.\n");
+		printf("ERROR: unable to reverse operations.\n");
 		return FAIL;
 	}
+	version_t* lastEl = newRoot; //конец пути, по которому можно дойти от корня до элемента (newRoot поднимаетcя по этому пути)
 	while (newRoot->parentPtr != NULL)
 	{
 		version_t* par = newRoot->parentPtr;
 		version_t* parOfPar = NULL;
 		if (par->parentPtr) parOfPar = par->parentPtr;
-
 		if (deleteFromChildren(par, parOfPar) == FAIL) 
 		{
 			printf("ERROR: unable to move version down.\n");
@@ -484,54 +483,28 @@ status_t rebase(int verNum)
 			return FAIL;
 		}
 		lastEl = par;
-		/*version_t* oldParent = lastEl->parentPtr;
-		if (addChild(newRoot->parentPtr, lastEl) == FAIL) //добавить newRoot->parent в детей lastEl
-		{
-			printf("ERROR: unable to switch versions positions in tree.\n");
-			return FAIL;
-		}
-		lastEl = newRoot->parentPtr; //lastEl = этот новый ребёнок
-		if (oldParent == NULL) newRoot->parentPtr = NULL; //newRoot встал на позицию корня
-		else
-		{
-			if (deleteFromChildren(lastEl, oldParent) == FAIL) //убрать lastEl из детей newRoot->parent->parent (если lastEl - корень, то игнор)
-			{
-				printf("ERROR: unable to move version down.\n");
-				return FAIL;
-			}
-			if (addChild(newRoot, oldParent) == FAIL) //добавить newRoot в детей newRoot->parent->parent (если lastEl - корень, то игнор) TODO test
-			{
-				printf("ERROR: unable to switch versions positions in tree.\n");
-				return FAIL;
-			}
-			newRoot->parentPtr = newRoot->parentPtr->parentPtr;
-		}*/
-		if (reverseOpList(lastEl) == FAIL) //Реверс операций lastEl
-		{
-			printf("ERROR: unable to reverse operations.\n");
-			return FAIL;
-		}
-		//обновить файл версии lastEl
+		//обновить файл версии lastEl TODO
 	}
-	//обновить файл версии newRoot
 	generalInfo->root = newRoot;
+	//обновить файл версии newRoot TODO
 	return SUCCESS;
 }
 
-status_t mergeOperaions(version_t* ver)
+status_t handleMerging()
 {
-	int stringLen = getMaxTextLen(ver);
-	char* text = (char*)calloc(stringLen + 1, sizeof(char));
-	if (getCurText(text, stringLen, ver, NULL) == FAIL)
+	int i = 0;
+	printf("Enter version number or any negative number to cancel (no number -> index = 0): ");
+	fflush(stdin);
+	scanf_s("%i", &i);
+	if (i < 0) return SUCCESS;
+	if (merge(i) == FAIL)
 	{
-		free(text);
+		printf("ERROR: unable to delete version.\n");
 		return FAIL;
 	}
-	deleteOperationList(&(ver->operation));
-	if (add(0, text, ver) == FAIL)
-	{
-		free(text);
-		return FAIL;
-	}
+}
+
+status_t merge(int verNum)
+{
 	return SUCCESS;
 }

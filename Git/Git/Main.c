@@ -106,7 +106,7 @@ status_t handleAction(int ID)
 	case editID: return handleEditing(); break;
 	case addID: return handleAdd(); break;
 	case removeID: return handleRemoving(); break;
-	case mergeID: return SUCCESS; break; //TODO
+	case mergeID: return handleMerging(); break;
 	case pushID: return push(); break;
 	case pullID: return pull(); break;
 	case deleteVerID: return handleVerDeleting(); break;

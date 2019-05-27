@@ -64,7 +64,7 @@ status_t handleRemoving()
 	return SUCCESS;
 }
 
-status_t remove(int i, int j)
+status_t remove(int i, int j) //TODO test
 {
 	if (j < i || !indexIsCorrect(i) || !indexIsCorrect(j))
 	{
@@ -79,15 +79,23 @@ status_t remove(int i, int j)
 		printf("ERROR: memory allocation problem.\n");
 		return FAIL;
 	}
+	int stringLen = getMaxTextLen(NULL);
+	char* text = (char*)calloc(stringLen + 1, sizeof(char));
+	if (getCurText(text, stringLen, NULL, NULL) == FAIL)
+	{
+		free(text);
+		return FAIL;
+	}
+
 	opBuf->type = '-';
 	opBuf->beginIndex = i;
 	opBuf->endIndex = j;
-	opBuf->data = NULL;
+	opBuf->data = (char*)calloc(j - i + 1, sizeof(char));
+	strncpy(opBuf->data, &(text[i]), j - i);
 	opBuf->next = NULL;
-
 	//добавить операцию в линейный список буфера
 	pushIntoOpList(&(buf->operation), opBuf);
-
+	
 	return SUCCESS;
 }
 
