@@ -291,6 +291,15 @@ status_t handleVerDeleting()
 
 status_t deleteVer(version_t* verToDelete)
 {
+	if (!(verToDelete->parentPtr)) //TODO debug this case
+	{
+		if (rebase(verToDelete->child[0]->verNum) == FAIL) 
+		{
+			printf("ERROR: unable to set root's child as new root.\n");
+			return FAIL;
+		}
+		return deleteVer(verToDelete);
+	}
 	if (deleteFromChildren(verToDelete, NULL) == FAIL)
 	{
 		printf("ERROR: unable to delete version from it's parent children.\n");
@@ -361,20 +370,9 @@ void moveBackChildren(version_t* parentPtr, int verPos) //TODO test
 
 status_t copyVerChildren(version_t* prevParent)
 {
-	if (!(prevParent->parentPtr)) //handle if it's root
+	for (int i = 0; i < prevParent->childNum; i++)
 	{
-		generalInfo->root = prevParent->child[0];
-		for (int i = 1; i < prevParent->childNum; i++)
-		{
-			//формируемый список операций - отмена всех операций нулевого ребёнка + операции ребёнка, присвоить созданный список как список операций ребёнка, addChild TODO
-		}
-	}
-	else
-	{
-		for (int i = 0; i < prevParent->childNum; i++)
-		{
-			if (relocateChild(prevParent, i) == FAIL) return FAIL;
-		}
+		if (relocateChild(prevParent, i) == FAIL) return FAIL;
 	}
 	return SUCCESS;
 }
@@ -488,8 +486,17 @@ status_t setVerAsRoot(version_t* newRoot)
 			printf("ERROR: unable to move version down.\n");
 			return FAIL;
 		}
-		if (!parOfPar) newRoot->parentPtr = NULL;
-		else if (addChild(newRoot, parOfPar) == FAIL || addChild(par, lastEl) == FAIL)
+		if (!parOfPar)
+		{
+			newRoot->parentPtr = NULL;
+			newRoot->parentVerNum = INVALID_VER;
+		}
+		else if (addChild(newRoot, parOfPar) == FAIL)
+		{
+			printf("ERROR: unable to switch versions positions in tree.\n");
+			return FAIL;
+		}
+		if (addChild(par, lastEl) == FAIL)
 		{
 			printf("ERROR: unable to switch versions positions in tree.\n");
 			return FAIL;
