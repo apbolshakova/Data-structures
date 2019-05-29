@@ -62,8 +62,10 @@ status_t getReversedOperation(operation_t** result, operation_t* src);
 void swapOpLists(operation_t** opList1, operation_t** opList2);
 
 /*Path.c*/
-status_t getPath(path_t** path, version_t* ver); //получить путь от корня до буфера
-status_t shiftIntoPath(path_t** root, version_t* ver);
+status_t getPath(verList_t** path, version_t* ver); //получить путь от корня до буфера
+status_t shiftIntoPath(verList_t** root, version_t* ver);
+void popFromVerList(verList_t** root);
+void deletePath(verList_t** root);
 
 /*Text.c*/
 int getTextLen(); //получить длину текста на текущей итерации
@@ -72,7 +74,7 @@ int getLenDiff(operation_t* operation); //получить изменение длины текста после 
 int getMaxLenDiff(operation_t* list);
 status_t print(); //выводит текст на текущей итерации
 status_t getCurText(char* text, int textLen, version_t* ver, operation_t* applyChangesUpTo);
-status_t applyChanges(char* text, int textLen, path_t* el, operation_t* applyChangesUpTo);
+status_t applyChanges(char* text, int textLen, verList_t* el, operation_t* applyChangesUpTo);
 status_t applyVerChanges(char* text, int textLen, operation_t* opEl); //пройти по пути и собрать операции, применяя их к text
 void printText(char* text);
 
@@ -83,8 +85,8 @@ status_t getSourceText(char** text);
 void deleteVerTree(version_t* p);
 status_t buildVerTree(int verNum); //получить generalInfo->root, lastCreatedVersion для нового дерева
 status_t loadVerTree(); //получить generalInfo->root, lastCreatedVersion, пройти по всех файлам версий и построить дерево
-status_t handleVerFile(char filePath[FNAME_LEN]);
-status_t insertIntoTree(version_t* ver); //Add version into tree
+status_t handleVerFile(char filePath[FNAME_LEN], verList_t** lostVersList);
+status_t insertIntoTree(version_t* ver, int parentVerNum, verList_t** lostVersList); //Add version into tree
 version_t* getVerPtr(version_t* p, int verNum); //обойти дерево, найти вершину и вернуть либо указатель на неё, либо NULL
 status_t push();
 status_t handleVerDeleting();

@@ -122,6 +122,7 @@ status_t buildVerTree(int verNum)
 
 status_t loadVerTree()
 {
+	verList_t* lostVersList = NULL; //list of versions which parent wasn't found in tree
 	WIN32_FIND_DATA fdFile;
 	HANDLE hFind = NULL;
 	char* dirName = getDirName();
@@ -139,7 +140,7 @@ status_t loadVerTree()
 			&& strcmp(fdFile.cFileName, "..") != 0) //and ".." as the first two directories.
 		{
 			sprintf(filePath, "%s\\%s", dirName, fdFile.cFileName);
-			if (handleVerFile(filePath) == FAIL)
+			if (handleVerFile(filePath, &lostVersList) == FAIL)
 			{
 				printf("ERROR: unable to load existing tree.\n");
 				return FAIL;
@@ -150,7 +151,7 @@ status_t loadVerTree()
 	return SUCCESS;
 }
 
-status_t handleVerFile(char filePath[FNAME_LEN])
+status_t handleVerFile(char filePath[FNAME_LEN], verList_t** lostVersList)
 {
 	FILE* file = fopen(filePath, "r");
 	if (!file)
@@ -170,6 +171,7 @@ status_t handleVerFile(char filePath[FNAME_LEN])
 		free(ver);
 		return FAIL;
 	}
+	ver->parentVerNum = parentVer;
 	ver->parentPtr = getVerPtr(generalInfo->root, parentVer);
 	ver->childNum = 0;
 	ver->child = NULL;
@@ -180,7 +182,7 @@ status_t handleVerFile(char filePath[FNAME_LEN])
 		free(ver);
 		return FAIL;
 	}
-	if (insertIntoTree(ver) == FAIL)
+	if (insertIntoTree(ver, parentVer, lostVersList) == FAIL)
 	{
 		printf("ERROR: unable to insert version into version tree.\n");
 		return FAIL;
@@ -189,11 +191,13 @@ status_t handleVerFile(char filePath[FNAME_LEN])
 	return SUCCESS;
 }
 
-status_t insertIntoTree(version_t* ver)
+status_t insertIntoTree(version_t* ver, int parentVerNum, verList_t** lostVersList)
 {
-	if (!(ver->parentPtr)) generalInfo->root = ver;
+	if (parentVerNum == INVALID_VER) generalInfo->root = ver;
+	else if (!(ver->parentPtr)) shiftIntoPath(lostVersList, ver);
 	else if (addChild(ver, ver->parentPtr) == FAIL)
 	{
+		
 		printf("ERROR: unable to add child to version.\n");
 		return FAIL;
 	}
@@ -416,6 +420,7 @@ status_t addChild(version_t* newChild, version_t* parent)
 		return FAIL;
 	}
 	parent->child[parent->childNum - 1] = newChild;
+	newChild->parentVerNum = parent->verNum;
 	newChild->parentPtr = parent;
 	return SUCCESS;
 }
@@ -442,7 +447,7 @@ status_t handleRebasing()
 	}
 }
 
-status_t rebase(int verNum) //TODO сначала реверснуть операции, а потом поменять связи
+status_t rebase(int verNum)
 {
 	version_t* newRoot = getVerPtr(generalInfo->root, verNum); //получить newRoot и lastEl
 	if (!newRoot)
@@ -455,39 +460,47 @@ status_t rebase(int verNum) //TODO сначала реверснуть операции, а потом поменять
 		printf("ERROR: unable to reverse operations.\n");
 		return FAIL;
 	}
+	if (setVerAsRoot(newRoot) == FAIL)
+	{
+		printf("ERROR: unable to change version bonds.\n");
+		return FAIL;
+	}
+	return SUCCESS;
+}
+
+status_t setVerAsRoot(version_t* newRoot)
+{
 	version_t* lastEl = newRoot; //конец пути, по которому можно дойти от корня до элемента (newRoot поднимаетcя по этому пути)
 	while (newRoot->parentPtr != NULL)
 	{
 		version_t* par = newRoot->parentPtr;
 		version_t* parOfPar = NULL;
 		if (par->parentPtr) parOfPar = par->parentPtr;
-		if (deleteFromChildren(par, parOfPar) == FAIL) 
-		{
-			printf("ERROR: unable to move version down.\n");
-			return FAIL;
-		}
-		if (deleteFromChildren(newRoot, par) == FAIL)
+		if (deleteFromChildren(par, parOfPar) == FAIL ||
+			deleteFromChildren(newRoot, par) == FAIL)
 		{
 			printf("ERROR: unable to move version down.\n");
 			return FAIL;
 		}
 		if (!parOfPar) newRoot->parentPtr = NULL;
-		else if (addChild(newRoot, parOfPar) == FAIL)
-		{
-			printf("ERROR: unable to switch versions positions in tree.\n");
-			return FAIL;
-		}
-		if (addChild(par, lastEl) == FAIL)
+		else if (addChild(newRoot, parOfPar) == FAIL || addChild(par, lastEl) == FAIL)
 		{
 			printf("ERROR: unable to switch versions positions in tree.\n");
 			return FAIL;
 		}
 		lastEl = par;
-		//обновить файл версии lastEl TODO
+		if (rewriteVerFile(lastEl) == FAIL)
+		{
+			printf("ERROR: unable to rewrite version file.\n");
+			return FAIL;
+		}
 	}
 	generalInfo->root = newRoot;
-	//обновить файл версии newRoot TODO
-	return SUCCESS;
+	if (rewriteVerFile(newRoot) == FAIL)
+	{
+		printf("ERROR: unable to rewrite version file of new root.\n");
+		return FAIL;
+	}
 }
 
 status_t handleMerging()

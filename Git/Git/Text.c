@@ -83,7 +83,7 @@ status_t print()
 
 status_t getCurText(char* text, int textLen, version_t* ver, operation_t* applyChangesUpTo)
 {
-	path_t* pathToVer = NULL; //if ver == NULL then it's the path to buffer
+	verList_t* pathToVer = NULL; //if ver == NULL then it's the path to buffer
 	if (getPath(&pathToVer, ver) == FAIL)
 	{
 		deletePath(&pathToVer);
@@ -100,7 +100,7 @@ status_t getCurText(char* text, int textLen, version_t* ver, operation_t* applyC
 	return SUCCESS;
 }
 
-status_t applyChanges(char* text, int textLen, path_t* el, operation_t* applyChangesUpTo)
+status_t applyChanges(char* text, int textLen, verList_t* el, operation_t* applyChangesUpTo)
 {
 	while (el)
 	{

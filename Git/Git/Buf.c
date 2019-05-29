@@ -10,8 +10,10 @@ status_t initBuf(int version)
 		return FAIL;
 	}
 	buf->parentPtr = NULL;
+	buf->parentVerNum = INVALID_VER;
 	if (generalInfo->root) //дерево уже существует
 	{
+		buf->parentVerNum = version;
 		buf->parentPtr = getVerPtr(generalInfo->root, version);
 		if (!(buf->parentPtr))
 		{
@@ -47,7 +49,7 @@ status_t createVerFile()
 		printf("ERROR: unable to create new version file.\n");
 		return FAIL;
 	}
-	if (buf->parentPtr) fprintf(file, "%i\n", buf->parentPtr->verNum);
+	if (buf->parentPtr) fprintf(file, "%i\n", buf->parentVerNum);
 	else fprintf(file, "-1\n");
 	if (printOperations(file, NULL) == FAIL)
 	{
@@ -70,7 +72,7 @@ status_t rewriteVerFile(version_t* ver)
 		printf("ERROR: unable to open version file.\n");
 		return FAIL;
 	}
-	if (ver->parentPtr) fprintf(file, "%i\n", ver->parentPtr->verNum);
+	if (ver->parentPtr) fprintf(file, "%i\n", ver->parentVerNum);
 	else fprintf(file, "-1\n");
 	if (printOperations(file, ver->operation) == FAIL)
 	{

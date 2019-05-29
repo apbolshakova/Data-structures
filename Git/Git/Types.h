@@ -32,6 +32,7 @@ typedef struct Operation_ //операция над текстом
 typedef struct Version_ //версия
 {
 	int verNum;
+	int parentVerNum;
 	struct Version_* parentPtr;
 	int childNum;
 	struct Version_** child;
@@ -45,9 +46,9 @@ typedef struct General_ //главная информация о дереве
 	version_t* root; //корень дерева версий
 } general_t;
 
-typedef struct Path_ //путь до определённой версии от корня, линейный список указателей на версии
+typedef struct Path_ //линейный список версий
 {
 	version_t* ver;
 	struct Path_* next;
-} path_t;
+} verList_t;
 #endif

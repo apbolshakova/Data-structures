@@ -1,6 +1,6 @@
 #include "Common.h"
 
-status_t getPath(path_t** path, version_t* ver)
+status_t getPath(verList_t** path, version_t* ver)
 {
 	if (!ver)
 	{
@@ -27,9 +27,9 @@ status_t getPath(path_t** path, version_t* ver)
 	return SUCCESS;
 }
 
-status_t shiftIntoPath(path_t** root, version_t* ver)
+status_t shiftIntoPath(verList_t** root, version_t* ver)
 {
-	path_t* newEl = (path_t*)malloc(sizeof(path_t));
+	verList_t* newEl = (verList_t*)malloc(sizeof(verList_t));
 	if (!newEl)
 	{
 		printf("ERROR: memory allocation error.\n");
@@ -42,9 +42,17 @@ status_t shiftIntoPath(path_t** root, version_t* ver)
 	return SUCCESS;
 }
 
-void deletePath(path_t** root)
+void popFromVerList(verList_t** root)
 {
-	path_t* temp = *root;
+	if (!*root) return;
+	verList_t* newRoot = (*root)->next;
+	free(*root);
+	*root = newRoot;
+}
+
+void deletePath(verList_t** root)
+{
+	verList_t* temp = *root;
 	while (*root)
 	{
 		*root = (*root)->next;
