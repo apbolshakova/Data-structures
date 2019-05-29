@@ -281,7 +281,7 @@ status_t handleVerDeleting()
 
 status_t deleteVer(version_t* verToDelete)
 {
-	if (deleteFromChildren(verToDelete, NULL) == FAIL) //TODO
+	if (deleteFromChildren(verToDelete, NULL) == FAIL)
 	{
 		printf("ERROR: unable to delete version from it's parent children.\n");
 		return FAIL;

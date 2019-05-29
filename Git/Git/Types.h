@@ -32,7 +32,7 @@ typedef struct Operation_ //операция над текстом
 typedef struct Version_ //версия
 {
 	int verNum;
-	struct Version_* parentPtr; //TODO: add function that returns TRUE_ if ver is deleted (it's parent == INVALID_PARENT)
+	struct Version_* parentPtr;
 	int childNum;
 	struct Version_** child;
 	operation_t* operation; //линейный список изменений в этой версии

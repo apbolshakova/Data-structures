@@ -122,6 +122,18 @@ status_t appendOpList(operation_t** opListRoot, operation_t* appendOpList)
 
 status_t reverseVerOperations(version_t* newRoot)
 {
+	//делать реверс в версии, менять местами реверс версии и temp 
+	operation_t* temp = NULL;
+	if (appendOpList(&temp, newRoot->operation) == FAIL)
+	{
+		printf("ERROR: unable to copy version's operation list.\n");
+		return FAIL;
+	}
+	if (reverseOpList(&(temp)) == FAIL) //Реверс операций
+	{
+		printf("ERROR: unable to reverse operations.\n");
+		return FAIL;
+	}
 	version_t* el = newRoot;
 	int stringLen = getMaxTextLen(newRoot);
 	char* text = (char*)calloc(stringLen + 1, sizeof(char));
@@ -140,24 +152,25 @@ status_t reverseVerOperations(version_t* newRoot)
 	el = newRoot->parentPtr;
 	while (el)
 	{
-		if (reverseOpList(el) == FAIL) //Реверс операций lastEl
+		if (reverseOpList(&(el->operation)) == FAIL) //Реверс операций
 		{
 			printf("ERROR: unable to reverse operations.\n");
 			return FAIL;
 		}
+		swapOpLists(&temp, &(el->operation));
 		el = el->parentPtr;
 	}
 	return SUCCESS;
 }
 
-status_t reverseOpList(version_t* ver)
+status_t reverseOpList(operation_t** opList)
 {
 	operation_t* reversedListRoot = NULL;
-	operation_t* op = ver->operation;
+	operation_t* op = *opList;
 	while (op)
 	{
 		operation_t* reversedOp = NULL;
-		if (getReversedOperation(&reversedOp, op, ver) == FAIL)
+		if (getReversedOperation(&reversedOp, op) == FAIL)
 		{
 			printf("ERROR: unable to reverse operation.\n");
 			deleteOperationList(&reversedListRoot);
@@ -165,12 +178,12 @@ status_t reverseOpList(version_t* ver)
 		shiftIntoOpList(&reversedListRoot, reversedOp);
 		op = op->next;
 	}
-	deleteOperationList(&(ver->operation));
-	ver->operation = reversedListRoot;
+	deleteOperationList(opList);
+	*opList = reversedListRoot;
 	return SUCCESS;
 }
 
-status_t getReversedOperation(operation_t** result, operation_t* src, version_t* ver)
+status_t getReversedOperation(operation_t** result, operation_t* src)
 {
 	operation_t* reversed = (operation_t*)malloc(sizeof(operation_t));
 	if (!reversed)
@@ -195,4 +208,11 @@ status_t getReversedOperation(operation_t** result, operation_t* src, version_t*
 	reversed->next = NULL;
 	*result = reversed;
 	return SUCCESS;
+}
+
+void swapOpLists(operation_t** opList1, operation_t** opList2)
+{
+	operation_t* temp = *opList1;
+	*opList1 = *opList2;
+	*opList2 = temp;
 }

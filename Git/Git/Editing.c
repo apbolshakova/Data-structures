@@ -64,7 +64,7 @@ status_t handleRemoving()
 	return SUCCESS;
 }
 
-status_t remove(int i, int j) //TODO test
+status_t remove(int i, int j)
 {
 	if (j < i || !indexIsCorrect(i) || !indexIsCorrect(j))
 	{
