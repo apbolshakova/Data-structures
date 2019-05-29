@@ -64,7 +64,7 @@ void swapOpLists(operation_t** opList1, operation_t** opList2);
 /*Path.c*/
 status_t getPath(verList_t** path, version_t* ver); //получить путь от корня до буфера
 status_t shiftIntoPath(verList_t** root, version_t* ver);
-void popFromVerList(verList_t** root);
+status_t insertLostVersIntoTree(verList_t** root);
 void deletePath(verList_t** root);
 
 /*Text.c*/

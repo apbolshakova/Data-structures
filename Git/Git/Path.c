@@ -42,12 +42,40 @@ status_t shiftIntoPath(verList_t** root, version_t* ver)
 	return SUCCESS;
 }
 
-void popFromVerList(verList_t** root)
+status_t insertLostVersIntoTree(verList_t** root)
 {
-	if (!*root) return;
-	verList_t* newRoot = (*root)->next;
-	free(*root);
-	*root = newRoot;
+	bool_t changed = TRUE_;
+	while (changed)
+	{
+		changed = FALSE_;
+		if (!*root) return;
+		verList_t* prev = NULL;
+		verList_t* el = *root;
+		while (el)
+		{
+			version_t* parent = getVerPtr(generalInfo->root, el->ver->parentVerNum);
+			if (parent)
+			{
+				if (addChild(el->ver, parent) == FAIL)
+				{
+					printf("ERROR: found missed parent but unable to attach child to it.\n");
+					return FAIL;
+				}
+				verList_t* sav = el->next;
+				free(el);
+			
+				el = sav;
+				if (prev) prev->next = el;
+				else *root = el;
+				changed = TRUE_;
+			}
+			else
+			{
+				prev = el;
+				el = el->next;
+			}
+		}
+	}
 }
 
 void deletePath(verList_t** root)

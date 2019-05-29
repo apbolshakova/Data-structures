@@ -145,9 +145,15 @@ status_t loadVerTree()
 				printf("ERROR: unable to load existing tree.\n");
 				return FAIL;
 			}
+			if (insertLostVersIntoTree(&lostVersList) == FAIL) return FAIL;
 		}
 	} while (FindNextFile(hFind, &fdFile));
 	FindClose(hFind);
+	if (lostVersList)
+	{
+		printf("ERROR: found versions with not existing parents.\n");
+		return FAIL;
+	}
 	return SUCCESS;
 }
 
