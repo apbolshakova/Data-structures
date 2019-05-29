@@ -50,7 +50,6 @@ status_t getSourceText(char** text)
 	FILE* source = fopen(generalInfo->name, "r");
 	if (!source)
 	{
-		fclose(source);
 		printf("ERROR: Unable to open source file.\n");
 		return FAIL;
 	}
@@ -293,6 +292,11 @@ status_t deleteVer(version_t* verToDelete)
 {
 	if (!(verToDelete->parentPtr)) //TODO debug this case
 	{
+		if (verToDelete->childNum == 0)
+		{
+			printf("ERROR: attempt to delete single node.\n");
+			return FAIL;
+		}
 		if (rebase(verToDelete->child[0]->verNum) == FAIL) 
 		{
 			printf("ERROR: unable to set root's child as new root.\n");
