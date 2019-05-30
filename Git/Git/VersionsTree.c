@@ -560,17 +560,60 @@ status_t merge(int verNum)
 		printf("ERROR: unable to get path to version to merge with.\n");
 		return FAIL;
 	}
-	version_t* basicVer = getСlosestSameVerFromPath(&pathToBuf, &pathToVer);
-	deletePath(&pathToBuf);
-	deletePath(&pathToVer);
 
-	int diffArrayLen = getTextLen(basicVer) * 2 + 1;
-	int* diff = (int*)malloc(sizeof(int) * diffArrayLen); 
+	int diffArrayLen = getTextLen(pathToBuf->ver) * 2 + 1;
+	int* bufDiff = NULL;
+	int* verDiff = NULL;
+	if (getDiffArray(&bufDiff, pathToBuf, diffArrayLen) == FAIL)
+	{
+		deletePath(&pathToBuf);
+		deletePath(&pathToVer);
+		printf("ERROR: unable to get info about changes until buffer.\n");
+		return FAIL;
+	}
+	if (getDiffArray(&verDiff, pathToVer, diffArrayLen) == FAIL)
+	{
+		deletePath(&pathToBuf);
+		deletePath(&pathToVer);
+		free(bufDiff);
+		printf("ERROR: unable to get info about changes until version to merge with.\n");
+		return FAIL;
+	}
+	/*if (areAbleToMerge(bufDiff, verDiff))
+	{
+		operation_t* opListForMerging = getOpListForMerging(bufDiff, verDiff); //из ver вытянуть все операции, при добавлении которых в буфер произойдёт merge
+		if (!opListForMerging)
+		{
+			deletePath(&pathToBuf);
+			deletePath(&pathToVer);
+			free(bufDiff);
+			free(verDiff);
+			printf("ERROR: unable to get operations list for merging");
+			return FAIL;
+		}
+		deletePath(&pathToBuf);
+		deletePath(&pathToVer);
+		free(bufDiff);
+		free(verDiff);
+		if (appendOpList(&(buf->operation), opListForMerging) == FAIL)
+		{
+			printf("ERROR: unable to copy version's operation list.\n");
+			return FAIL;
+		}
+		return SUCCESS;
+	}
+	else
+	{
+		deletePath(&pathToBuf);
+		deletePath(&pathToVer);
+		free(bufDiff);
+		free(verDiff);
+		printf("ERROR: unable to merge.\n");
+		return FAIL;
+	}*/
 	//diff:
-	//чётные эл-ты отвечают за символы (0 - изменений нет, 1 - удалён, 2 - изменён)
-	//нечётные эл-ты отвечают за расстояние между символами (0 - между ними ничего не добавлено)
+
 	//сформировать diff для буфера и для версии
 	//сопоставить коды у символов: -2 может быть только с нулём
-	//если это ок - то сливаем версии вместе
-	return SUCCESS;
+	//если это ок - то сливаем версии вместе (добавляем в буфер операции из ver, индексы действия которых сдвинуты в зависимости от diff (исходный + сдвиги из buf + сдвиги из ver))
 }

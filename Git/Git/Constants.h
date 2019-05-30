@@ -20,4 +20,8 @@
 #define BACKSPACE '\b'
 #define NEW_STRING '\n'
 #define FILE_MASK "%s\\%s.*.txt"
+
+#define NOT_CHANGED 0 
+#define DELETED 1
+#define CHANGED 2
 #endif

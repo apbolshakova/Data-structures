@@ -117,6 +117,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Buf.c" />
+    <ClCompile Include="DiffArray.c" />
     <ClCompile Include="Editing.c" />
     <ClCompile Include="GeneralInfo.c" />
     <ClCompile Include="Main.c">

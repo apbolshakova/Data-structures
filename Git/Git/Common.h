@@ -18,6 +18,10 @@ void deleteBuf();
 status_t createVerFile(); //формирует из буфера новый файл
 status_t rewriteVerFile(version_t* ver); //пересохраняет файл версии
 
+/*DiffArray.c*/
+status_t* getDiffArray(int** diffPtr, verList_t* basicVer, int diffArrayLen);
+void initDiffArrayVal(int* diff, int len); //устанавливает "расстояние между символами в тексте" == 1
+
 /*Editing.c*/
 status_t handleAdd();
 status_t add(int i, char* data, version_t* ver);
@@ -66,7 +70,6 @@ status_t getPath(verList_t** path, version_t* ver); //получить путь от корня до 
 status_t shiftIntoPath(verList_t** root, version_t* ver);
 status_t insertLostVersIntoTree(verList_t** root);
 void deletePath(verList_t** root);
-version_t* getСlosestSameVerFromPath(verList_t** path1, verList_t** path2);
 
 /*Text.c*/
 int getTextLen(version_t* ver); //получить длину текста на текущей итерации
