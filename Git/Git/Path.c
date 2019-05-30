@@ -89,3 +89,18 @@ void deletePath(verList_t** root)
 		temp = *root;
 	}
 }
+
+version_t* getÑlosestSameVerFromPath(verList_t** path1, verList_t** path2)
+{
+	version_t* res = NULL;
+	verList_t* el1 = *path1;
+	verList_t* el2 = *path2;
+	while (el1 && el2 && el1->ver == el2->ver)
+	{
+		res = el1->ver;
+		el1 = el1->next;
+		el2 = el2->next;
+	}
+	if (!((int)el1 * (int)el2)) res = NULL;
+	return res;
+}

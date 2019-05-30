@@ -66,9 +66,10 @@ status_t getPath(verList_t** path, version_t* ver); //получить путь от корня до 
 status_t shiftIntoPath(verList_t** root, version_t* ver);
 status_t insertLostVersIntoTree(verList_t** root);
 void deletePath(verList_t** root);
+version_t* getСlosestSameVerFromPath(verList_t** path1, verList_t** path2);
 
 /*Text.c*/
-int getTextLen(); //получить длину текста на текущей итерации
+int getTextLen(version_t* ver); //получить длину текста на текущей итерации
 int getMaxTextLen(version_t* ver); //получить размер для буфера
 int getLenDiff(operation_t* operation); //получить изменение длины текста после применения операций из массива operation
 int getMaxLenDiff(operation_t* list);

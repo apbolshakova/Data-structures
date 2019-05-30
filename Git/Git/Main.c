@@ -65,7 +65,7 @@ void printMainMenu()
 	printf("- edit\n");
 	printf("- add\n");
 	printf("- remove\n");
-	//printf("- merge\n");
+	printf("- merge\n");
 
 	printf("\nVersions handling:\n");
 	printf("- push\n");

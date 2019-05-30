@@ -1,14 +1,16 @@
 #include "Common.h"
 
-int getTextLen()
+int getTextLen(version_t* ver)
 {
 	int result = 0;
-	version_t* ver = generalInfo->root;
-
-	if (buf)
+	if (!ver)
 	{
-		result += getLenDiff(buf->operation);
-		ver = buf->parentPtr;
+		ver = generalInfo->root;
+		if (buf)
+		{
+			result += getLenDiff(buf->operation);
+			ver = buf->parentPtr;
+		}
 	}
 	while (ver)
 	{

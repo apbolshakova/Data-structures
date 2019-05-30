@@ -174,7 +174,7 @@ char* getDataFromInput(int* dataLen)
 
 bool_t indexIsCorrect(int i)
 {
-	int textLen = getTextLen();
+	int textLen = getTextLen(NULL);
 	if (i > textLen) return FALSE_;
 	return TRUE_;
 }

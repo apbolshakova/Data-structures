@@ -536,5 +536,41 @@ status_t handleMerging()
 
 status_t merge(int verNum)
 {
+	verList_t* pathToBuf = NULL; //if ver == NULL then it's the path to buffer
+	if (getPath(&pathToBuf, NULL) == FAIL)
+	{
+		deletePath(&pathToBuf);
+		printf("ERROR: unable to get path to buffer.\n");
+		return FAIL;
+	}
+
+	version_t* ver = getVerPtr(generalInfo->root, verNum);
+	if (!ver)
+	{
+		deletePath(&pathToBuf);
+		printf("ERROR: unable to get version to merge with.\n");
+		return FAIL;
+	}
+	
+	verList_t* pathToVer = NULL;
+	if (getPath(&pathToVer, ver) == FAIL)
+	{
+		deletePath(&pathToBuf);
+		deletePath(&pathToVer);
+		printf("ERROR: unable to get path to version to merge with.\n");
+		return FAIL;
+	}
+	version_t* basicVer = getСlosestSameVerFromPath(&pathToBuf, &pathToVer);
+	deletePath(&pathToBuf);
+	deletePath(&pathToVer);
+
+	int diffArrayLen = getTextLen(basicVer) * 2 + 1;
+	int* diff = (int*)malloc(sizeof(int) * diffArrayLen); 
+	//diff:
+	//чётные эл-ты отвечают за символы (0 - изменений нет, 1 - удалён, 2 - изменён)
+	//нечётные эл-ты отвечают за расстояние между символами (0 - между ними ничего не добавлено)
+	//сформировать diff для буфера и для версии
+	//сопоставить коды у символов: -2 может быть только с нулём
+	//если это ок - то сливаем версии вместе
 	return SUCCESS;
 }
