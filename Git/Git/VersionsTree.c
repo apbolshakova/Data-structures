@@ -564,6 +564,6 @@ status_t merge(int verNum)
 	deletePath(&pathToBuf);
 	deletePath(&pathToVer);
 
-	//TODO finish
+	//TODO
 	return SUCCESS;
 }
