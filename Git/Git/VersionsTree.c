@@ -564,13 +564,6 @@ status_t merge(int verNum)
 	deletePath(&pathToBuf);
 	deletePath(&pathToVer);
 
-	int diffArrayLen = getTextLen(basicVer) * 2 + 1;
-	int* diff = (int*)malloc(sizeof(int) * diffArrayLen); 
-	//diff:
-	//чётные эл-ты отвечают за символы (0 - изменений нет, 1 - удалён, 2 - изменён)
-	//нечётные эл-ты отвечают за расстояние между символами (0 - между ними ничего не добавлено)
-	//сформировать diff для буфера и для версии
-	//сопоставить коды у символов: -2 может быть только с нулём
-	//если это ок - то сливаем версии вместе
+	//TODO finish
 	return SUCCESS;
 }
