@@ -98,6 +98,15 @@ status_t copyVerChildren(version_t* prevParent); //copy version's children to it
 status_t relocateChild(version_t* prevParent, int i);
 status_t addChild(version_t* newChild, version_t* parent); //add version to child array without any editing
 void cleanupVersion(version_t** ver);
+
+/*Rebase.c*/
 status_t handleRebasing();
 status_t rebase(int verNum);
+status_t setVerAsRoot(version_t* newRoot);
+
+/*Merge.c*/
 status_t handleMerging();
+status_t merge(int verNum);
+int* getOffsets(verList_t* pathToBuf, int size); //получить массив, отражающий сколько символов перед каждым из символов, встречающимся в исходном тексте
+void updateOffsetsForVer(operation_t* opEl, int* offset, int size);
+int findClosestIndex(int valueToFind, int* array, int size);

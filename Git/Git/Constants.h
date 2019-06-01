@@ -20,4 +20,5 @@
 #define BACKSPACE '\b'
 #define NEW_STRING '\n'
 #define FILE_MASK "%s\\%s.*.txt"
+#define DELETED -1
 #endif

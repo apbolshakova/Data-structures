@@ -42,6 +42,12 @@
     <ClCompile Include="Text.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Merge.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Rebase.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Constants.h">
