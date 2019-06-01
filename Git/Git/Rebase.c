@@ -16,7 +16,7 @@ status_t handleRebasing()
 
 status_t rebase(int verNum)
 {
-	version_t* newRoot = getVerPtr(generalInfo->root, verNum); //получить newRoot и lastEl
+	version_t* newRoot = getVerPtr(generalInfo->root, verNum); //get newRoot and lastEl
 	if (!newRoot)
 	{
 		printf("ERROR: invalid version number for rebasing.\n");
@@ -37,7 +37,7 @@ status_t rebase(int verNum)
 
 status_t setVerAsRoot(version_t* newRoot)
 {
-	version_t* lastEl = newRoot; //конец пути, по которому можно дойти от корня до элемента (newRoot поднимаетcя по этому пути)
+	version_t* lastEl = newRoot; //end of path from root to el (newRoot moves to root position along this path)
 	while (newRoot->parentPtr != NULL)
 	{
 		version_t* par = newRoot->parentPtr;

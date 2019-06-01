@@ -14,8 +14,8 @@ int getTextLen(version_t* ver)
 	}
 	while (ver)
 	{
-		result += getLenDiff(ver->operation); //просуммировать длины операций из этой версии
-		ver = ver->parentPtr; //новая текущая версия - родитель текущей
+		result += getLenDiff(ver->operation); //sum operations lengths from this ver
+		ver = ver->parentPtr;
 	}
 	return result;
 }
@@ -38,7 +38,7 @@ int getMaxTextLen(version_t* ver)
 	{
 		lenDiff = getMaxLenDiff(ver->operation);
 		if (lenDiff > 0) result += lenDiff;
-		ver = ver->parentPtr; //новая текущая версия - родитель текущей
+		ver = ver->parentPtr;
 	}
 	return result;
 }

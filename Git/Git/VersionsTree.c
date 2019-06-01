@@ -3,7 +3,7 @@
 status_t initVerTree()
 {
 	generalInfo->lastCreatedVersion = INIT_VERSION;
-	if (initBuf(ROOT_VER) == FAIL) 	//создать буфер с нулевой версией
+	if (initBuf(ROOT_VER) == FAIL) 	//create buffer with version number 0
 	{
 		printf("ERROR: invalid buffer initialization.\n");
 		return FAIL;
@@ -20,7 +20,7 @@ status_t initVerTree()
 		printf("ERROR: unable to create directory for version files.\n");
 		return FAIL;
 	}
-	if (push() == FAIL) //записать версию в файл (push), последн€€ созданна€ верси€ - 0
+	if (push() == FAIL) //save version as file (push), last created version is 0
 	{
 		printf("ERROR: unsuccessful attempt to push init version.\n");
 		return FAIL;
@@ -30,14 +30,13 @@ status_t initVerTree()
 
 status_t initTextAsOpearationInRootVer()
 {
-	//открыть файл generalInfo->fileName и получить из него текст
 	char* text = NULL;
 	if (getSourceText(&text) == FAIL)
 	{
 		printf("ERROR: Unable to get source text.\n");
 		return FAIL;
 	}
-	//положить в операции буфера команду add текста из файла
+	//create add operation with source text
 	if (add(0, text, NULL) == FAIL)
 	{
 		printf("ERROR: Unable to create an operation entry.\n");
@@ -85,7 +84,7 @@ status_t buildVerTree(int verNum)
 {
 	char* fileName = getNameOfVerFile(verNum);
 	char* rootFileName = getNameOfVerFile(ROOT_VER);
-	if (!exists(rootFileName) && verNum != ROOT_VER) //попытка прочитать несуществующее дерево
+	if (!exists(rootFileName) && verNum != ROOT_VER) //an attempt to read non existable tree
 	{
 		free(fileName);
 		free(rootFileName);
@@ -206,7 +205,7 @@ status_t insertIntoTree(version_t* ver, int parentVerNum, verList_t** lostVersLi
 		printf("ERROR: unable to add child to version.\n");
 		return FAIL;
 	}
-	generalInfo->lastCreatedVersion = ver->verNum; //увеличить номер последней сохранЄнной версии
+	generalInfo->lastCreatedVersion = ver->verNum; //inc number of last saved version
 	return SUCCESS;
 }
 
@@ -229,18 +228,18 @@ version_t* getVerPtr(version_t* p, int verNum)
 
 status_t push()
 {
-	if (buf->parentPtr && addChild(buf, buf->parentPtr) == FAIL) //сохранить буфер как ребЄнка потенциального родител€
+	if (buf->parentPtr && addChild(buf, buf->parentPtr) == FAIL) //save buffer as it's parent child
 	{
 		printf("ERROR: unable to add buffer to version as it's child.\n");
 		return FAIL;
 	}
-	generalInfo->lastCreatedVersion = buf->verNum; //увеличить номер последней сохранЄнной версии
+	generalInfo->lastCreatedVersion = buf->verNum; //inc number of last saved version
 	if (createVerFile() == FAIL)
 	{
 		printf("ERROR: unable to update version files after pushing new version.\n");
 		return FAIL;
 	}
-	if (initBuf(generalInfo->lastCreatedVersion) == FAIL) //очистить и создать новый буфер
+	if (initBuf(generalInfo->lastCreatedVersion) == FAIL) //recreate buffer
 	{
 		printf("ERROR: unable to create new buffer.\n");
 		return FAIL;
@@ -290,7 +289,7 @@ status_t handleVerDeleting()
 
 status_t deleteVer(version_t* verToDelete)
 {
-	if (!(verToDelete->parentPtr)) //TODO debug this case
+	if (!(verToDelete->parentPtr))
 	{
 		if (verToDelete->childNum == 0)
 		{
@@ -314,7 +313,7 @@ status_t deleteVer(version_t* verToDelete)
 		printf("ERROR: unable to attach version's children to it's parent.\n");
 		return FAIL;
 	}
-	if (buf->parentPtr == verToDelete && relocateChild(verToDelete, BUF) == FAIL) //если буфер - сын удал€емой версии, то его тоже перекинуть на родител€ verToDelete
+	if (buf->parentPtr == verToDelete && relocateChild(verToDelete, BUF) == FAIL) //if buffer is child of version to remove change it's parent to parent of verToDelete
 	{
 		printf("ERROR: unable to attach buffer to new parent");
 		return FAIL;
@@ -362,7 +361,7 @@ status_t deleteFromChildren(version_t* verToDelete, version_t* parent)
 	return SUCCESS;
 }
 
-void moveBackChildren(version_t* parentPtr, int verPos) //TODO test
+void moveBackChildren(version_t* parentPtr, int verPos)
 {
 	for (int i = verPos + 1; i < parentPtr->childNum; i++)
 	{
@@ -383,7 +382,7 @@ status_t copyVerChildren(version_t* prevParent)
 
 status_t relocateChild(version_t* prevParent, int i)
 {
-	operation_t* opListRoot = NULL; //новый список операций
+	operation_t* opListRoot = NULL; //new operation list
 	if (appendOpList(&opListRoot, prevParent->operation) == FAIL)
 	{
 		printf("ERROR: unable to copy version's operation list.\n");

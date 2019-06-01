@@ -20,7 +20,7 @@ typedef enum ActionID_
 	countID
 };
 
-typedef struct Operation_ //операция над текстом
+typedef struct Operation_ //text operations
 {
 	char type;
 	int beginIndex;
@@ -29,24 +29,24 @@ typedef struct Operation_ //операция над текстом
 	struct Operation_* next;
 } operation_t;
 
-typedef struct Version_ //версия
+typedef struct Version_
 {
 	int verNum;
 	int parentVerNum;
 	struct Version_* parentPtr;
 	int childNum;
 	struct Version_** child;
-	operation_t* operation; //линейный список изменений в этой версии
+	operation_t* operation; //list of operations from one version
 } version_t;
 
-typedef struct General_ //главная информация о дереве
+typedef struct General_ //general info about tree
 {
 	char* name;
 	int lastCreatedVersion;
-	version_t* root; //корень дерева версий
+	version_t* root; //root of version tree
 } general_t;
 
-typedef struct Path_ //линейный список версий
+typedef struct Path_ //list of versions
 {
 	version_t* ver;
 	struct Path_* next;

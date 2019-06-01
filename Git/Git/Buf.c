@@ -11,7 +11,7 @@ status_t initBuf(int version)
 	}
 	buf->parentPtr = NULL;
 	buf->parentVerNum = INVALID_VER;
-	if (generalInfo->root) //дерево уже существует
+	if (generalInfo->root) //tree is already existing
 	{
 		buf->parentVerNum = version;
 		buf->parentPtr = getVerPtr(generalInfo->root, version);

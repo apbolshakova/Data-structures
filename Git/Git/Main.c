@@ -8,7 +8,7 @@ int main(void)
 	char action[ACTION_LEN] = { 0 };
 	char fname[FNAME_LEN] = { 0 };
 	char temp[TEMP_LEN] = { 0 };
-	int version = 0; //¬ерси€, котора€ станет родителем следующей. ≈сли version == 0, то это корень - верси€ с добавлением исходного текста
+	int version = 0; //version which will be the parent of next one. If version == 0 then it's the root - version which contains "add" operation with source text
 	
 	printf("Type \"open <fname> <version>\" to start:\n");
 	scanf_s("%s %s %s", action, (unsigned)sizeof(action), fname, (unsigned)sizeof(fname), temp, (unsigned)sizeof(temp));

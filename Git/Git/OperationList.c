@@ -122,14 +122,13 @@ status_t appendOpList(operation_t** opListRoot, operation_t* appendOpList)
 
 status_t reverseVerOperations(version_t* newRoot)
 {
-	//делать реверс в версии, менять местами реверс версии и temp 
 	operation_t* temp = NULL;
 	if (appendOpList(&temp, newRoot->operation) == FAIL)
 	{
 		printf("ERROR: unable to copy version's operation list.\n");
 		return FAIL;
 	}
-	if (reverseOpList(&(temp)) == FAIL) //Реверс операций
+	if (reverseOpList(&(temp)) == FAIL) //reverse operations
 	{
 		printf("ERROR: unable to reverse operations.\n");
 		return FAIL;
@@ -152,7 +151,7 @@ status_t reverseVerOperations(version_t* newRoot)
 	el = newRoot->parentPtr;
 	while (el)
 	{
-		if (reverseOpList(&(el->operation)) == FAIL) //Реверс операций
+		if (reverseOpList(&(el->operation)) == FAIL) //reverse operations
 		{
 			printf("ERROR: unable to reverse operations.\n");
 			return FAIL;

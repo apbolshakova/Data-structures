@@ -22,7 +22,7 @@ status_t getPath(verList_t** path, version_t* ver)
 			printf("ERROR: unable to get path of buffer's parent.\n");
 			return FAIL;
 		}
-		ver = ver->parentPtr; //новая текущая версия - родитель текущей
+		ver = ver->parentPtr; //new current version is the parent of previous current
 	}
 	return SUCCESS;
 }

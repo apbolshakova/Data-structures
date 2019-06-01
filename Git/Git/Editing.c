@@ -24,7 +24,7 @@ status_t add(int i, char* data, version_t* ver)
 		printf("ERROR: invalid index for starting position.\n");
 		return FAIL;
 	}
-	//создать операцию
+	//create new operation
 	operation_t* opBuf = (operation_t*)malloc(sizeof(operation_t));
 	if (!opBuf)
 	{
@@ -37,7 +37,7 @@ status_t add(int i, char* data, version_t* ver)
 	opBuf->data = data;
 	opBuf->next = NULL;
 
-	//добавить операцию в линейный список буфера
+	//add operation into buffer's list
 	if (!ver) pushIntoOpList(&(buf->operation), opBuf);
 	else pushIntoOpList(&(ver->operation), opBuf);
 	return SUCCESS;
@@ -72,7 +72,7 @@ status_t remove(int i, int j)
 		return FAIL;
 	}
 
-	//создать операцию
+	//create new operation
 	operation_t* opBuf = (operation_t*)malloc(sizeof(operation_t));
 	if (!opBuf)
 	{
@@ -93,7 +93,8 @@ status_t remove(int i, int j)
 	opBuf->data = (char*)calloc(j - i + 1, sizeof(char));
 	strncpy(opBuf->data, &(text[i]), j - i);
 	opBuf->next = NULL;
-	//добавить операцию в линейный список буфера
+
+	//add operation into buffer's list
 	pushIntoOpList(&(buf->operation), opBuf);
 	
 	return SUCCESS;

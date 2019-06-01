@@ -57,11 +57,11 @@ status_t merge(int verNum)
 		goto Fail;
 	}
 
-	/*if (addOperationsForMerging(bufOffset, verOffset) == FAIL) //add to buffer required for merge operations
+	if (saveMergeInBuffer(bufOffset, verOffset, offsetsArrLen, ver) == FAIL) //recreate buffer and add operations to get merged text
 	{
 		printf("ERROR: unable to merge.\n");
 		goto Fail;
-	}*/
+	}
 
 	if (pathToBuf) deletePath(&pathToBuf);
 	if (pathToVer) deletePath(&pathToVer);
@@ -131,4 +131,39 @@ int findClosestIndex(int valueToFind, int* array, int size)
 		if (valueToFind <= array[i]) return i;
 	}
 	return size; //adding to the end
+}
+
+status_t saveMergeInBuffer(int* bufOffset, int* verOffset, int size, version_t* ver)
+{
+	int bufStrLen = getMaxTextLen(NULL);
+	char* bufText = (char*)calloc(bufStrLen + 1, sizeof(char));
+	if (getCurText(bufText, bufStrLen, NULL, NULL) == FAIL)
+	{
+		free(bufText);
+		printf("ERROR: unable to get text to define merge operations.\n");
+		return FAIL;
+	}
+
+	int verStrLen = getMaxTextLen(ver);
+	char* verText = (char*)calloc(verStrLen + 1, sizeof(char));
+	if (getCurText(verText, verStrLen, ver, NULL) == FAIL)
+	{
+		free(bufText);
+		free(verText);
+		printf("ERROR: unable to get text to define merge operations.\n");
+		return FAIL;
+	}
+
+	if (initBuf(buf->parentVerNum) == FAIL)
+	{
+		printf("ERROR: unable to recreate buffer.\n");
+		return FAIL;
+	}
+	
+	/*for (int i = 0; i < size; i++)
+	{
+	TODO
+	}*/
+
+	return SUCCESS;
 }
