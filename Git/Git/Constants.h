@@ -21,4 +21,5 @@
 #define NEW_STRING '\n'
 #define FILE_MASK "%s\\%s.*.txt"
 #define DELETED -1
+#define ALL -1
 #endif

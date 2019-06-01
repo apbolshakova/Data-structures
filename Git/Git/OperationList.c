@@ -142,7 +142,7 @@ status_t reverseVerOperations(version_t* newRoot)
 		return FAIL;
 	}
 	deleteOperationList(&(newRoot->operation));
-	if (add(0, text, newRoot) == FAIL)
+	if (add(0, text, ALL, newRoot) == FAIL)
 	{
 		free(text);
 		return FAIL;

@@ -20,7 +20,7 @@ status_t rewriteVerFile(version_t* ver); //recreate version file
 
 /*Editing.c*/
 status_t handleAdd();
-status_t add(int i, char* data, version_t* ver);
+status_t add(int i, char* data, int n, version_t* ver);
 status_t handleRemoving();
 status_t remove(int i, int j);
 status_t handleEditing();
@@ -110,3 +110,4 @@ int* getOffsets(verList_t* pathToBuf, int size); //get an array which shows how 
 void updateOffsetsForVer(operation_t* opEl, int* offset, int size);
 int findClosestIndex(int valueToFind, int* array, int size);
 status_t saveMergeInBuffer(int* bufOffset, int* verOffset, int size, version_t* ver);
+bool_t areOnSamePath(verList_t* pathToBuf, verList_t* pathToVer);

@@ -7,6 +7,11 @@ status_t handleMerging()
 	fflush(stdin);
 	scanf_s("%i", &i);
 	if (i < 0) return SUCCESS;
+	if (i == buf->parentVerNum)
+	{
+		printf("ERROR: attempt to merge version with itself.\n");
+		return FAIL;
+	}
 	if (merge(i) == FAIL)
 	{
 		printf("ERROR: unable to delete version.\n");
@@ -37,6 +42,11 @@ status_t merge(int verNum)
 	{
 		printf("ERROR: unable to get path to version to merge with.\n");
 		goto Fail;
+	}
+
+	if (areOnSamePath(pathToBuf, pathToVer))
+	{
+		printf("ERROR: merged version will contain no changing.\n");
 	}
 
 	int offsetsArrLen = 0;
@@ -159,11 +169,98 @@ status_t saveMergeInBuffer(int* bufOffset, int* verOffset, int size, version_t* 
 		printf("ERROR: unable to recreate buffer.\n");
 		return FAIL;
 	}
-	
-	/*for (int i = 0; i < size; i++)
+	if (remove(0, strlen(bufText)) == FAIL)
 	{
-	TODO
-	}*/
+		free(bufText);
+		free(verText);
+		return FAIL;
+	}
 
+	int addIndex = 0; //offset for addition into result
+	for (int i = 0; i < size; i++)
+	{
+		if (verOffset[i] == DELETED && bufOffset[i] == DELETED) continue;
+		int nextAddIndex = addIndex;
+		
+		//copy first char itself
+		if (verOffset[i] != DELETED && bufOffset[i] != DELETED && i != size - 1)
+		{
+			nextAddIndex++;
+			if (add(addIndex, bufText + bufOffset[i], 1, NULL) == FAIL)
+			{
+				free(bufText);
+				free(verText);
+				return FAIL;
+			}
+		}
+		
+		if (i == 0)
+		{
+			//copy text before first char from buf
+			int len = bufOffset[i] + 1;
+			if (len > 0)
+			{
+				nextAddIndex += len;
+				if (add(addIndex, bufText, len, NULL) == FAIL)
+				{
+					free(bufText);
+					free(verText);
+					return FAIL;
+				}
+			}
+			//copy text before first char from ver
+			len = verOffset[i] + 1;
+			if (len > 0)
+			{
+				nextAddIndex += len;
+				if (add(addIndex, verText, len, NULL) == FAIL)
+				{
+					free(bufText);
+					free(verText);
+					return FAIL;
+				}
+			}
+		}
+		else
+		{
+			//copy text before char from buf
+			int len = bufOffset[i] - bufOffset[i - 1] - 1;
+			if (len > 1)
+			{
+				nextAddIndex += len;
+				if (add(addIndex, bufText + bufOffset[i - 1] + 1, len, NULL) == FAIL)
+				{
+					free(bufText);
+					free(verText);
+					return FAIL;
+				}
+			}
+			//copy text before char from ver
+			len = verOffset[i] - verOffset[i - 1] - 1;
+			if (len > 1)
+			{
+				nextAddIndex += len;
+				if (add(addIndex, verText + verOffset[i - 1] + 1, len, NULL) == FAIL)
+				{
+					free(bufText);
+					free(verText);
+					return FAIL;
+				}
+			}
+		}
+		addIndex = nextAddIndex;
+	}
 	return SUCCESS;
+}
+
+bool_t areOnSamePath(verList_t* pathToBuf, verList_t* pathToVer)
+{
+	while (pathToBuf && pathToVer && pathToBuf->ver == pathToVer->ver)
+	{
+		pathToBuf = pathToBuf->next;
+		pathToVer = pathToVer->next;
+	}
+	if (!pathToBuf || !pathToVer || 
+		pathToBuf->ver->parentPtr == pathToVer->ver) return TRUE;
+	return FALSE;
 }

@@ -37,7 +37,7 @@ status_t initTextAsOpearationInRootVer()
 		return FAIL;
 	}
 	//create add operation with source text
-	if (add(0, text, NULL) == FAIL)
+	if (add(0, text, ALL, NULL) == FAIL)
 	{
 		printf("ERROR: Unable to create an operation entry.\n");
 		return FAIL;
