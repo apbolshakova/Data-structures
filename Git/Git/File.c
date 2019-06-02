@@ -10,7 +10,11 @@ char* getNameOfVerFile(int version)
 	strcat(fileName, "\\");
 	strncat(fileName, generalInfo->name, 
 		strlen(generalInfo->name) - strlen(fileExt));
-	strcatInt(fileName, version);
+	char* numAsStr = (char*)calloc(VERSION_CHARS_NUM, sizeof(char));
+	if (!numAsStr) return NULL;
+	_itoa(version, numAsStr, 10);
+	strcat(fileName, numAsStr);
+	free(numAsStr);
 	strcat(fileName, ".txt");
 	return fileName;
 }
@@ -23,18 +27,6 @@ char* getDirName()
 	strncpy(dirName, generalInfo->name,
 		strlen(generalInfo->name) - strlen(fileExt) - 1);
 	return dirName;
-}
-
-void strcatInt(char* fileName, int version)
-{
-	char digitAsChar = '0';
-	if (!version) strncat(fileName, &digitAsChar, 1);
-	while (version)
-	{
-		digitAsChar = (version % DEC_NUMBER_SYSTEM) + '0';
-		version /= DEC_NUMBER_SYSTEM;
-		strncat(fileName, &digitAsChar, 1);
-	}
 }
 
 bool_t exists(const char *fname)

@@ -41,7 +41,6 @@ void cleanup();
 /*File.c*/
 char* getNameOfVerFile(int version);
 char* getDirName();
-void strcatInt(char* fileName, int version);
 bool_t exists(const char *fname);
 const char* getFileExt(const char* filename);
 long int getFileSize(FILE *f);
