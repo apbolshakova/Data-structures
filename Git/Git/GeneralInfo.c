@@ -17,6 +17,7 @@ status_t initGeneralInfo(char* fname, int verNum)
 		return FAIL;
 	}
 	strncpy(generalInfo->name, fname, nameLen);
+	generalInfo->lastCreatedVersion = 0;
 	generalInfo->name[nameLen] = '\0';
 	generalInfo->root = NULL;
 

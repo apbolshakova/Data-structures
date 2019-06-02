@@ -205,7 +205,8 @@ status_t insertIntoTree(version_t* ver, int parentVerNum, verList_t** lostVersLi
 		printf("ERROR: unable to add child to version.\n");
 		return FAIL;
 	}
-	generalInfo->lastCreatedVersion = ver->verNum; //inc number of last saved version
+	if (generalInfo->lastCreatedVersion < ver->verNum) 
+		generalInfo->lastCreatedVersion = ver->verNum; //inc number of last saved version
 	return SUCCESS;
 }
 
@@ -233,7 +234,8 @@ status_t push()
 		printf("ERROR: unable to add buffer to version as it's child.\n");
 		return FAIL;
 	}
-	generalInfo->lastCreatedVersion = buf->verNum; //inc number of last saved version
+	if (generalInfo->lastCreatedVersion < buf->verNum)
+		generalInfo->lastCreatedVersion = buf->verNum; //inc number of last saved version
 	if (createVerFile() == FAIL)
 	{
 		printf("ERROR: unable to update version files after pushing new version.\n");

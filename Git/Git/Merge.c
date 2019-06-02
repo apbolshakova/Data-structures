@@ -260,7 +260,6 @@ bool_t areOnSamePath(verList_t* pathToBuf, verList_t* pathToVer)
 		pathToBuf = pathToBuf->next;
 		pathToVer = pathToVer->next;
 	}
-	if (!pathToBuf || !pathToVer || 
-		pathToBuf->ver->parentPtr == pathToVer->ver) return TRUE;
+	if (!pathToBuf || !pathToVer || pathToBuf->ver == buf) return TRUE;
 	return FALSE;
 }
