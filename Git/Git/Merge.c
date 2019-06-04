@@ -89,7 +89,7 @@ Fail:
 
 int* getOffsets(verList_t* path, int size)
 {
-	int* offset = (int*)malloc(size * sizeof(int));
+	int* offset = (int*)malloc(size * sizeof(int)); //value in offset - position in text with additions
 	if (!offset)
 	{
 		printf("ERROR: memory allocation problem.\n");
@@ -120,7 +120,7 @@ void updateOffsetsForVer(operation_t* opEl, int* offset, int size)
 		if (opEl->type == '-')
 		{
 			int i = findClosestIndex(opEl->beginIndex, offset, size);
-			while (opEl->beginIndex <= i && i < opEl->endIndex)
+			while (opEl->beginIndex <= offset[i] && offset[i] < opEl->endIndex)
 			{
 				offset[i] = DELETED;
 				i++;
@@ -176,17 +176,17 @@ status_t saveMergeInBuffer(int* bufOffset, int* verOffset, int size, version_t* 
 		return FAIL;
 	}
 
-	int addIndex = 0; //offset for addition into result
+	int index = 0; //offset for addition into result
 	for (int i = 0; i < size; i++)
 	{
 		if (verOffset[i] == DELETED && bufOffset[i] == DELETED) continue;
-		int nextAddIndex = addIndex;
 		
+		int nextIndex = index;
 		//copy first char itself
 		if (verOffset[i] != DELETED && bufOffset[i] != DELETED && i != size - 1)
 		{
-			nextAddIndex++;
-			if (add(addIndex, bufText + bufOffset[i], 1, NULL) == FAIL)
+			nextIndex++;
+			if (add(index, bufText + bufOffset[i], 1, NULL) == FAIL)
 			{
 				free(bufText);
 				free(verText);
@@ -194,14 +194,15 @@ status_t saveMergeInBuffer(int* bufOffset, int* verOffset, int size, version_t* 
 			}
 		}
 		
+		int len = 0;
 		if (i == 0)
 		{
 			//copy text before first char from buf
-			int len = bufOffset[i] + 1;
+			len = bufOffset[i];
 			if (len > 0)
 			{
-				nextAddIndex += len;
-				if (add(addIndex, bufText, len, NULL) == FAIL)
+				nextIndex += len;
+				if (add(index, bufText, len, NULL) == FAIL)
 				{
 					free(bufText);
 					free(verText);
@@ -209,11 +210,11 @@ status_t saveMergeInBuffer(int* bufOffset, int* verOffset, int size, version_t* 
 				}
 			}
 			//copy text before first char from ver
-			len = verOffset[i] + 1;
+			len = verOffset[i];
 			if (len > 0)
 			{
-				nextAddIndex += len;
-				if (add(addIndex, verText, len, NULL) == FAIL)
+				nextIndex += len;
+				if (add(index, verText, len, NULL) == FAIL)
 				{
 					free(bufText);
 					free(verText);
@@ -223,12 +224,25 @@ status_t saveMergeInBuffer(int* bufOffset, int* verOffset, int size, version_t* 
 		}
 		else
 		{
+			int prev = 0;
+			int textOffset = 0;
 			//copy text before char from buf
-			int len = bufOffset[i] - bufOffset[i - 1] - 1;
-			if (len > 1)
+			prev = getClosestNonDeletedIndex(i, bufOffset);
+			len = bufOffset[i] - 1;
+			if (prev != INVALID_INDEX)
 			{
-				nextAddIndex += len;
-				if (add(addIndex, bufText + bufOffset[i - 1] + 1, len, NULL) == FAIL)
+				len -= bufOffset[prev];
+				textOffset = bufOffset[prev];
+			}
+			else
+			{
+				len++; //only deleted chars before current
+				textOffset = -1;
+			}
+			if (len > 0)
+			{
+				nextIndex += len;
+				if (add(index, bufText + textOffset + 1, len, NULL) == FAIL)
 				{
 					free(bufText);
 					free(verText);
@@ -236,11 +250,22 @@ status_t saveMergeInBuffer(int* bufOffset, int* verOffset, int size, version_t* 
 				}
 			}
 			//copy text before char from ver
-			len = verOffset[i] - verOffset[i - 1] - 1;
-			if (len > 1)
+			prev = getClosestNonDeletedIndex(i, verOffset);
+			len = verOffset[i] - 1;
+			if (prev != INVALID_INDEX)
 			{
-				nextAddIndex += len;
-				if (add(addIndex, verText + verOffset[i - 1] + 1, len, NULL) == FAIL)
+				len -= verOffset[prev];
+				textOffset = verOffset[prev];
+			}
+			else
+			{
+				len++; //only deleted chars before current
+				textOffset = -1;
+			}
+			if (len > 0)
+			{
+				nextIndex += len;
+				if (add(index, verText + textOffset + 1, len, NULL) == FAIL)
 				{
 					free(bufText);
 					free(verText);
@@ -248,7 +273,7 @@ status_t saveMergeInBuffer(int* bufOffset, int* verOffset, int size, version_t* 
 				}
 			}
 		}
-		addIndex = nextAddIndex;
+	index = nextIndex;
 	}
 	return SUCCESS;
 }
@@ -262,4 +287,14 @@ bool_t areOnSamePath(verList_t* pathToBuf, verList_t* pathToVer)
 	}
 	if (!pathToBuf || !pathToVer || pathToBuf->ver == buf) return TRUE;
 	return FALSE;
+}
+
+int getClosestNonDeletedIndex(int i, int* offset)
+{
+	i = i - 1;
+	for (; i >= 0; i--)
+	{
+		if (offset[i] != DELETED) return i;
+	}
+	return INVALID_INDEX;
 }
