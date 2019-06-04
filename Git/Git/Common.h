@@ -110,3 +110,4 @@ void updateOffsetsForVer(operation_t* opEl, int* offset, int size);
 int findClosestIndex(int valueToFind, int* array, int size);
 status_t saveMergeInBuffer(int* bufOffset, int* verOffset, int size, version_t* ver);
 bool_t areOnSamePath(verList_t* pathToBuf, verList_t* pathToVer);
+void removeSamePartOfPath(verList_t** pathToBuf, verList_t** pathToVer);

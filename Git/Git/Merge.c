@@ -25,6 +25,7 @@ status_t merge(int verNum)
 	verList_t* pathToVer = NULL;
 	int* bufOffset = NULL;
 	int* verOffset = NULL;
+	char* text = NULL;
 
 	if (getPath(&pathToBuf, NULL) == FAIL)
 	{
@@ -48,12 +49,16 @@ status_t merge(int verNum)
 	{
 		printf("ERROR: merged version will contain no changing.\n");
 	}
+	removeSamePartOfPath(&pathToBuf, &pathToVer);
 
-	int offsetsArrLen = 0;
-	if (generalInfo->root->operation)
+	int stringLen = getMaxTextLen(pathToBuf->ver);
+	text = (char*)calloc(stringLen + 1, sizeof(char));
+	if (getCurText(text, stringLen, pathToBuf->ver, NULL) == FAIL)
 	{
-		offsetsArrLen = strlen(generalInfo->root->operation->data) + 1;
+		printf("ERROR: unable to calculate length of merged text.\n");
+		goto Fail;
 	}
+	int offsetsArrLen = strlen(text) + 1;
 	bufOffset = getOffsets(pathToBuf, offsetsArrLen);
 	if (!bufOffset)
 	{
@@ -73,6 +78,7 @@ status_t merge(int verNum)
 		goto Fail;
 	}
 
+	if (text) free(text);
 	if (pathToBuf) deletePath(&pathToBuf);
 	if (pathToVer) deletePath(&pathToVer);
 	if (bufOffset) free(bufOffset);
@@ -80,6 +86,7 @@ status_t merge(int verNum)
 	return SUCCESS;
 
 Fail:
+	if (text) free(text);
 	if (pathToBuf) deletePath(&pathToBuf);
 	if (pathToVer) deletePath(&pathToVer);
 	if (bufOffset) free(bufOffset);
@@ -96,12 +103,10 @@ int* getOffsets(verList_t* path, int size)
 		return NULL;
 	}
 	for (int i = 0; i < size; i++) offset[i] = i;
+	path = path->next;
 	while (path)
 	{
-		if (path->ver == generalInfo->root) //no need to handle root's first operation
-			updateOffsetsForVer(path->ver->operation->next, offset, size);
-		else
-			updateOffsetsForVer(path->ver->operation, offset, size);
+		updateOffsetsForVer(path->ver->operation, offset, size);
 		path = path->next;
 	}
 	return offset;
@@ -273,7 +278,7 @@ status_t saveMergeInBuffer(int* bufOffset, int* verOffset, int size, version_t* 
 				}
 			}
 		}
-	index = nextIndex;
+	    index = nextIndex;
 	}
 	return SUCCESS;
 }
@@ -297,4 +302,19 @@ int getClosestNonDeletedIndex(int i, int* offset)
 		if (offset[i] != DELETED) return i;
 	}
 	return INVALID_INDEX;
+}
+
+void removeSamePartOfPath(verList_t** pathToBuf, verList_t** pathToVer)
+{
+	verList_t* bufPrev = NULL;
+	verList_t* verPrev = NULL;
+	do
+	{
+		bufPrev = *pathToBuf;
+		verPrev = *pathToVer;
+		*pathToBuf = (*pathToBuf)->next;
+		*pathToVer = (*pathToVer)->next;
+	} while (*pathToBuf && *pathToVer && (*pathToBuf)->ver == (*pathToVer)->ver);
+	*pathToBuf = bufPrev;
+	*pathToVer = verPrev;
 }
