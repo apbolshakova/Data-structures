@@ -14,7 +14,7 @@ status_t handleMerging()
 	}
 	if (merge(i) == FAIL)
 	{
-		printf("ERROR: unable to delete version.\n");
+		printf("ERROR: unable to merge.\n");
 		return FAIL;
 	}
 }
@@ -48,6 +48,7 @@ status_t merge(int verNum)
 	if (areOnSamePath(pathToBuf, pathToVer))
 	{
 		printf("ERROR: merged version will contain no changing.\n");
+		goto Fail;
 	}
 	removeSamePartOfPath(&pathToBuf, &pathToVer);
 
@@ -86,6 +87,10 @@ status_t merge(int verNum)
 	return SUCCESS;
 
 Fail:
+	if (initBuf(buf->parentVerNum) == FAIL)
+	{
+		printf("ERROR: unable to recreate buffer.\n");
+	}
 	if (text) free(text);
 	if (pathToBuf) deletePath(&pathToBuf);
 	if (pathToVer) deletePath(&pathToVer);
