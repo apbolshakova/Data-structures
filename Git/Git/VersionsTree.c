@@ -251,6 +251,7 @@ status_t pull()
 	if (!getVerPtr(generalInfo->root, i))
 	{
 		printf("ERROR: attempt to pull not existing version.\n");
+		return FAIL;
 	}
 	if (initBuf(i) == FAIL)
 	{
@@ -347,7 +348,7 @@ status_t deleteFromChildren(version_t* verToDelete, version_t* parent)
 	}
 	if (verPos == INVALID_INDEX)
 	{
-		printf("ERROR: version is not attacted to it's parent as child");
+		printf("ERROR: version is not attacted to it's parent as child\n");
 		return FAIL;
 	}
 	verToDelete->parentPtr->child[verPos] = NULL;
