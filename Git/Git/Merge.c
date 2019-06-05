@@ -75,7 +75,7 @@ status_t merge(int verNum)
 
 	if (saveMergeInBuffer(bufOffset, verOffset, offsetsArrLen, ver) == FAIL) //recreate buffer and add operations to get merged text
 	{
-		printf("ERROR: unable to merge.\n");
+		printf("ERROR: unable to save merging result in buffer.\n");
 		goto Fail;
 	}
 
@@ -212,7 +212,7 @@ status_t saveMergeInBuffer(int* bufOffset, int* verOffset, int size, version_t* 
 			//copy text before first char from buf or ver
 			toAddFromBuf = bufOffset[i];
 			toAddFromVer = verOffset[i];
-			if (toAddFromBuf > 0 && toAddFromVer > 0)
+			if (toAddFromBuf != 0 && toAddFromVer != 0)
 			{
 				printf("ERROR: conflict while merging.\n");
 				free(bufText);
@@ -229,7 +229,7 @@ status_t saveMergeInBuffer(int* bufOffset, int* verOffset, int size, version_t* 
 					return FAIL;
 				}
 			}
-			else
+			else if (toAddFromVer > 0)
 			{
 				nextIndex += toAddFromVer;
 				if (add(index, verText, toAddFromVer, NULL) == FAIL)
@@ -247,7 +247,7 @@ status_t saveMergeInBuffer(int* bufOffset, int* verOffset, int size, version_t* 
 			getAddOperationInfo(&toAddFromBuf, &bufSrcOffset, i, bufOffset);
 			getAddOperationInfo(&toAddFromVer, &verSrcOffset, i, verOffset);
 			
-			if (toAddFromBuf > 0 && toAddFromVer > 0)
+			if (toAddFromBuf != 0 && toAddFromVer != 0)
 			{
 				printf("ERROR: conflict while merging.\n");
 				free(bufText);
@@ -264,7 +264,7 @@ status_t saveMergeInBuffer(int* bufOffset, int* verOffset, int size, version_t* 
 					return FAIL;
 				}
 			}
-			else
+			else if (toAddFromVer > 0)
 			{
 				nextIndex += toAddFromVer;
 				if (add(index, verText + verSrcOffset + 1, toAddFromVer, NULL) == FAIL)
@@ -287,7 +287,7 @@ bool_t areOnSamePath(verList_t* pathToBuf, verList_t* pathToVer)
 		pathToBuf = pathToBuf->next;
 		pathToVer = pathToVer->next;
 	}
-	if (!pathToBuf || !pathToVer || pathToBuf->ver == buf) return TRUE;
+	if (!pathToBuf || !pathToVer) return TRUE;
 	return FALSE;
 }
 
