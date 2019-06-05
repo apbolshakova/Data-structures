@@ -83,14 +83,6 @@ void deleteVerTree(version_t* p)
 status_t buildVerTree(int verNum) 
 {
 	char* fileName = getNameOfVerFile(verNum);
-	char* rootFileName = getNameOfVerFile(ROOT_VER);
-	if (!exists(rootFileName) && verNum != ROOT_VER) //an attempt to read non existable tree
-	{
-		free(fileName);
-		free(rootFileName);
-		printf("ERROR: attempt to load not existing tree.\n");
-		return FAIL;
-	}
 	if (!exists(fileName))
 	{
 		free(fileName);

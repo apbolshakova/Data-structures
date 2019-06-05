@@ -111,3 +111,4 @@ int findClosestIndex(int valueToFind, int* array, int size);
 status_t saveMergeInBuffer(int* bufOffset, int* verOffset, int size, version_t* ver);
 bool_t areOnSamePath(verList_t* pathToBuf, verList_t* pathToVer);
 void removeSamePartOfPath(verList_t** pathToBuf, verList_t** pathToVer);
+void getAddOperationInfo(int* toAdd, int* srcOffset, int i, int* offsetsArr);
