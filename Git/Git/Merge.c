@@ -72,10 +72,13 @@ status_t merge(int verNum)
 		printf("ERROR: unable to compare versions.\n");
 		goto Fail;
 	}
-
-	if (saveMergeInBuffer(bufOffset, verOffset, offsetsArrLen, ver) == FAIL) //recreate buffer and add operations to get merged text
+	if (!areAbleToMerge(bufOffset, verOffset, offsetsArrLen))
 	{
-		printf("ERROR: unable to save merging result in buffer.\n");
+		goto Fail;
+	}
+	if (copyMergeOperations() == FAIL)
+	{
+		printf("ERROR: unable to copy operations.\n");
 		goto Fail;
 	}
 
@@ -153,39 +156,8 @@ int findClosestIndex(int valueToFind, int* array, int size)
 	return size; //adding to the end
 }
 
-status_t saveMergeInBuffer(int* bufOffset, int* verOffset, int size, version_t* ver)
+bool_t areAbleToMerge(int* bufOffset, int* verOffset, int size)
 {
-	int bufStrLen = getMaxTextLen(NULL);
-	char* bufText = (char*)calloc(bufStrLen + 1, sizeof(char));
-	if (getCurText(bufText, bufStrLen, NULL, NULL) == FAIL)
-	{
-		free(bufText);
-		printf("ERROR: unable to get text to define merge operations.\n");
-		return FAIL;
-	}
-
-	int verStrLen = getMaxTextLen(ver);
-	char* verText = (char*)calloc(verStrLen + 1, sizeof(char));
-	if (getCurText(verText, verStrLen, ver, NULL) == FAIL)
-	{
-		free(bufText);
-		free(verText);
-		printf("ERROR: unable to get text to define merge operations.\n");
-		return FAIL;
-	}
-
-	if (initBuf(buf->parentVerNum) == FAIL)
-	{
-		printf("ERROR: unable to recreate buffer.\n");
-		return FAIL;
-	}
-	if (remove(0, strlen(bufText)) == FAIL)
-	{
-		free(bufText);
-		free(verText);
-		return FAIL;
-	}
-
 	int index = 0; //offset for addition into result
 	for (int i = 0; i < size; i++)
 	{
@@ -196,17 +168,9 @@ status_t saveMergeInBuffer(int* bufOffset, int* verOffset, int size, version_t* 
 		if (verOffset[i] != DELETED && bufOffset[i] != DELETED && i != size - 1)
 		{
 			nextIndex++;
-			if (add(index, bufText + bufOffset[i], 1, NULL) == FAIL)
-			{
-				free(bufText);
-				free(verText);
-				return FAIL;
-			}
 		}
-		
 		int toAddFromBuf = 0;
 		int toAddFromVer = 0;
-
 		if (i == 0)
 		{
 			//copy text before first char from buf or ver
@@ -215,69 +179,26 @@ status_t saveMergeInBuffer(int* bufOffset, int* verOffset, int size, version_t* 
 			if (toAddFromBuf != 0 && toAddFromVer != 0)
 			{
 				printf("ERROR: conflict while merging.\n");
-				free(bufText);
-				free(verText);
-				return FAIL;
+				return FALSE_;
 			}
-			else if (toAddFromBuf > 0)
-			{
-				nextIndex += toAddFromBuf;
-				if (add(index, bufText, toAddFromBuf, NULL) == FAIL)
-				{
-					free(bufText);
-					free(verText);
-					return FAIL;
-				}
-			}
-			else if (toAddFromVer > 0)
-			{
-				nextIndex += toAddFromVer;
-				if (add(index, verText, toAddFromVer, NULL) == FAIL)
-				{
-					free(bufText);
-					free(verText);
-					return FAIL;
-				}
-			}
+			else if (toAddFromBuf > 0) nextIndex += toAddFromBuf;
+			else if (toAddFromVer > 0) nextIndex += toAddFromVer;
 		}
 		else
 		{
-			int bufSrcOffset = 0;
-			int verSrcOffset = 0;
-			getAddOperationInfo(&toAddFromBuf, &bufSrcOffset, i, bufOffset);
-			getAddOperationInfo(&toAddFromVer, &verSrcOffset, i, verOffset);
-			
+			getAddOperationInfo(&toAddFromBuf, i, bufOffset);
+			getAddOperationInfo(&toAddFromVer, i, verOffset);
 			if (toAddFromBuf != 0 && toAddFromVer != 0)
 			{
 				printf("ERROR: conflict while merging.\n");
-				free(bufText);
-				free(verText);
-				return FAIL;
+				return FALSE_;
 			}
-			else if (toAddFromBuf > 0)
-			{
-				nextIndex += toAddFromBuf;
-				if (add(index, bufText + bufSrcOffset + 1, toAddFromBuf, NULL) == FAIL)
-				{
-					free(bufText);
-					free(verText);
-					return FAIL;
-				}
-			}
-			else if (toAddFromVer > 0)
-			{
-				nextIndex += toAddFromVer;
-				if (add(index, verText + verSrcOffset + 1, toAddFromVer, NULL) == FAIL)
-				{
-					free(bufText);
-					free(verText);
-					return FAIL;
-				}
-			}
+			else if (toAddFromBuf > 0) nextIndex += toAddFromBuf;
+			else if (toAddFromVer > 0) nextIndex += toAddFromVer;
 		}
 	    index = nextIndex;
 	}
-	return SUCCESS;
+	return TRUE_;
 }
 
 bool_t areOnSamePath(verList_t* pathToBuf, verList_t* pathToVer)
@@ -316,18 +237,10 @@ void removeSamePartOfPath(verList_t** pathToBuf, verList_t** pathToVer)
 	*pathToVer = verPrev;
 }
 
-void getAddOperationInfo(int* toAdd, int* srcOffset, int i, int* offsetsArr)
+void getAddOperationInfo(int* toAdd, int i, int* offsetsArr)
 {
     int prev = getClosestNonDeletedIndex(i, offsetsArr);
 	*toAdd = offsetsArr[i] - 1;
-	if (prev != INVALID_INDEX)
-	{
-		*toAdd -= offsetsArr[prev];
-		*srcOffset = offsetsArr[prev];
-	}
-	else
-	{
-		(*toAdd)++; //only deleted chars before current
-		*srcOffset = -1;
-	}
+	if (prev != INVALID_INDEX) *toAdd -= offsetsArr[prev];
+	else (*toAdd)++; //only deleted chars before current
 }
