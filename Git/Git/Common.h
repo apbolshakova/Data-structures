@@ -107,8 +107,9 @@ status_t handleMerging();
 status_t merge(int verNum);
 int* getOffsets(verList_t* pathToBuf, int size); //get an array which shows how many chars before each one from original text
 void updateOffsetsForVer(operation_t* opEl, int* offset, int size);
-int findClosestIndex(int valueToFind, int* array, int size);
-bool_t areAbleToMerge(int* bufOffset, int* verOffset, int size);
+int findClosestIndex(int valueToFind, int* array, int size, int* diff);
+bool_t areAbleToMerge(int* bufOffset, int* verOffset, int size); //calculate how chars will be olaced and detect merge conflicts
 bool_t areOnSamePath(verList_t* pathToBuf, verList_t* pathToVer);
 void removeSamePartOfPath(verList_t** pathToBuf, verList_t** pathToVer);
 void getAddOperationInfo(int* toAdd, int i, int* offsetsArr);
+status_t copyMergeOperations(int* bufOffset, int size, verList_t* pathToVer);

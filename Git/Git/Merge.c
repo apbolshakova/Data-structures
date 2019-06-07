@@ -60,23 +60,26 @@ status_t merge(int verNum)
 		goto Fail;
 	}
 	int offsetsArrLen = strlen(text) + 1;
+	pathToBuf = pathToBuf->next;
 	bufOffset = getOffsets(pathToBuf, offsetsArrLen);
 	if (!bufOffset)
 	{
 		printf("ERROR: unable to compare versions.\n");
 		goto Fail;
 	}
+	pathToVer = pathToVer->next;
 	verOffset = getOffsets(pathToVer, offsetsArrLen);
 	if (!verOffset)
 	{
 		printf("ERROR: unable to compare versions.\n");
 		goto Fail;
 	}
+
 	if (!areAbleToMerge(bufOffset, verOffset, offsetsArrLen))
 	{
 		goto Fail;
 	}
-	if (copyMergeOperations() == FAIL)
+	if (copyMergeOperations(bufOffset, offsetsArrLen, pathToVer) == FAIL)
 	{
 		printf("ERROR: unable to copy operations.\n");
 		goto Fail;
@@ -111,7 +114,6 @@ int* getOffsets(verList_t* path, int size)
 		return NULL;
 	}
 	for (int i = 0; i < size; i++) offset[i] = i;
-	path = path->next;
 	while (path)
 	{
 		updateOffsetsForVer(path->ver->operation, offset, size);
@@ -126,13 +128,16 @@ void updateOffsetsForVer(operation_t* opEl, int* offset, int size)
 	{
 		if (opEl->type == '+')
 		{
-			int i = findClosestIndex(opEl->beginIndex, offset, size);
+			int i = findClosestIndex(opEl->beginIndex, offset, size, NULL);
 			int opLen = strlen(opEl->data);
-			for (i; i < size; i++) offset[i] += opLen;
+			for (i; i < size; i++)
+			{
+				if (offset[i] != DELETED) offset[i] += opLen;
+			}
 		}
 		if (opEl->type == '-')
 		{
-			int i = findClosestIndex(opEl->beginIndex, offset, size);
+			int i = findClosestIndex(opEl->beginIndex, offset, size, NULL);
 			while (opEl->beginIndex <= offset[i] && offset[i] < opEl->endIndex)
 			{
 				offset[i] = DELETED;
@@ -147,11 +152,15 @@ void updateOffsetsForVer(operation_t* opEl, int* offset, int size)
 	}
 }
 
-int findClosestIndex(int valueToFind, int* array, int size)
+int findClosestIndex(int valueToFind, int* array, int size, int* diff) //returns index after which (include it) offset must be applied
 {
 	for (int i = 0; i < size; i++)
 	{
-		if (valueToFind <= array[i]) return i;
+		if (valueToFind <= array[i])
+		{
+			if (diff) *diff = array[i] - valueToFind;
+			return i; //array[i] позиция i-го исходного символа в буфере
+		}
 	}
 	return size; //adding to the end
 }
@@ -243,4 +252,81 @@ void getAddOperationInfo(int* toAdd, int i, int* offsetsArr)
 	*toAdd = offsetsArr[i] - 1;
 	if (prev != INVALID_INDEX) *toAdd -= offsetsArr[prev];
 	else (*toAdd)++; //only deleted chars before current
+}
+
+status_t copyMergeOperations(int* bufOffset, int size, verList_t* pathToVer)
+{
+	int* verOffset = (int*)malloc(sizeof(int) * size);
+	for (int i = 0; i < size; i++) verOffset[i] = i;
+	if (!verOffset)
+	{
+		printf("ERROR: memory allocation problem.\n");
+		return FAIL;
+	}
+
+	while (pathToVer)
+	{
+		operation_t* opEl = pathToVer->ver->operation;
+		while (opEl)
+		{
+			int diff = 0;
+			int i = findClosestIndex(opEl->beginIndex, verOffset, size, &diff);
+			int offset = bufOffset[i] - diff;
+
+			if (opEl->type == '+' && offset >= 0)
+			{
+				if (add(offset, opEl->data, ALL, NULL) == FAIL)
+				{
+					return FAIL;
+				}
+				int opLen = strlen(opEl->data);
+
+				//update ver offsets
+				i = findClosestIndex(opEl->beginIndex, verOffset, size, NULL);
+				for (i; i < size; i++)
+				{
+					if (verOffset[i] != DELETED) verOffset[i] += opLen;
+				}
+				//update buf offsets
+				i = findClosestIndex(offset, bufOffset, size, NULL);
+				for (i; i < size; i++)
+				{
+					if (bufOffset[i] != DELETED) bufOffset[i] += opLen;
+				}
+			}
+			if (opEl->type == '-' && offset >= 0)
+			{
+				if (remove(offset, offset + opEl->endIndex - opEl->beginIndex) == FAIL)
+				{
+					return FAIL;
+				}
+
+				//update ver offsets
+				i = findClosestIndex(opEl->beginIndex, verOffset, size, NULL);
+				while (opEl->beginIndex <= verOffset[i] && verOffset[i] < opEl->endIndex)
+				{
+					verOffset[i] = DELETED;
+					i++;
+				}
+				for (; i < size; i++)
+				{
+					verOffset[i] -= opEl->endIndex - opEl->beginIndex;
+				}
+				//update buf offsets
+				i = findClosestIndex(offset, bufOffset, size, NULL);
+				while (offset <= bufOffset[i] && bufOffset[i] < offset + opEl->endIndex - opEl->beginIndex)
+				{
+					bufOffset[i] = DELETED;
+					i++;
+				}
+				for (; i < size; i++)
+				{
+					bufOffset[i] -= opEl->endIndex - opEl->beginIndex;
+				}
+			}
+			opEl = opEl->next;
+		}
+		pathToVer = pathToVer->next;
+	}
+	return SUCCESS;
 }
